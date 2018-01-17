@@ -18,8 +18,7 @@ df = df.dropna()
 df.isnull().sum()
 # List names and correct names
 list(df)
-names = ['Brent','BNO','WTI','YXA1','RE1','USD Index','USD/CAD',
-         'USD/NOK','S&P 500','EuroStoxx50']
+names = ['Brent','BNO','WTI','YXA1','RE1','USD Index','USD/CAD','USD/NOK','S&P 500','EuroStoxx50']
 
 ret = df.pct_change()
 ret.columns = names
@@ -32,8 +31,19 @@ corr1y = ret1y.corr().dropna()
 corr6m = ret6m.corr().dropna()
 corr3m = ret3m.corr().dropna()
 # 1 Year
-sns.clustermap(corr1y,
-            annot=True,
-            cmap = 'RdYlGn',
-            xticklabels=corr.columns,
-            yticklabels=corr.columns)
+plot1y = sns.heatmap(corr1y,
+                        annot=True,
+                        cmap = 'RdYlGn',
+                        xticklabels=ret.columns,
+                        yticklabels=ret.columns).set_title('Correlation over 1 Year')
+plot6m = sns.heatmap(corr6m,
+                        annot=True,
+                        cmap = 'RdYlGn',
+                        xticklabels=ret.columns,
+                        yticklabels=ret.columns).set_title('Correlation over 6 Months')
+
+plot3m = sns.heatmap(corr3m,
+                        annot=True,
+                        cmap = 'RdYlGn',
+                        xticklabels=ret.columns,
+                        yticklabels=ret.columns).set_title('Correlation over 3 Months')
