@@ -1,5 +1,7 @@
 # Source: http://cs.bme.hu/~adam.zlatniczki/education/stockforecast/08_volatility_modelling.py
 # https://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/
+# https://machinelearningmastery.com/make-sample-forecasts-arima-python/
+http://www.blackarbs.com/blog/time-series-analysis-in-python-linear-models-to-garch/11/1/2016
 # -*- coding: utf-8 -*-
 """
 Created on Sun Dec 06 20:58:52 2015
