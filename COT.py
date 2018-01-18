@@ -16,13 +16,11 @@ df.head()
 list(df)
 names = ['Brent','BNO','WTI','YXA1','RE1','USD Index','USD/CAD','USD/NOK','S&P 500','EuroStoxx50']
 df.columns = names
-
-brent.plot()
+brent = df['Brent']
 
 data = cot.merge(brent.to_frame(), left_index=True, right_index=True)
 data.plot()
 data['Brent'].plot()
-data['Noncommercial Long', 'Noncommercial Short'].plot()
 
 fig=plt.figure()
 ax=data['Brent'].plot()
@@ -33,6 +31,7 @@ fig.suptitle('COT Report')
 ax.set_xlabel('Date')
 ax.set_ylabel('Brent Future Price')
 ax2.set_ylabel('Noncommercial Positions')
+fig.legend()
 
 ax2.scatter(x_values2, y_values2, color="C1")
 ax2.xaxis.tick_top()
