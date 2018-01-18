@@ -1,7 +1,7 @@
 # Source: http://cs.bme.hu/~adam.zlatniczki/education/stockforecast/08_volatility_modelling.py
 # https://machinelearningmastery.com/arima-for-time-series-forecasting-with-python/
 # https://machinelearningmastery.com/make-sample-forecasts-arima-python/
-http://www.blackarbs.com/blog/time-series-analysis-in-python-linear-models-to-garch/11/1/2016
+# http://www.blackarbs.com/blog/time-series-analysis-in-python-linear-models-to-garch/11/1/2016
 # -*- coding: utf-8 -*-
 """
 Created on Sun Dec 06 20:58:52 2015
@@ -41,6 +41,7 @@ df.index = pd.to_datetime(df.Date)
 df = df.drop("Date", axis=1)
 
 df = df['CO1 Comdty']
+df = df.dropna()
 prices = df.sort_index()
 
 # Explore the data a little
@@ -62,7 +63,7 @@ tsaplots.plot_pacf(prices, lags=36) # very significant at lag=1
 
 returns = prices.pct_change()
 returns = returns[1:] # drop NA
-
+returns.isnull().sum()
 
 returns.plot()
 

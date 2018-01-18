@@ -31,7 +31,7 @@ corr1y = ret1y.corr().dropna()
 corr6m = ret6m.corr().dropna()
 corr3m = ret3m.corr().dropna()
 # 1 Year
-plot1y = sns.heatmap(corr1y,
+plot1y = sns.clustermap(corr1y,
                         annot=True,
                         cmap = 'RdYlGn',
                         xticklabels=ret.columns,
