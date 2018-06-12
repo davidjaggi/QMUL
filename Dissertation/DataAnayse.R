@@ -9,14 +9,16 @@ library(ggthemes)
 library(tidyr)
 library(tbl2xts)
 library(xtable)
+library(moments)
+library(qqplotr)
 
 ##### Import Data ##############################################################
 # Load the data
-sp500 <- read.csv(file = 'C:/Users/David Jaggi/Documents/QMUL/Dissertation/Data/SP500.csv')
+sp500 <- read.csv(file = 'Dissertation/Data/SP500.csv')
 # convoert it into an xts
 colnames(sp500) <- c('Date','Close')
 x <- as.xts(x = sp500$Close, order.by = as.POSIXct(sp500$Date, tryFormat = "%d/%m/%Y"), tz = 'UTC')
-
+remove(sp500)
 # Check the series
 head(x)
 
@@ -26,17 +28,17 @@ head(x)
 # Troubleshoot why I need an autoplot.zoo
 
 # Save as png
-png(filename="C:/Users/David Jaggi/Desktop/QMUL/Dissertation/Dissertation/Figures/SP500.png",
-    height = 960, width = 1440, res = 300)
-autoplot.zoo(x) + 
-  ggtitle('SP500') + 
-  xlab('Time') + 
-  ylab('Price') + 
-  theme_light()
-dev.off()
+# png(filename="Dissertation/Figures/SP500.png",
+#     height = 960, width = 1440, res = 300)
+# autoplot.zoo(x) + 
+#   ggtitle('SP500') + 
+#   xlab('Time') + 
+#   ylab('Price') + 
+#   theme_light()
+# dev.off()
 # Make summary
 summary(x)
-
+xtable(summary(x))
 # Now check for NA's
 sum(is.na(x)) # in this series we have 91 NA's
 
@@ -47,7 +49,19 @@ x <- na.locf(x)
 sum(is.na(x))
 # Show a corrolelogram
 # ACF
-autoplot(stats::acf(x)) +
+autoplot(forecast::Acf(x)) +
+  ggtitle('Autocorrelation function') +
+  xlab('Lag') +
+  ylab('ACF') +
+  theme_minimal()
+
+autoplot(forecast::Acf(x^2)) +
+  ggtitle('Autocorrelation function') +
+  xlab('Lag') +
+  ylab('ACF') +
+  theme_minimal()
+
+autoplot(forecast::Acf(abs(x))) +
   ggtitle('Autocorrelation function') +
   xlab('Lag') +
   ylab('ACF') +
@@ -68,7 +82,9 @@ ret <- na.omit(ret)
 summary(ret)
 xtable(summary(ret))
 
-
+median(ret)
+kurtosis(ret)
+skewness(ret)
 sd(ret)
 
 # Plot the returns
@@ -82,17 +98,12 @@ sd(ret)
 # dev.off()
 
 # Return ACF
-autoplot(forecast::Acf(ret)) +
+q <-autoplot(forecast::Acf(ret)) +
   ggtitle('ACF: Return') +
   xlab('Lag') +
   ylab('ACF') +
   theme_minimal()
-
-autoplot(forecast::Acf(ret^2)) +
-  ggtitle('ACF: Squared Return') +
-  xlab('Lag') +
-  ylab('ACF') +
-  theme_minimal()
+printer(plot = q, path = 'SP500ACF')
 
 autoplot(forecast::Acf(abs(ret))) +
   ggtitle('ACF: Absolute Return') +
@@ -100,18 +111,16 @@ autoplot(forecast::Acf(abs(ret))) +
   ylab('ACF') +
   theme_minimal()
 
-# Return PAcf
-# Take care of x axis
-autoplot(stats::pacf(ret, lag.max = 32)) +
-  ggtitle('Partial autocorrelation function') +
+q <- autoplot(forecast::Acf(ret^2)) +
+  ggtitle('ACF: Squared Return') +
   xlab('Lag') +
   ylab('ACF') +
   theme_minimal()
+printer(q, 'SP500ACF2')
+
 
 # Plot histogram of returns
-png(filename="C:/Users/David Jaggi/Desktop/QMUL/Dissertation/Dissertation/Figures/SP500Histo.png",
-    height = 960, width = 1440, res = 300)
-ggplot(data=ret, aes(ret)) + geom_histogram(bins = 100) + 
+q <- ggplot(data=ret, aes(ret)) + geom_histogram(bins = 100) + 
   theme_minimal() + 
   ggtitle('Histogram of S&P 500 Returns') + 
   xlab('Returns') + 
@@ -121,7 +130,7 @@ ggplot(data=ret, aes(ret)) + geom_histogram(bins = 100) +
   geom_vline(xintercept = mean(ret) + sd(ret), col = 'blue') +
   geom_vline(xintercept = mean(ret) - 2*sd(ret), col = 'green') +
   geom_vline(xintercept = mean(ret) + 2*sd(ret), col = 'green')
-dev.off()
+printer(q, 'SP500Hist')
 Ret <- log(1+ret/100)*100
 
 plotdata <- cbind(Ret, Ret^2, abs(Ret))
