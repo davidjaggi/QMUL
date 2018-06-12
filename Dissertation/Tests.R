@@ -1,6 +1,8 @@
 # This file contains test which help testing the series
+# Test for stationarity
+adf.
 
-# Sharpiro Wilks test
+# Sharpiro Wilks test tests for normality of the data
 shapiro_sample <- c(coredata(ret[(length(ret)-4999):length(ret)]))
 shapiro.test(x = shapiro_sample)
 
@@ -16,7 +18,6 @@ ggplot(data = fortify(ret), aes(sample = ret)) +
   ggtitle('QQ - Plot of the S&P 500 log-returns')
 
 
-# Test for autocorrelation
 # Return ACF
 q <-autoplot(forecast::Acf(ret)) +
   ggtitle('ACF: Return') +
@@ -59,11 +60,6 @@ autoplot(forecast::Pacf(ret^2, lag.max = 32)) +
   xlab('Lag') +
   ylab('ACF') +
   theme_minimal()
-
-# Test for autocorrelation using the durbin watson test
-dw
-
-
 
 # Test for ARCH effects
 Box.test(coredata(ret^2), type = 'Ljung-Box', lag = 12)
