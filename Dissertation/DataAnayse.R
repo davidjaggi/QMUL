@@ -5,6 +5,9 @@ sp500 <- read.csv(file = 'Dissertation/Data/SP500.csv')
 colnames(sp500) <- c('Date','Close')
 x <- as.xts(x = sp500$Close, order.by = as.POSIXct(sp500$Date, tryFormat = "%d/%m/%Y"), tz = 'UTC')
 remove(sp500)
+
+# crop the time series
+x <- x['1990-01-01/']
 # Check the series
 head(x)
 
@@ -116,18 +119,28 @@ q <- ggplot(data=ret, aes(ret)) + geom_histogram(bins = 100) +
   geom_vline(xintercept = mean(ret) + sd(ret), col = 'blue') +
   geom_vline(xintercept = mean(ret) - 2*sd(ret), col = 'green') +
   geom_vline(xintercept = mean(ret) + 2*sd(ret), col = 'green')
-printer(q, 'SP500Hist')
-Ret <- log(1+ret/100)*100
+# printer(q, 'SP500Hist')
 
-plotdata <- cbind(Ret, Ret^2, abs(Ret))
-colnames(plotdata) <- c('Returns','Squared Returns','Absolute Returns')
+# Plot the log returns
+ggplot(data = fortify(ret), aes(x = Index, y = ret)) + 
+  geom_line() + 
+  ggtitle('Log-returns') +
+  xlab('Time') +
+  ylab('log-return') +
+  theme_minimal()
 
-plotdata <- 
-  plotdata %>% xts_tbl() %>% gather(ReturnType, Returns, -date)
+# Plot the absolute log returns
+ggplot(data = fortify(ret), aes(x = Index, y = abs(ret))) + 
+  geom_line() + 
+  ggtitle('Absolute log-returns') +
+  xlab('Time') +
+  ylab('log-return') +
+  theme_minimal()
 
-ggplot(plotdata) + 
-  geom_line(aes(x = date, y = Returns, colour = ReturnType, alpha = 0.5)) + 
-  ggtitle("Return Type Persistence: SA Financials") +
-  facet_wrap(~ReturnType, nrow = 3, ncol = 1, scales = "free") +   
-  guides(alpha=FALSE, colour = FALSE) +
+# Plot the squared log returns
+ggplot(data = fortify(ret), aes(x = Index, y = ret^2)) + 
+  geom_line() + 
+  ggtitle('Squared log-returns') +
+  xlab('Time') +
+  ylab('log-return') +
   theme_minimal()
