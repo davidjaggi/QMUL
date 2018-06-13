@@ -1,6 +1,8 @@
 # This file contains test which help testing the series
 # Test for stationarity
-adf.
+# H0: unit root in the time series
+# H1: stationarity or trend stationarity
+adf.test(ret)
 
 # Sharpiro Wilks test tests for normality of the data
 shapiro_sample <- c(coredata(ret[(length(ret)-4999):length(ret)]))
@@ -16,6 +18,7 @@ ggplot(data = fortify(ret), aes(sample = ret)) +
   stat_qq() +
   theme_minimal() +
   ggtitle('QQ - Plot of the S&P 500 log-returns')
+
 
 
 # Return ACF

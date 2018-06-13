@@ -1,0 +1,31 @@
+# In this file I will split the data into an in- and out-of-sample data
+
+# first lets create the is sample
+is <- ret['2000-01-01/2016-21-31']
+
+# now the oos data
+oos <- ret['2017-01-01/2018-05-31']
+
+# now lets plot the data with the corresponding title
+
+ggplot(data = fortify(is), aes(x = Index, y = is)) +
+  geom_line() +
+  ggtitle('In-sample log-returns') +
+  xlab('Time') +
+  ylab('log-returns') +
+  theme_minimal()
+
+ggplot(data = fortify(oos), aes(x = Index, y = oos)) +
+  geom_line() +
+  ggtitle('In-sample log-returns') +
+  xlab('Time') +
+  ylab('log-returns') +
+  theme_minimal()
+
+# Plot both data series in one plot
+ggplot(data = fortify(merge.xts(is,oos)), aes(x = Index)) + 
+  geom_line(aes(y = is), color = 'black') +
+  geom_line(aes(y = oos), color = 'red') +
+  labs(title = 'In- and OOS-split', x = 'Time', y = 'Log-return') +
+  theme_minimal()
+

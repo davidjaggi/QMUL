@@ -1,17 +1,3 @@
-##### Load Packages ############################################################
-library(xts)
-library(ggplot2)
-library(ggfortify)
-library(forecast)
-library(scales)
-library(dplyr)
-library(ggthemes)
-library(tidyr)
-library(tbl2xts)
-library(xtable)
-library(moments)
-library(qqplotr)
-
 ##### Import Data ##############################################################
 # Load the data
 sp500 <- read.csv(file = 'Dissertation/Data/SP500.csv')
