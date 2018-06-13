@@ -1,3 +1,4 @@
+##### Test the series for its properties #######################################
 # This file contains test which help testing the series
 # Test for stationarity
 # H0: unit root in the time series
@@ -20,7 +21,7 @@ ggplot(data = fortify(ret), aes(sample = ret)) +
   ggtitle('QQ - Plot of the S&P 500 log-returns')
 
 
-
+##### Test series for autocorrelation ##########################################
 # Return ACF
 q <-autoplot(forecast::Acf(ret)) +
   ggtitle('ACF: Return') +

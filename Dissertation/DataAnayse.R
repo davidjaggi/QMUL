@@ -11,6 +11,10 @@ x <- x['1990-01-01/']
 # Check the series
 head(x)
 
+##### Calculate returns ########################################################
+# Calculate returns
+ret <- diff(x = log(x), lag = 1)
+ret <- na.omit(ret)
 
 ##### Plot time series #########################################################
 # Plot the data
@@ -26,6 +30,8 @@ head(x)
 #   theme_light()
 # dev.off()
 # Make summary
+
+##### Analyse the time series ##################################################
 summary(x)
 xtable(summary(x))
 # Now check for NA's
@@ -36,6 +42,8 @@ sum(is.na(x)) # in this series we have 91 NA's
 # Fill the NA's with the previous values
 x <- na.locf(x)
 sum(is.na(x))
+
+##### Analyse the series for autocorrelation ###################################
 # Show a corrolelogram
 # ACF
 autoplot(forecast::Acf(x)) +
@@ -63,11 +71,8 @@ autoplot(stats::pacf(x)) +
   ylab('ACF') +
   theme_minimal()
 
-##### Calculate returns ########################################################
-# Calculate returns
-ret <- diff(x = log(x), lag = 1)
-ret <- na.omit(ret)
 
+##### Analyse returns ##########################################################
 summary(ret)
 xtable(summary(ret))
 

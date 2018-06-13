@@ -1,11 +1,13 @@
+##### Split data into in-sample and oos ########################################
 # In this file I will split the data into an in- and out-of-sample data
 
 # first lets create the is sample
-is <- ret['2000-01-01/2016-21-31']
+is <- ret['2016-01-01/2016-12-31']
 
 # now the oos data
 oos <- ret['2017-01-01/2018-05-31']
 
+##### Plot the is and oos data #################################################
 # now lets plot the data with the corresponding title
 
 ggplot(data = fortify(is), aes(x = Index, y = is)) +
@@ -23,9 +25,9 @@ ggplot(data = fortify(oos), aes(x = Index, y = oos)) +
   theme_minimal()
 
 # Plot both data series in one plot
-ggplot(data = fortify(merge.xts(is,oos)), aes(x = Index)) + 
-  geom_line(aes(y = is), color = 'black') +
-  geom_line(aes(y = oos), color = 'red') +
-  labs(title = 'In- and OOS-split', x = 'Time', y = 'Log-return') +
+ggplot() + 
+  geom_line(data = fortify(is),aes(x = Index, y = is), color = 'black') +
+  geom_line(data = fortify(oos),aes(x = Index, y = oos), color = 'red') +
+  labs(title = 'IS- and OOS-split', x = 'Time', y = 'Log-return') +
   theme_minimal()
 

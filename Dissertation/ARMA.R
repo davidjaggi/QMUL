@@ -1,6 +1,7 @@
+###### Insert other files ######################################################
 source('Dissertation/Setup.R')
 
-
+##### Creat ARMA Model and get parameters ######################################
 # Create the ARMA Model
 arima.model <- auto.arima(is)
 arima.model
@@ -9,16 +10,19 @@ arima.model
 ar.comp <- arimaorder(object = arima.model)[1]
 ma.comp <- arimaorder(object = arima.model)[3]
 
+##### Fit the model ############################################################
 fit = arima(is, order = c(2,0,0), include.mean = FALSE)
 summary(fit)
 
+##### Forecast the model #######################################################
 arima.forecast <- forecast(object = fit, h = 30)
 
-# extract first 30 observations
-actual <- ret[1:30,1]
+# extract first 30 observations of oos
+actual <- oos[1:30,1]
 
 
-autoplot(arima.forecast) + theme_minimal()
+##### Plot the estimated data ##################################################
+autoplot(arima.forecast)
 
 ggplot(data = fortify(actual), aes(x = Index)) +
   geom_line(aes(y = actual), color = 'red') +
@@ -26,17 +30,18 @@ ggplot(data = fortify(actual), aes(x = Index)) +
        ylab = 'Log-return') +
   theme_minimal()
 
+##### Plot with the fitted values ##############################################
+fit <- data.frame(data=as.matrix(fitted(arima.forecast)), 
+                  date=time(fitted(arima.forecast)))
+autoplot(arima.forecast) + geom_line(data = fit,aes(date,data), col = "red")
 
-merge.xts(actual, arima.forecast)
-length(actual)
-length(arima.forecast)
 
-dforc <- funggcast
+forc <- tail(fortify(arima.forecast),60)
+# extract first 30 observations of oos
+actual <- fortify(oos[1:30,1])
+actual$Index <- tail(forc$Index, 30)
+colnames(actual) <- c('Index','OOS')
 
-p1a<-ggplot(data=pd,aes(x=date,y=observed)) 
-p1a<-p1a+geom_line(col='red')
-p1a<-p1a+geom_line(aes(y=fitted),col='blue')
-p1a<-p1a+geom_line(aes(y=forecast))+geom_ribbon(aes(ymin=lo95,ymax=hi95),alpha=.25)
-p1a<-p1a+scale_x_date(name='',breaks='1 year',minor_breaks='1 month',labels=date_format("%b-%y"),expand=c(0,0))
-p1a<-p1a+scale_y_continuous(name='Units of Y')
-p1a<-p1a+opts(axis.text.x=theme_text(size=10),title='Arima Fit to Simulated Data\n (black=forecast, blue=fitted, red=data, shadow=95% conf. interval)')
+ggplot(data = forc, aes(x = Index)) +
+  geom_line(aes(y = 'Point Forecast')) +
+  geom_line(data = actual, aes(x = Index, y = OOS))

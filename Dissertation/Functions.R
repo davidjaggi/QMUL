@@ -1,3 +1,4 @@
+##### Printer function to save pictures as png #################################
 # This file contains useful functions which help to write the dissertation
 printer <- function(plot, name){
   # name is the filename
@@ -9,6 +10,7 @@ printer <- function(plot, name){
   dev.off()
 }
 
+##### Sinker function to save output to txt ####################################
 sinker <- function(output, name){
   # name is the name of the file
   # output is the stuff which should be saved
@@ -18,5 +20,3 @@ sinker <- function(output, name){
   print(output)
   sink()
 }
-
-# printer(plot = q, 'SP500ACF')
