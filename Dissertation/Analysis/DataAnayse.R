@@ -1,21 +1,3 @@
-##### Import Data ##############################################################
-# Load the data
-sp500 <- read.csv(file = 'Dissertation/Data/SP500.csv')
-# convoert it into an xts
-colnames(sp500) <- c('Date','Close')
-x <- as.xts(x = sp500$Close, order.by = as.POSIXct(sp500$Date, tryFormat = "%d/%m/%Y"), tz = 'UTC')
-remove(sp500)
-
-# crop the time series
-x <- x['1990-01-01/']
-# Check the series
-head(x)
-
-##### Calculate returns ########################################################
-# Calculate returns
-ret <- diff(x = log(x), lag = 1)
-ret <- na.omit(ret)
-
 ##### Plot time series #########################################################
 # Plot the data
 # Troubleshoot why I need an autoplot.zoo
@@ -44,6 +26,11 @@ x <- na.locf(x)
 sum(is.na(x))
 
 ##### Analyse the series for autocorrelation ###################################
+# check for heteroscedasticity
+# H0: There is no autoregressive conditional heteroscedasticity
+# H1: There is autoregressive heteroscedaticity
+McLeod.Li.test(y = ret)
+
 # Show a corrolelogram
 # ACF
 autoplot(forecast::Acf(x)) +
