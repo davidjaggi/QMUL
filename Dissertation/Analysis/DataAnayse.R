@@ -43,13 +43,13 @@ autoplot(forecast::Acf(x^2)) +
   ggtitle('Autocorrelation function') +
   xlab('Lag') +
   ylab('ACF') +
-  theme_minimal()
+  theme_economist()
 
 autoplot(forecast::Acf(abs(x))) +
   ggtitle('Autocorrelation function') +
   xlab('Lag') +
   ylab('ACF') +
-  theme_minimal()
+  theme_bw()
 
 # PAcf
 autoplot(stats::pacf(x)) +

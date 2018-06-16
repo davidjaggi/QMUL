@@ -20,3 +20,10 @@ sinker <- function(output, name){
   print(output)
   sink()
 }
+
+##### Calculate MAD function ###################################################
+error_MAD <- function(series1, series2){
+  res <- series1 - series2
+  cumres <- sum(abs(coredata(res)))
+  return(cumres/length(series1))
+}

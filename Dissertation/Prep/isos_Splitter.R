@@ -1,15 +1,22 @@
 ##### Split data into in-sample and oos ########################################
 # In this file I will split the data into an in- and out-of-sample data
 
+split_date <- '2017-01-01'
 # first lets create the is sample
-is <- ret['2016-01-01/2016-12-31']
+is <- ret[paste0('/',split_date)]
+# Show summary
+summary(is)
 
 # now the oos data
-oos <- ret['2017-01-01/2018-05-31']
+oos <- ret[paste0(split_date,'/')]
+oos.sq <- ret.sq[paste0(split_date,'/')]
+# Show summary
+summary(oos)
 
 # there should be 2/3 of the observation oos
-is.num <- floor(length(ret)*2/3)
-os.num <- length(ret) - is.num
+is.num <- nrow(is)
+oos.num <- nrow(oos)
+
 ##### Plot the is and oos data #################################################
 # now lets plot the data with the corresponding title
 

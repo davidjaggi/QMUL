@@ -27,6 +27,11 @@ head(x)
 ret <- diff(x = log(x), lag = 1)
 ret <- na.omit(ret)
 
+# Squared returns are used as proxy for conditional volatility and 
+# absolute returns for unconditional volatility
+ret.sq <- ret^2
+ret.abs <- abs(ret)
+
 ##### Make tidy series #########################################################
 ret_tidy <- tidy(ret)
 x_tidy <- tidy(x)
