@@ -18,6 +18,7 @@
 # install.packages('broom')
 # install.packages('TSA')
 # install.packages('ggseas')
+# install.packages('aTSA')
 
 library(xts)
 library(ggplot2)
@@ -38,3 +39,4 @@ library(rugarch)
 library(broom)
 library(TSA)
 library(ggseas)
+library(aTSA)

@@ -1,28 +1,45 @@
----
-title: "Structure"
-output: html_document
----
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
-## R Markdown
+# Volatility Forecast in financial markets
+*Author: David Jaggi*
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Introduction
+* What is variance
+* What is heteroscedasticity
+* Math behind volatility
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Analyse the series
+1. Plot the series
+2. Make the returns and plot them
+Calculate the log returns
+3. ACF and PACF of the returns
+4. Test the series
+* ADF- Test
+* Shapiro-Wilks test for the data
+* Ljung-Box test for ARCH effects
+* Ljung-Box test of the squared returns
+* Histogram and QQ-Plot
+5. Calculate the ARMA terms
 
-```{r cars}
-summary(cars)
-```
+## Models
+1. ARMA
+2. EWMA
+3. ARCH
+4. GARCH
+5. APARCH
+6. EGARCH
+7. NGARCH
+8. TGARCH
+9. GJR-GARCH
 
-## Including Plots
+## Errors
+1. ME
+2. RMSE
+3. MAE
+4. MPE
+5. MAPE
+6. MASE
+7. Correlation
+8. R-Squared
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Conclusion
