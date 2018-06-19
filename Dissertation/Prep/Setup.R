@@ -1,4 +1,8 @@
 ##### Import the packages ######################################################
+# install.packages('rugarch')
+# install.packages('parallel')
+# install.packages('snow')
+
 library(rugarch)
 library(parallel)
 library(snow)

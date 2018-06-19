@@ -1,79 +1,106 @@
-###### Insert other files ######################################################
+##### Creat ARMA Model and get parameters ######################################
 source('Dissertation/Prep/Setup.R')
 
-##### Creat ARMA Model and get parameters ######################################
+
 # Create the ARMA Model
-arima.model <- auto.arima(is)
+arima.model <- autoarfima(data = as.numeric(is), ar.max = 3, ma.max = 3, 
+                          criterion = 'AIC', method = 'partial', arfima = FALSE, 
+                          include.mean = NULL, distribution.model = 'norm', 
+                          solver = 'hybrid', cluster=cl)
+# Show the different models
+show(head(arima.model$rank.matrix))
 arima.model
+# suggests a ARIMA(3,0,3) with a non zero mean
 
 
 ar.comp <- arimaorder(object = arima.model)[1]
 ma.comp <- arimaorder(object = arima.model)[3]
 
-##### Fit the model ############################################################
-fit = arima(is, order = c(ar.comp,0,ma.comp), include.mean = FALSE)
-summary(fit)
+arima.spec <- arfimaspec(arfima = FALSE, distribution.model = 'norm')
+##### Fit the data to the in sample ############################################
+arima.fit <- arfimafit(spec = arima.spec, data = is)  
+coef(arima.fit)
+show(arima.fit)
 
-##### Forecast the model #######################################################
-arima.forecast <- forecast(object = fit, h = 30)
+arima.fit@fit$matcoef
+##### Fix the variables to filter the oos data #################################
+arima.spec.fixed <- getspec(arima.fit)
+setfixed(arima.spec.fixed) <- as.list(coef(arima.fit))
+arima.filt <- arfimafilter(spec = arima.spec.fixed, 
+                           data = oos)
 
-# extract first 30 observations of oos
-obs <- fortify(oos[1:30,1])
-rowind <- rownames(data.frame(arima.forecast))
+plot(arima.filt)
 
-actual$Index <- rowind
-colnames(obs) <- c('Index','OOS')
+##### Extract varaibles ########################################################
+arima.resid <- residuals(arima.filt)
 
-##### Plot the estimated data ##################################################
-autoplot(arima.forecast) + 
-  scale_x_continuous(limits = c(500000,NA)) +
-  theme_minimal()
-
-ggplot(data = fortify(actual), aes(x = Index)) +
-  geom_line(aes(y = actual), color = 'red') +
-  labs(title = 'ARMA Forecast 30-steps ahead', xlab = 'Time',
-       ylab = 'Log-return') +
-  theme_minimal()
-
-##### Plot with the fitted values ##############################################
-fit <- data.frame(data=as.matrix(fitted(arima.forecast)), 
-                  date=time(fitted(arima.forecast)))
-
-autoplot(arima.forecast) + geom_line(data = fit,aes(date,data), col = "red")
-
-
-forc <- tail(fortify(arima.forecast),60)
-# extract first 30 observations of oos
-actual <- fortify(oos[1:30,1])
-actual$Index <- tail(forc$Index, 30)
-colnames(actual) <- c('Index','OOS')
-
-ggplot(data = forc, aes(x = Index)) +
-  geom_line(aes(y = 'Point Forecast')) +
-  geom_line(data = actual, aes(x = Index, y = OOS))
-
-##### Analyse residuals ########################################################
-res.arma <- arima.forecast$residuals
-sq.res.arma <- res.arma^2
-autoplot(sq.res.arma) + 
-  labs(title = 'Squared residuals', ylab = 'Squared residuals') +
-  theme_minimal()
-
-# Make acf of squared residuals
-autoplot(forecast::Acf(sq.res.arma)) +
-  theme_minimal()
-
-# Make pacf of squared residuals
-autoplot(forecast::Pacf(sq.res.arma)) +
+# Plot the residuals
+ggplot(data = fortify(arima.resid), aes(x = Index, y=arima.resid)) +
+  geom_line() +
+  labs(title = 'ARIMA Residuals', x='Time',y='Residuals') +
   theme_bw()
 
-##### Try with the rugarch gackage #############################################
-model <- ugarchspec(
-  variance.model = list(model = "sGARCH", garchOrder = c(0, 1)),
-  mean.model = list(armaOrder = c(ar.comp, ma.comp), include.mean = FALSE),
-  distribution.model = "norm"
-)
+##### Analyse the forecast #####################################################
+# create a time series with the estimated and the real values
+# We use the relized volatility as the squared returns
+arima.result <- oos.rv
+colnames(arima.result) <- c('RV')
+arima.result$Sigma <- sigma(arima.filt)
+arima.result$Sigma.sq <- arima.result$Sigma^2
 
-modelfit <- ugarchfit(spec = model, data = ret, solver = 'hybrid')
+# Plot the estimation
+ggplot(data = fortify(arima.result), aes(x = Index)) +
+  geom_line(aes(y = RV)) +
+  geom_line(aes(y = Sigma.sq), colour = 'red') +
+  labs(title = 'Realized vs estimated volatility', x = 'Time', y = 'Volatility') +
+  theme_bw()
 
-coef(modelfit)
+##### Test the volatility forecast #############################################
+# Show the correlation between the forecast and the realized volatility
+cor(arima.result$RV, arima.result$Sigma.sq, 
+    method = "spearman")
+
+# Show the accuracy of our estimate
+accuracy(ts(arima.result$RV), ts(arima.result$Sigma.sq))
+
+# make a regression
+arima.lm <- lm(formula = oos.sq ~ arima.sigma.sq)
+plot(arima.lm)
+summary(arima.lm)
+accuracy(arima.lm)
+# xtable(accuracy(arima.lm))
+error_MAD(arima.result$OOS, arima.result$Sigma)
+
+
+
+ggplot(fortify(arima.result), aes(x = Index)) +
+  # geom_line(aes(y = abs(OOS))) +
+  # geom_line(aes(y = Sigma)) +
+  geom_line(aes(y = Resid)) +
+  theme_bw() +
+  
+  
+  plot(arima.filt@filter$z)
+infocriteria(arima.filt)
+plot(sigma(arima.filt))
+
+# conditional variance
+arima.sigma <- sigma(arima.filt)
+
+# Plot conditional variance
+ggplot(data = fortify(arima.sigma), aes(x = Index, y = arima.sigma)) +
+  geom_line() +
+  labs(title = 'Conditional variance out-of-sample', x = 'Time', y = 'Cond. variance') +
+  theme_bw()
+
+arima.resid <- residuals(arima.filt)
+arima.stresid <- residuals(arima.filt, standardize = TRUE)
+
+# calculate approximate z value
+arima.resid/arima.sigma
+
+##### 
+ggplot(data = fortify(oos),aes(x = Index, y = oos)) + geom_line()
+
+plot(fitted(arima.filt))
+report(arima.filt)
