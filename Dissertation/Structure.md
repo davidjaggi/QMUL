@@ -22,8 +22,8 @@ Calculate the log returns
 5. Calculate the ARMA terms
 
 ## Models
-1. ARMA
-2. EWMA
+1. EWMA
+2. ARMA
 3. ARCH
 4. GARCH
 5. APARCH
@@ -31,6 +31,10 @@ Calculate the log returns
 7. NGARCH
 8. TGARCH
 9. GJR-GARCH
+
+## Test the residuals
+1. Test residuals for ARCH effects
+2. Test for other properties
 
 ## Errors
 1. ME

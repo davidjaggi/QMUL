@@ -55,6 +55,7 @@ rm(dpar)
 ##### decompose the series #####################################################
 is.decomp <- decompose(x = ts(is, frequency = 5), type = 'multiplicative')
 plot(is.decomp)
+
 ##### Test series for autocorrelation ##########################################
 # Return ACF
 q <-autoplot(forecast::Acf(ret)) +
