@@ -21,9 +21,9 @@ sinker <- function(output, name){
   sink()
 }
 
-##### Calculate MAD function ###################################################
-error_MAD <- function(series1, series2){
-  res <- series1 - series2
-  cumres <- sum(abs(coredata(res)))
-  return(cumres/length(series1))
-}
+# ##### Calculate MAD function ###################################################
+# error_MAD <- function(series1, series2){
+#   res <- series1 - series2
+#   cumres <- sum(abs(coredata(res)))
+#   return(cumres/length(series1))
+# }

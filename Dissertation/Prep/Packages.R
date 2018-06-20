@@ -20,6 +20,9 @@
 # install.packages('ggseas')
 # install.packages('aTSA')
 
+# Load my functions
+source('Dissertation/Prep/Functions.R')
+
 library(xts)
 library(ggplot2)
 library(ggfortify)

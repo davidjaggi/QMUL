@@ -18,7 +18,7 @@ x <- as.xts(x = sp500$Close, order.by = as.POSIXct(sp500$Date, tryFormat = "%d/%
 remove(sp500)
 
 # crop the time series
-x <- x['1990-01-01/']
+x <- x['1990-01-01/2018-05-31']
 # Check the series
 head(x)
 

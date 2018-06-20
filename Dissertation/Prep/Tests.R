@@ -90,17 +90,21 @@ autoplot(forecast::Pacf(ret^2, lag.max = 32)) +
   labs(title = 'PACF: S&P 500 squared log-returns', x = 'Lag', y = 'PACF') +
   theme_bw()
 
+##### Run an Ljung-Box test ####################################################
 # Test for ARCH effects using the Ljung-Box test
 # H0: The data are independently distributed (i.e. the correlations in the 
 # population from which the sample is taken are 0, so that any observed 
 # correlations in the data result from randomness of the sampling process).
 # H1: The data are not independently distributed; they exhibit serial correlation.
-Box.test(coredata(ret), type = 'Ljung-Box', lag = 12)
+q <- Box.test(coredata(ret), type = 'Ljung-Box', lag = 5)
 # Reject the null hypothesis of no ARCH effects - need to control
+# Save the outcome
+# sinker(output = q, name = 'SPret_LjungBox')
 
-# Perform the same calculation with the squared returns
-Box.test(coredata(ret^2), type = 'Ljung-Box', lag = 12)
-# Reject the null hypothesis of no ARCH effects - need to control
-# for remaining conditional heteroscedasticity.
+##### Run an ADF test ##########################################################
+q <- adf.test(coredata(ret), nlag = 5)
+# sinker(q, name = 'SPret_adf')
 
-  
+##### Run an ADF test ##########################################################
+q <- kpss.test(coredata(ret))
+# sinker(q, name = 'SPret_kpss')

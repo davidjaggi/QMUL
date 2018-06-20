@@ -1,0 +1,6 @@
+
+	Box-Ljung test
+
+data:  coredata(ret)
+X-squared = 49.678, df = 5, p-value = 1.613e-09
+

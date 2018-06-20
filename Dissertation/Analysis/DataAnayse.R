@@ -3,65 +3,72 @@
 # Troubleshoot why I need an autoplot.zoo
 
 # Save as png
-# png(filename="Dissertation/Figures/SP500.png",
-#     height = 960, width = 1440, res = 300)
-# autoplot.zoo(x) + 
-#   ggtitle('SP500') + 
-#   xlab('Time') + 
-#   ylab('Price') + 
-#   theme_light()
-# dev.off()
-# Make summary
+q <- autoplot.zoo(x) +
+  ggtitle('SP500') +
+  xlab('Time') +
+  ylab('Price') +
+  theme_bw()
+# printer(q, name = 'SP_Series')
 
 ##### Analyse the time series ##################################################
-summary(x)
-xtable(summary(x))
-# Now check for NA's
-sum(is.na(x)) # in this series we have 91 NA's
-
 # Delete the NA's
 # x <- na.omit(x)
 # Fill the NA's with the previous values
 x <- na.locf(x)
 sum(is.na(x))
 
+# Generate the summary
+summary(x)
+xtable(summary(x))
+# sinker(xtable(summary(x)), name = 'SP_Summary')
+
+
+# Now check for NA's
+sum(is.na(x)) # in this series we have 91 NA's
+
 ##### Analyse the series for autocorrelation ###################################
 # check for heteroscedasticity
 # H0: There is no autoregressive conditional heteroscedasticity
 # H1: There is autoregressive heteroscedaticity
-McLeod.Li.test(y = ret)
+t <- McLeod.Li.test(y = ret)$p.values
+i <- seq(1,34) 
+df <- data.frame(i,t)
+
+q <- ggplot(data = df, aes(x = i)) +
+  geom_point(y = t) +
+  labs(title = 'McLeod-Li Test', x = 'Lag', y = 'P-Value') +
+  geom_hline(yintercept = 0.05, colour = 'red', linetype = 'dashed') +
+  ylim(0,1) +
+  xlim(0,35) +
+  theme_bw()
+# printer(plot = q, name = 'SP_McLeod')
 
 # Show a corrolelogram
 # ACF
-autoplot(forecast::Acf(x)) +
-  ggtitle('Autocorrelation function') +
-  xlab('Lag') +
-  ylab('ACF') +
-  theme_minimal()
-
-autoplot(forecast::Acf(x^2)) +
-  ggtitle('Autocorrelation function') +
-  xlab('Lag') +
-  ylab('ACF') +
-  theme_economist()
-
-autoplot(forecast::Acf(abs(x))) +
+q <- autoplot(forecast::Acf(x)) +
   ggtitle('Autocorrelation function') +
   xlab('Lag') +
   ylab('ACF') +
   theme_bw()
+# printer(q, name = 'SP_Acf')
 
-# PAcf
-autoplot(stats::pacf(x)) +
-  ggtitle('Partial autocorrelation function') +
+q <- autoplot(forecast::Acf(x^2)) +
+  ggtitle('Autocorrelation function') +
   xlab('Lag') +
   ylab('ACF') +
-  theme_minimal()
+  theme_bw()
+# printer(q, name = 'SP_Acf2')
 
-
+q <- autoplot(forecast::Acf(abs(x))) +
+  ggtitle('Autocorrelation function') +
+  xlab('Lag') +
+  ylab('ACF') +
+  theme_bw()
+# printer(q, name = 'SP_AcfAbs')
 ##### Analyse returns ##########################################################
 summary(ret)
 xtable(summary(ret))
+# sinker(xtable(summary(ret)), name = 'SPret_Summary')
 
 median(ret)
 kurtosis(ret)
@@ -83,23 +90,47 @@ q <-autoplot(forecast::Acf(ret)) +
   ggtitle('ACF: Return') +
   xlab('Lag') +
   ylab('ACF') +
-  theme_minimal()
-printer(plot = q, path = 'SP500ACF')
+  theme_bw()
+# printer(plot = q, name = 'SPret_Acf')
 
-autoplot(forecast::Acf(abs(ret))) +
+q <- autoplot(forecast::Acf(abs(ret))) +
   ggtitle('ACF: Absolute Return') +
   xlab('Lag') +
   ylab('ACF') +
-  theme_minimal()
+  theme_bw()
+# printer(q, name = 'SPret_AcfAbs')
 
 q <- autoplot(forecast::Acf(ret^2)) +
   ggtitle('ACF: Squared Return') +
   xlab('Lag') +
   ylab('ACF') +
-  theme_minimal()
-printer(q, 'SP500ACF2')
+  theme_bw()
+# printer(q, 'SPret_Acf2')
 
+##### Plot the PACF of the return series #######################################
+# Return ACF
+# q <-autoplot(forecast::Pacf(ret)) +
+#   ggtitle('PACF: Return') +
+#   xlab('Lag') +
+#   ylab('PACF') +
+#   theme_bw()
+# printer(plot = q, name = 'SPret_Pacf')
+# 
+# q <- autoplot(forecast::Pacf(abs(ret))) +
+#   ggtitle('PACF: Absolute Return') +
+#   xlab('Lag') +
+#   ylab('PACF') +
+#   theme_bw()
+# printer(q, name = 'SPret_PacfAbs')
+# 
+# q <- autoplot(forecast::Pacf(ret^2)) +
+#   ggtitle('PACF: Squared Return') +
+#   xlab('Lag') +
+#   ylab('PACF') +
+#   theme_bw()
+# printer(q, 'SPret_Pacf2')
 
+##### Make a histogram of the return series ####################################
 # Plot histogram of returns
 q <- ggplot(data=ret, aes(ret)) + geom_histogram(bins = 100) + 
   theme_minimal() + 
@@ -119,7 +150,7 @@ ggplot(data = fortify(ret), aes(x = Index, y = ret)) +
   ggtitle('Log-returns') +
   xlab('Time') +
   ylab('log-return') +
-  theme_minimal()
+  theme_bw()
 
 # Plot the absolute log returns
 ggplot(data = fortify(ret), aes(x = Index, y = abs(ret))) + 
