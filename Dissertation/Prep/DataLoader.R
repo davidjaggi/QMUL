@@ -14,7 +14,7 @@ source('Dissertation/Prep/Packages.R')
 sp500 <- read.csv(file = 'Dissertation/Data/SP500.csv')
 # convoert it into an xts
 colnames(sp500) <- c('Date','Close')
-x <- as.xts(x = sp500$Close, order.by = as.POSIXct(sp500$Date, tryFormat = "%d/%m/%Y"), tz = 'UTC')
+x <- as.xts(x = sp500$Close, order.by = as.POSIXct(sp500$Date, tryFormat = "%d/%m/%Y"))
 remove(sp500)
 
 # crop the time series

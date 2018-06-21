@@ -3,12 +3,13 @@ source('Dissertation/Prep/Setup.R')
 
 
 # Create the ARMA Model
-arima.model <- autoarfima(data = as.numeric(is), ar.max = 3, ma.max = 3, 
+arima.model <- autoarfima(data = as.numeric(ret), ar.max = 3, ma.max = 3, 
                           criterion = 'AIC', method = 'partial', arfima = FALSE, 
                           include.mean = NULL, distribution.model = 'norm', 
-                          solver = 'hybrid', cluster=cl)
+                          solver = 'hybrid')
 # Show the different models
 show(head(arima.model$rank.matrix))
+
 arima.model
 # suggests a ARIMA(3,0,3) with a non zero mean
 
@@ -16,44 +17,53 @@ arima.model
 ar.comp <- arimaorder(object = arima.model)[1]
 ma.comp <- arimaorder(object = arima.model)[3]
 
+##### Specify ARIMA model ######################################################
 arima.spec <- arfimaspec(arfima = FALSE, distribution.model = 'norm')
-##### Fit the data to the in sample ############################################
-arima.fit <- arfimafit(spec = arima.spec, data = is)  
-coef(arima.fit)
-show(arima.fit)
 
+##### Fit the data to the in sample ############################################
+arima.fit <- arfimafit(spec = arima.spec, data = ret, out.sample = oos.num)
+# sinker(show(arima.fit), 'arima_fit')
+coef(arima.fit)
+
+q <- show(arima.fit)
+# sinker(q, name = 'arima_fit')
 arima.fit@fit$matcoef
-##### Fix the variables to filter the oos data #################################
+# sinker(arima.fit@fit$matcoef, 'arima_matcoef')
+
+##### Fix the variables to forecast the oos data ###############################
 arima.spec.fixed <- getspec(arima.fit)
 setfixed(arima.spec.fixed) <- as.list(coef(arima.fit))
-arima.filt <- arfimafilter(spec = arima.spec.fixed, 
-                           data = oos)
-
-plot(arima.filt)
+arima.forc <- arfimaforecast(arima.spec.fixed, data = ret, n.ahead = 1, 
+                             n.roll = oos.num-1, out.sample = oos.num-1)
 
 ##### Extract varaibles ########################################################
-arima.resid <- residuals(arima.filt)
+arima.fitted <- t(fitted(arima.forc))
+
+# Calculate the residuals
+arima.resid <- oos - arima.fitted
 
 # Plot the residuals
-ggplot(data = fortify(arima.resid), aes(x = Index, y=arima.resid)) +
+q <- ggplot(data = fortify(arima.resid), aes(x = Index, y=arima.resid)) +
   geom_line() +
-  labs(title = 'ARIMA Residuals', x='Time',y='Residuals') +
+  labs(title = 'ARMA Residuals', x='Time',y='Residuals') +
   theme_bw()
+# printer(q, 'ARMA_Resid')
 
 ##### Analyse the forecast #####################################################
 # create a time series with the estimated and the real values
 # We use the relized volatility as the squared returns
-arima.result <- oos.rv
+arima.result <- oos.sq
 colnames(arima.result) <- c('RV')
-arima.result$Sigma <- sigma(arima.filt)
+arima.result$Sigma <- t(fitted(arima.forc))
 arima.result$Sigma.sq <- arima.result$Sigma^2
 
 # Plot the estimation
-ggplot(data = fortify(arima.result), aes(x = Index)) +
+q <- ggplot(data = fortify(arima.result), aes(x = Index)) +
   geom_line(aes(y = RV)) +
   geom_line(aes(y = Sigma.sq), colour = 'red') +
   labs(title = 'Realized vs estimated volatility', x = 'Time', y = 'Volatility') +
   theme_bw()
+# printer(q, 'ARMA_realvsestd')
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
@@ -64,13 +74,35 @@ cor(arima.result$RV, arima.result$Sigma.sq,
 accuracy(ts(arima.result$RV), ts(arima.result$Sigma.sq))
 
 # make a regression
-arima.lm <- lm(formula = oos.sq ~ arima.sigma.sq)
+arima.lm <- lm(formula = arima.result$RV ~ arima.result$Sigma.sq)
 plot(arima.lm)
-summary(arima.lm)
-accuracy(arima.lm)
-# xtable(accuracy(arima.lm))
-error_MAD(arima.result$OOS, arima.result$Sigma)
 
+##### Analyse the residuals ####################################################
+summary(arima.lm)
+# sinker(summary(arima.lm), 'arima_lm')
+arima.result$StdRes <- rstandard(arima.lm)
+plot(arima.result$StdRes)
+
+q <- ggplot(data = fortify(arima.result), aes(x = Index)) +
+  geom_line(aes(y = StdRes)) +
+  labs(title = 'Standardized Residuals of ARMA Forecast', x = 'Time', 
+       y = 'Standardized Residuals') +
+  theme_bw()
+# printer(q, 'ARIMA_Stdres')
+
+q <- ggplot(data = fortify(arima.result), aes(sample = StdRes)) +
+  stat_qq() +
+  stat_qq_line() +
+  labs(title = 'QQ-Plot of standardized Residuals', y = 'Standardized Residuals') +
+  theme_bw()
+# printer(q, 'ARIMA_Stdres_qq')
+
+accuracy(arima.lm)
+# sinker(accuracy(arima.lm),'arima_accuracy')
+xtable(accuracy(arima.lm))
+
+##### Perform further tests on residuals #######################################
+ols_test_normality(arima.lm)
 
 
 ggplot(fortify(arima.result), aes(x = Index)) +
@@ -79,8 +111,8 @@ ggplot(fortify(arima.result), aes(x = Index)) +
   geom_line(aes(y = Resid)) +
   theme_bw() +
   
-  
-  plot(arima.filt@filter$z)
+
+plot(arima.filt@filter$z)
 infocriteria(arima.filt)
 plot(sigma(arima.filt))
 
@@ -102,5 +134,5 @@ arima.resid/arima.sigma
 ##### 
 ggplot(data = fortify(oos),aes(x = Index, y = oos)) + geom_line()
 
-plot(fitted(arima.filt))
-report(arima.filt)
+plot(t(fitted(arima.forc)))
+

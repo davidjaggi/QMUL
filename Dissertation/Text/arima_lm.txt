@@ -1,0 +1,19 @@
+
+Call:
+lm(formula = arima.result$RV ~ arima.result$Sigma.sq)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-1.581e-03 -3.851e-05 -2.724e-05  6.530e-06  2.015e-03 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(>|t|)    
+(Intercept)           2.981e-05  3.580e-06   8.326   <2e-16 ***
+arima.result$Sigma.sq 9.976e+01  2.049e+00  48.681   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.0001552 on 2115 degrees of freedom
+Multiple R-squared:  0.5284,	Adjusted R-squared:  0.5282 
+F-statistic:  2370 on 1 and 2115 DF,  p-value: < 2.2e-16
+

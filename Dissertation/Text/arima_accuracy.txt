@@ -1,0 +1,2 @@
+                        ME         RMSE          MAE  MPE MAPE      MASE
+Training set -5.151043e-21 0.0001551031 7.374707e-05 -Inf  Inf 0.6891188

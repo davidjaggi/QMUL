@@ -24,6 +24,12 @@ Calculate the log returns
 ## Models
 1. EWMA
 2. ARMA
+* Specify the model
+* Fit to the in-sample data
+* Analyse the fit
+* Forecast the out-of-sample data
+* Compare the forecast and the realized volatility
+* Analyse the residuals
 3. ARCH
 4. GARCH
 5. APARCH

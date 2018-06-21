@@ -1,0 +1,19 @@
+
+Call:
+lm(formula = arch.result$RV ~ arch.result$Sigma.sq)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-0.0001662 -0.0000778 -0.0000518 -0.0000031  0.0046330 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(>|t|)    
+(Intercept)           3.119e-01  4.601e-02   6.778 1.57e-11 ***
+arch.result$Sigma.sq -2.115e+03  3.121e+02  -6.776 1.59e-11 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.0002236 on 2115 degrees of freedom
+Multiple R-squared:  0.02125,	Adjusted R-squared:  0.02079 
+F-statistic: 45.92 on 1 and 2115 DF,  p-value: 1.592e-11
+

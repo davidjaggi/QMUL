@@ -1,0 +1,71 @@
+
+*----------------------------------*
+*          ARFIMA Model Fit        *
+*----------------------------------*
+Mean Model	: ARFIMA(1,0,1)
+Distribution	: norm 
+
+Optimal Parameters
+------------------------------------
+       Estimate  Std. Error  t value Pr(>|t|)
+mu     0.000225    0.000139   1.6254  0.10408
+ar1    0.604744    0.099610   6.0711  0.00000
+ma1   -0.667126    0.092904  -7.1808  0.00000
+sigma  0.011692    0.000117 100.3609  0.00000
+
+Robust Standard Errors:
+       Estimate  Std. Error  t value Pr(>|t|)
+mu     0.000225    0.000141   1.5966 0.110364
+ar1    0.604744    0.139148   4.3461 0.000014
+ma1   -0.667126    0.128574  -5.1887 0.000000
+sigma  0.011692    0.000686  17.0352 0.000000
+
+LogLikelihood : 15271.96 
+
+Information Criteria
+------------------------------------
+                    
+Akaike       -6.0587
+Bayes        -6.0535
+Shibata      -6.0587
+Hannan-Quinn -6.0569
+
+Weighted Ljung-Box Test on Standardized Residuals
+------------------------------------
+                        statistic   p-value
+Lag[1]                    0.04799 8.266e-01
+Lag[2*(p+q)+(p+q)-1][5]   6.85270 2.056e-06
+Lag[4*(p+q)+(p+q)-1][9]  12.27873 8.577e-04
+
+H0 : No serial correlation
+
+Weighted Ljung-Box Test on Standardized Squared Residuals
+------------------------------------
+                        statistic p-value
+Lag[1]                      216.1       0
+Lag[2*(p+q)+(p+q)-1][2]     566.1       0
+Lag[4*(p+q)+(p+q)-1][5]    1194.5       0
+
+
+ARCH LM Tests
+------------------------------------
+             Statistic DoF P-Value
+ARCH Lag[2]        788   2       0
+ARCH Lag[5]       1162   5       0
+ARCH Lag[10]      1328  10       0
+
+Nyblom stability test
+------------------------------------
+Joint Statistic:  13.5182
+Individual Statistics:             
+mu     0.3048
+ar1    0.4357
+ma1    0.3451
+sigma 12.9678
+
+Asymptotic Critical Values (10% 5% 1%)
+Joint Statistic:     	 1.07 1.24 1.6
+Individual Statistic:	 0.35 0.47 0.75
+
+
+Elapsed time : 0.127969 
