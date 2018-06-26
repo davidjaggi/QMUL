@@ -58,16 +58,18 @@ plot(is.decomp)
 
 ##### Test series for autocorrelation ##########################################
 # Return ACF
-q <-autoplot(forecast::Acf(ret)) +
+q <-ggAcf(ret) +
   labs(title = 'ACF: S&P 500 log-returns', x = 'Lag', y = 'ACF') +
   theme_bw()
 q
 # printer(plot = q, path = 'SP500ACF')
 
-autoplot(forecast::Acf(abs(ret))) +
+
+q <- ggAcf(abs(ret)) +
   labs(title = 'ACF: S&P 500 absolute log-returns', x = 'Lag', y = 'ACF') +
   theme_bw()
-
+# printer(q, 'SP500_ACFABS)
+  
 q <- autoplot(forecast::Acf(ret^2)) +
   labs(title = 'ACF: S&P 500 squared log-returns', x = 'Lag', y = 'ACF') +
   theme_bw()
@@ -105,6 +107,6 @@ q <- Box.test(coredata(ret), type = 'Ljung-Box', lag = 5)
 q <- adf.test(coredata(ret), nlag = 5)
 # sinker(q, name = 'SPret_adf')
 
-##### Run an ADF test ##########################################################
+##### Run an KPSS test #########################################################
 q <- kpss.test(coredata(ret))
 # sinker(q, name = 'SPret_kpss')

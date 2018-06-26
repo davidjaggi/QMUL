@@ -19,12 +19,7 @@ setfixed(arch.spec.fixed) <- as.list(coef(arch.fit))
 arch.forc <- ugarchforecast(arch.spec.fixed, data = ret, n.ahead = 1, 
                             n.roll = oos.num-1, out.sample = oos.num-1)
 
-plot(arch.filt)
-
-##### Extract varaibles ########################################################
-arch.sigma <- t(sigma(arch.forc))
-arch.sigma.sq <- arch.sigma^2
-
+plot(arch.forc)
 ##### Analyse the forecast #####################################################
 # create a time series with the estimated and the real values
 # We use the relized volatility as the squared returns
@@ -40,6 +35,7 @@ q <- ggplot(data = fortify(arch.result), aes(x = Index)) +
   labs(title = 'Realized vs estimated volatility', x = 'Time', y = 'Volatility') +
   theme_bw()
 # printer(q, 'ARCH_realvsestd')
+q
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
@@ -49,20 +45,37 @@ cor(arch.result$RV, arch.result$Sigma.sq,
 # Show the accuracy of our estimate
 accuracy(ts(arch.result$RV), ts(arch.result$Sigma.sq))
 
-# make a regression
+##### Analyse the residuals ####################################################
 arch.lm <- lm(formula = arch.result$RV ~ arch.result$Sigma.sq)
 plot(arch.lm)
 summary(arch.lm)
 # sinker(summary(arch.lm), name = 'arch_lm')
-accuracy(arch.lm)
 
-ggplot(fortify(arch.result), aes(x = Index)) +
-  # geom_line(aes(y = abs(OOS))) +
-  # geom_line(aes(y = Sigma)) +
-  geom_line(aes(y = Resid)) +
-  theme_bw() +
-  
-infocriteria(arch.forc)
+# Extract residuals
+arch.result$StdRes <- rstandard(arch.lm)
+arch.result$Res <- residuals(arch.lm)
+
+accuracy(arch.lm)
+# sinker(accuracy(arch.lm),'arch_accuracy')
+xtable(accuracy(arch.lm))
+
+# Time series of the standardized residuals
+q <- ggplot(data = fortify(arch.result), aes(x = Index)) +
+  geom_line(aes(y = StdRes)) +
+  labs(title = 'Standardized Residuals of ARMA Forecast', x = 'Time', 
+       y = 'Standardized Residuals') +
+  theme_bw()
+# printer(q, 'ARCH_Stdres')
+q
+
+# QQ-Plot of standardized residuals
+q <- ggplot(data = fortify(arch.result), aes(sample = StdRes)) +
+  stat_qq() +
+  stat_qq_line() +
+  labs(title = 'QQ-Plot of standardized Residuals', y = 'Standardized Residuals') +
+  theme_bw()
+# printer(q, 'ARCH_Stdres_qq')
+q
 
 # conditional variance
 
@@ -72,14 +85,21 @@ ggplot(data = fortify(arch.result), aes(x = Index, y = Sigma)) +
   labs(title = 'Conditional variance out-of-sample', x = 'Time', y = 'Cond. variance') +
   theme_bw()
 
-arch.resid <- residuals(arch.forc)
-arch.stresid <- residuals(arch.filt, standardize = TRUE)
+##### Perform further tests on residuals #######################################
+q <- gghistogram(arch.result$Res) +
+  labs(title = 'Histogram of ARCH residuals', x = 'Residuals', y = 'Count') +
+  theme_bw()
+# printer(q, 'ARCH_Res_Hist')
+q
 
-# calculate approximate z value
-arch.resid/arch.sigma
+# Box test
+q <- Box.test(x = arch.result$Res, type = 'Ljung-Box', lag = 5)
+# sinker(q, 'arch_lm_box')
+q
 
-##### 
-ggplot(data = fortify(oos),aes(x = Index, y = oos)) + geom_line()
-
-plot(fitted(arch.filt))
-
+# Auto correlation plot
+q <- ggAcf(arch.result$Res) + 
+  labs(title = 'ACF: ARCH Residuals') +
+  theme_bw()
+# printer(q, 'ARCH_Res_Acf')
+q

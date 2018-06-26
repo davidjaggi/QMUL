@@ -81,13 +81,15 @@ plot(arima.lm)
 summary(arima.lm)
 # sinker(summary(arima.lm), 'arima_lm')
 arima.result$StdRes <- rstandard(arima.lm)
-plot(arima.result$StdRes)
+arima.result$Res <- residuals(arima.lm)
 
+# Time series of the standardized residuals
 q <- ggplot(data = fortify(arima.result), aes(x = Index)) +
   geom_line(aes(y = StdRes)) +
   labs(title = 'Standardized Residuals of ARMA Forecast', x = 'Time', 
        y = 'Standardized Residuals') +
   theme_bw()
+q
 # printer(q, 'ARIMA_Stdres')
 
 q <- ggplot(data = fortify(arima.result), aes(sample = StdRes)) +
@@ -96,43 +98,28 @@ q <- ggplot(data = fortify(arima.result), aes(sample = StdRes)) +
   labs(title = 'QQ-Plot of standardized Residuals', y = 'Standardized Residuals') +
   theme_bw()
 # printer(q, 'ARIMA_Stdres_qq')
+q
+
 
 accuracy(arima.lm)
 # sinker(accuracy(arima.lm),'arima_accuracy')
 xtable(accuracy(arima.lm))
 
 ##### Perform further tests on residuals #######################################
-ols_test_normality(arima.lm)
-
-
-ggplot(fortify(arima.result), aes(x = Index)) +
-  # geom_line(aes(y = abs(OOS))) +
-  # geom_line(aes(y = Sigma)) +
-  geom_line(aes(y = Resid)) +
-  theme_bw() +
-  
-
-plot(arima.filt@filter$z)
-infocriteria(arima.filt)
-plot(sigma(arima.filt))
-
-# conditional variance
-arima.sigma <- sigma(arima.filt)
-
-# Plot conditional variance
-ggplot(data = fortify(arima.sigma), aes(x = Index, y = arima.sigma)) +
-  geom_line() +
-  labs(title = 'Conditional variance out-of-sample', x = 'Time', y = 'Cond. variance') +
+q <- gghistogram(arima.result$Res) +
+  labs(title = 'Histogram of ARMA residuals', x = 'Residuals', y = 'Count') +
   theme_bw()
+# printer(q, 'ARIMA_Res_Hist')
 
-arima.resid <- residuals(arima.filt)
-arima.stresid <- residuals(arima.filt, standardize = TRUE)
+# Box test
+q <- Box.test(x = arima.result$Res, type = 'Ljung-Box', lag = 5)
+# sinker(q, 'arima_lm_box')
 
-# calculate approximate z value
-arima.resid/arima.sigma
+# Auto correlation plot
+q <- ggAcf(arima.result$Res) + 
+  labs(title = 'ACF: ARMA Residuals') +
+  theme_bw()
+q
+# printer(q, 'ARIMA_Res_Acf')
 
-##### 
-ggplot(data = fortify(oos),aes(x = Index, y = oos)) + geom_line()
-
-plot(t(fitted(arima.forc)))
 
