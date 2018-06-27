@@ -1,5 +1,6 @@
 ##### Split data into in-sample and oos ########################################
 # In this file I will split the data into an in- and out-of-sample data
+summary(ret)
 
 split_date <- '2010-01-01'
 # first lets create the is sample
