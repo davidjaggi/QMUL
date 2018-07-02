@@ -1,6 +1,0 @@
-
-	Box-Ljung test
-
-data:  arch.result$Res
-X-squared = 695.44, df = 5, p-value < 2.2e-16
-

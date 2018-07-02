@@ -1,6 +1,6 @@
 ##### Load necessary packages ##################################################
 source('Dissertation/Prep/Packages.R')
-
+source('Dissertation/Prep/Functions.R')
 # Load the sp500 data from the FRED database in order to test the first model
 # getSymbols.FRED(Symbols = 'SP500', env = globalenv())
 
@@ -9,6 +9,8 @@ source('Dissertation/Prep/Packages.R')
 # saveRDS(object = sp500, file = 'Dissertation/Data/SP500.rds')
 # saveSymbols(Symbols = sp500, file.path = 'Dissertation/Data/sp500.csv')
 
+##### Set name of series #######################################################
+name <- 'SP'
 ##### Import Data ##############################################################
 # Load the data
 sp500 <- read.csv(file = 'Dissertation/Data/SP500.csv')
@@ -33,8 +35,8 @@ ret.sq <- ret^2
 ret.abs <- abs(ret)
 
 ##### Make tidy series #########################################################
-ret_tidy <- tidy(ret)
-x_tidy <- tidy(x)
+# ret_tidy <- tidy(ret)
+# x_tidy <- tidy(x)
 
 ##### Split data into is and oos ###############################################
 source('Dissertation/Prep/isos_Splitter.R')
