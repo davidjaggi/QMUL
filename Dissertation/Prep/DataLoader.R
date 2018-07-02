@@ -1,6 +1,7 @@
 ##### Load necessary packages ##################################################
 source('Dissertation/Prep/Packages.R')
 source('Dissertation/Prep/Functions.R')
+
 # Load the sp500 data from the FRED database in order to test the first model
 # getSymbols.FRED(Symbols = 'SP500', env = globalenv())
 

@@ -34,7 +34,7 @@ shapiro_sample <- c(coredata(ret[(length(ret)-4999):length(ret)]))
 shapiro.test(x = shapiro_sample)
 
 q <- shapiro.test(x = shapiro_sample)
-sinker(q, 'SP500ShapiroWilks')
+# sinker(q, paste0(name,'_shapiro'))
 # Delete the series again
 rm(shapiro_sample)
 rm(q)
@@ -46,7 +46,7 @@ dpar <- list('mean' = params[[1]], 'sd' = params[[2]])
 ggplot(data = fortify(ret), aes(sample = ret)) + 
   stat_qq() +
   # stat_qq_line(distribution = 'norm', dparams = dpar) +
-  theme_minimal() +
+  theme_bw() +
   ggtitle('QQ - Plot of the S&P 500 log-returns')
 rm(params)
 rm(dpar)
@@ -56,41 +56,44 @@ rm(dpar)
 is.decomp <- decompose(x = ts(is, frequency = 5), type = 'multiplicative')
 plot(is.decomp)
 
-##### Test series for autocorrelation ##########################################
+##### Test series for autocorrelation  ACF #####################################
 # Return ACF
-q <-ggAcf(ret) +
+q <- ggAcf(ret) +
   labs(title = 'ACF: S&P 500 log-returns', x = 'Lag', y = 'ACF') +
   theme_bw()
-q
-# printer(plot = q, path = 'SP500ACF')
+# printer(plot = q, paste0(name,'_acf'))
 
 
 q <- ggAcf(abs(ret)) +
   labs(title = 'ACF: S&P 500 absolute log-returns', x = 'Lag', y = 'ACF') +
   theme_bw()
-# printer(q, 'SP500_ACFABS)
+# printer(q, paste0(name,'_acf_abs'))
   
-q <- autoplot(forecast::Acf(ret^2)) +
+q <- ggAcf(ret^2) +
   labs(title = 'ACF: S&P 500 squared log-returns', x = 'Lag', y = 'ACF') +
   theme_bw()
-q
-# printer(q, 'SP500ACF2')
+# printer(q, paste0(name,'_acf_2'))
 
+##### Test series for autocorrelation  PACF ####################################
 # Return PAcf
 # Take care of x axis
-autoplot(forecast::Pacf(ret, lag.max = 32)) +
+q <- ggPacf(ret) +
   labs(title = 'PACF: S&P 500 log-returns', x = 'Lag', y = 'PACF') +
   theme_bw()
+# printer(q, paste0(name,'_pacf'))
 
-autoplot(forecast::Pacf(abs(ret), lag.max = 32)) +
+
+q <- ggPacf(abs(ret)) +
   labs(title = 'PACF: S&P 500 absolute log-returns', x = 'Lag', y = 'PACF') +
   theme_bw()
+# printer(q, paste0(name,'_pacf_abs'))
 
 # Return PAcf
 # Take care of x axis
-autoplot(forecast::Pacf(ret^2, lag.max = 32)) +
+q <- ggPacf(ret^2) +
   labs(title = 'PACF: S&P 500 squared log-returns', x = 'Lag', y = 'PACF') +
   theme_bw()
+# printer(q, paste0(name,'_pacf_2'))
 
 ##### Run an Ljung-Box test ####################################################
 # Test for ARCH effects using the Ljung-Box test
@@ -105,8 +108,10 @@ q <- Box.test(coredata(ret), type = 'Ljung-Box', lag = 5)
 
 ##### Run an ADF test ##########################################################
 q <- adf.test(coredata(ret), nlag = 5)
-# sinker(q, name = 'SPret_adf')
+# sinker(adf.test(coredata(ret), nlag = 5), name = paste0(name,'_ret_adf'))
 
 ##### Run an KPSS test #########################################################
 q <- kpss.test(coredata(ret))
-# sinker(q, name = 'SPret_kpss')
+# sinker(kpss.test(coredata(ret)), name = paste0(name,'_ret_kpss'))
+
+       
