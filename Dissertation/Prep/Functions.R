@@ -21,9 +21,24 @@ sinker <- function(output, name){
   sink()
 }
 
-# ##### Calculate MAD function ###################################################
+##### Calculate MAD function ###################################################
 # error_MAD <- function(series1, series2){
 #   res <- series1 - series2
 #   cumres <- sum(abs(coredata(res)))
 #   return(cumres/length(series1))
 # }
+
+##### Other error measures #####################################################
+MSE<-function(sigmafc,RV){
+  MSE=1/length(sigmafc)*sum((sigmafc^2-RV)^2)
+  return(MSE)
+}
+
+#QLIKE
+QLIKE<-function(sigmafc,RV){
+  varfc=sigmafc^2
+  QLIKE=sum(
+    (RV/varfc-log(RV/varfc)-1)
+  )
+  return(QLIKE)
+}

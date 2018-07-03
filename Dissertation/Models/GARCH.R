@@ -9,7 +9,7 @@ plot(garch.fit)
 coef(garch.fit)
 confint(garch.fit)
 show(garch.fit)
-sinker(show(garch.fit), name = 'GARCH_fit')
+# sinker(show(garch.fit), name = paste0(name,'_garch_fit'))
 
 garch.fit@fit$matcoef
 persistence(garch.fit)
@@ -34,29 +34,31 @@ q <- ggplot(data = fortify(garch.result), aes(x = Index)) +
   geom_line(aes(y = Sigma.sq), colour = 'red') +
   labs(title = 'Realized vs estimated volatility', x = 'Time', y = 'Volatility') +
   theme_bw()
-# printer(q, 'GARCH_realvsestd')
-q
+# printer(q, paste0(name,'_garch_realvsestd'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
 cor(garch.result$RV, garch.result$Sigma.sq, 
     method = "spearman")
+# sinker(cor(garch.result$RV, garch.result$Sigma.sq, 
+#            method = "spearman"), paste0(name,'_garch_cor'))
 
 # Show the accuracy of our estimate
-accuracy(ts(garch.result$RV), ts(garch.result$Sigma.sq))
+accuracy(ts(garch.result$Sigma.sq), ts(garch.result$RV))
 
 ##### Analyse the residuals ####################################################
 garch.lm <- lm(formula = garch.result$RV ~ garch.result$Sigma.sq)
 plot(garch.lm)
 summary(garch.lm)
-# sinker(summary(garch.lm), name = 'garch_lm')
+# sinker(summary(garch.lm), name = paste0('_garch_lm'))
+accuracy(garch.lm)
+
 
 # Extract residuals
 garch.result$StdRes <- rstandard(garch.lm)
 garch.result$Res <- residuals(garch.lm)
 
-accuracy(garch.lm)
-# sinker(accuracy(garch.lm),'garch_accuracy')
+# sinker(accuracy(garch.lm), paste0(name,'_garch_accuracy'))
 xtable(accuracy(garch.lm))
 
 # Time series of the standardized residuals
@@ -65,7 +67,7 @@ q <- ggplot(data = fortify(garch.result), aes(x = Index)) +
   labs(title = 'Standardized Residuals of GARCH Forecast', x = 'Time', 
        y = 'Standardized Residuals') +
   theme_bw()
-# printer(q, 'GARCH_Stdres')
+# printer(q, paste0(name,'_garch_stdres'))
 q
 
 # QQ-Plot of standardized residuals
@@ -74,7 +76,7 @@ q <- ggplot(data = fortify(garch.result), aes(sample = StdRes)) +
   stat_qq_line() +
   labs(title = 'QQ-Plot of standardized Residuals', y = 'Standardized Residuals') +
   theme_bw()
-# printer(q, 'GARCH_Stdres_qq')
+# printer(q, paste0(name,'_garch_qq'))
 q
 
 # conditional variance
@@ -89,12 +91,16 @@ ggplot(data = fortify(garch.result), aes(x = Index, y = Sigma)) +
 q <- gghistogram(garch.result$Res) +
   labs(title = 'Histogram of GARCH residuals', x = 'Residuals', y = 'Count') +
   theme_bw()
-# printer(q, 'GARCH_Res_Hist')
+# printer(q, paste0(name,'_garch_res_hist'))
 q
 
+# Jarque Bera test for normality
+q <- jarque.bera.test(garch.result$Res)
+# sinker(jarque.bera.test(garch.result$Res), paste0(name, '_garch_res_jb'))
+q
 # Box test
-q <- Box.test(x = garch.result$Res, type = 'Ljung-Box', lag = 5)
-# sinker(q, 'garch_lm_box')
+q <- Box.test(x = garch.result$StdRes, type = 'Ljung-Box', lag = 1)
+# sinker(q, paste0(name,'_garch_res_box'))
 q
 
 # Auto correlation plot

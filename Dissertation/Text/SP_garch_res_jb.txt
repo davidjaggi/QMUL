@@ -1,0 +1,6 @@
+
+	Jarque Bera Test
+
+data:  garch.result$Res
+X-squared = 1016900, df = 2, p-value < 2.2e-16
+

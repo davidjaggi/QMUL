@@ -1,0 +1,19 @@
+
+Call:
+lm(formula = egarch.result$RV ~ egarch.result$Sigma.sq)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-0.0008529 -0.0000498 -0.0000119  0.0000189  0.0040038 
+
+Coefficients:
+                         Estimate Std. Error t value Pr(>|t|)    
+(Intercept)            -3.084e-05  5.786e-06   -5.33 1.08e-07 ***
+egarch.result$Sigma.sq  1.303e+00  4.436e-02   29.36  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.0001903 on 2121 degrees of freedom
+Multiple R-squared:  0.289,	Adjusted R-squared:  0.2887 
+F-statistic: 862.2 on 1 and 2121 DF,  p-value: < 2.2e-16
+

@@ -9,7 +9,7 @@ plot(arch.fit)
 coef(arch.fit)
 confint(arch.fit)
 show(arch.fit)
-# sinker(show(arch.fit), name = 'ARCH_fit')
+# sinker(show(arch.fit), name = paste0(name,'_arch_fit'))
 
 arch.fit@fit$matcoef
 persistence(arch.fit)
@@ -34,8 +34,7 @@ q <- ggplot(data = fortify(arch.result), aes(x = Index)) +
   geom_line(aes(y = Sigma.sq), colour = 'red') +
   labs(title = 'Realized vs estimated volatility', x = 'Time', y = 'Volatility') +
   theme_bw()
-# printer(q, 'ARCH_realvsestd')
-q
+# printer(q, paste0(name,'_arch_realvsestd'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility

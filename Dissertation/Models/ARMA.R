@@ -1,21 +1,21 @@
 ##### Creat ARMA Model and get parameters ######################################
 source('Dissertation/Prep/Setup.R')
 
-
-# Create the ARMA Model
-arima.model <- autoarfima(data = as.numeric(ret), ar.max = 3, ma.max = 3, 
-                          criterion = 'AIC', method = 'partial', arfima = FALSE, 
-                          include.mean = NULL, distribution.model = 'norm', 
-                          solver = 'hybrid')
-# Show the different models
-show(head(arima.model$rank.matrix))
-
-arima.model
-# suggests a ARIMA(3,0,3) with a non zero mean
-
-
-ar.comp <- arimaorder(object = arima.model)[1]
-ma.comp <- arimaorder(object = arima.model)[3]
+# 
+# # Create the ARMA Model
+# arima.model <- autoarfima(data = as.numeric(ret), ar.max = 3, ma.max = 3, 
+#                           criterion = 'AIC', method = 'partial', arfima = FALSE, 
+#                           include.mean = NULL, distribution.model = 'norm', 
+#                           solver = 'hybrid')
+# # Show the different models
+# show(head(arima.model$rank.matrix))
+# 
+# arima.model
+# # suggests a ARIMA(3,0,3) with a non zero mean
+# 
+# 
+# ar.comp <- arimaorder(object = arima.model)[1]
+# ma.comp <- arimaorder(object = arima.model)[3]
 
 ##### Specify ARIMA model ######################################################
 arima.spec <- arfimaspec(arfima = FALSE, distribution.model = 'norm')
@@ -26,9 +26,10 @@ arima.fit <- arfimafit(spec = arima.spec, data = ret, out.sample = oos.num)
 coef(arima.fit)
 
 q <- show(arima.fit)
-# sinker(q, name = 'arima_fit')
+sinker(show(arima.fit), name = paste0(name,'_arima_fit'))
+
 arima.fit@fit$matcoef
-# sinker(arima.fit@fit$matcoef, 'arima_matcoef')
+# sinker(arima.fit@fit$matcoef, paste0(name,'_arima_matcoef'))
 
 ##### Fix the variables to forecast the oos data ###############################
 arima.spec.fixed <- getspec(arima.fit)
@@ -47,7 +48,7 @@ q <- ggplot(data = fortify(arima.resid), aes(x = Index, y=arima.resid)) +
   geom_line() +
   labs(title = 'ARMA Residuals', x='Time',y='Residuals') +
   theme_bw()
-# printer(q, 'ARMA_Resid')
+printer(q, paste0(name,'_arima_resid'))
 
 ##### Analyse the forecast #####################################################
 # create a time series with the estimated and the real values
@@ -63,7 +64,7 @@ q <- ggplot(data = fortify(arima.result), aes(x = Index)) +
   geom_line(aes(y = Sigma.sq), colour = 'red') +
   labs(title = 'Realized vs estimated volatility', x = 'Time', y = 'Volatility') +
   theme_bw()
-# printer(q, 'ARMA_realvsestd')
+# printer(q, paste0(name,'_arima_realvsestd'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
@@ -79,7 +80,7 @@ plot(arima.lm)
 
 ##### Analyse the residuals ####################################################
 summary(arima.lm)
-# sinker(summary(arima.lm), 'arima_lm')
+# sinker(summary(arima.lm), paste0(name,'_arima_lm'))
 arima.result$StdRes <- rstandard(arima.lm)
 arima.result$Res <- residuals(arima.lm)
 
@@ -90,30 +91,30 @@ q <- ggplot(data = fortify(arima.result), aes(x = Index)) +
        y = 'Standardized Residuals') +
   theme_bw()
 q
-# printer(q, 'ARIMA_Stdres')
+# printer(q, paste0(name,'_arima_stdres'))
 
 q <- ggplot(data = fortify(arima.result), aes(sample = StdRes)) +
   stat_qq() +
   stat_qq_line() +
   labs(title = 'QQ-Plot of standardized Residuals', y = 'Standardized Residuals') +
   theme_bw()
-# printer(q, 'ARIMA_Stdres_qq')
+# printer(q, paste0(name,'_arima_stdres_qq'))
 q
 
 
 accuracy(arima.lm)
-# sinker(accuracy(arima.lm),'arima_accuracy')
+# sinker(accuracy(arima.lm),paste0(name'_arima_accuracy'))
 xtable(accuracy(arima.lm))
 
 ##### Perform further tests on residuals #######################################
 q <- gghistogram(arima.result$Res) +
   labs(title = 'Histogram of ARMA residuals', x = 'Residuals', y = 'Count') +
   theme_bw()
-# printer(q, 'ARIMA_Res_Hist')
+# printer(q, paste0(name'_arima_res_hist'))
 
 # Box test
 q <- Box.test(x = arima.result$Res, type = 'Ljung-Box', lag = 5)
-# sinker(q, 'arima_lm_box')
+# sinker(q, paste0(name,'_arima_lm_box')
 
 # Auto correlation plot
 q <- ggAcf(arima.result$Res) + 
