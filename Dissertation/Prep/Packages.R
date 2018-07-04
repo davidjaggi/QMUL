@@ -19,6 +19,7 @@
 # install.packages('TSA')
 # install.packages('ggseas')
 # install.packages('aTSA')
+# install.packages('PerformanceAnalytics')
 
 # Load my functions
 source('Dissertation/Prep/Functions.R')
@@ -43,3 +44,4 @@ library(broom)
 library(TSA)
 library(ggseas)
 library(aTSA)
+library(PerformanceAnalytics)

@@ -28,16 +28,12 @@ q
 
 ##### Test the series for its properties #######################################
 # Make a qq plot to see the properties
-# ggplot(data = fortify(ret), aes(x = Index, y = ret)) + geom_line()
-params <- as.list(MASS::fitdistr(fortify(ret)$ret, "normal")$estimate)
-dpar <- list('mean' = params[[1]], 'sd' = params[[2]])
 ggplot(data = fortify(ret), aes(sample = ret)) + 
   stat_qq() +
-  # stat_qq_line(distribution = 'norm', dparams = dpar) +
+  stat_qq_line() +
   theme_bw() +
   ggtitle('QQ - Plot of the S&P 500 log-returns')
-rm(params)
-rm(dpar)
+
 
 
 ##### decompose the series #####################################################

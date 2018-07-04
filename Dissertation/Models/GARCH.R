@@ -24,9 +24,33 @@ garch.fit.stdres <- residuals(garch.fit)
 # Make the newsimpactcurve
 garch.ni <- newsimpact(object = garch.fit, z = NULL)
 
-qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
+q <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
       geom="line", main = "News Impact Curve") +
+      theme_bw()
+# printer(q, paste0(name,'_garch_news'))
+
+garch.fit.stdres <- residuals(garch.fit, standardize = TRUE)
+q <- ggAcf(garch.fit.stdres) + 
+      labs(title = 'S&P 500 GARCH Standardized Residuals') +
+      theme_bw()
+# printer(q, paste0(name,'_garch_fit_acf'))
+q <- ggAcf(garch.fit.stdres^2) + 
+  labs(title = 'S&P 500 GARCH Squared Standardized Residuals') +
   theme_bw()
+# printer(q, paste0(name,'_garch_fit_acf_2'))
+
+# QQ-Plot of standardized residuals
+q <- ggplot(data = fortify(garch.fit.stdres), aes(sample = garch.fit.stdres)) +
+  stat_qq() +
+  qqplotr::stat_qq_line() +
+  labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
+  theme_bw()
+# printer(q, paste0(name,'_garch_qq'))
+q
+
+# Perform sharpiro wilks test
+# sinker(shapiro.test(coredata(garch.fit.stdres[1:4999,])), paste0(name,'_garch_fit_sharpiro'))
+
 ##### Fix the variables to filter the oos data #################################
 garch.spec.fixed <- getspec(garch.fit)
 setfixed(garch.spec.fixed) <- as.list(coef(garch.fit))
@@ -86,8 +110,8 @@ q
 # QQ-Plot of standardized residuals
 q <- ggplot(data = fortify(garch.result), aes(sample = StdRes)) +
   stat_qq() +
-  stat_qq_line() +
-  labs(title = 'QQ-Plot of standardized Residuals', y = 'Standardized Residuals') +
+  qqplotr::stat_qq_line() +
+  labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
   theme_bw()
 # printer(q, paste0(name,'_garch_qq'))
 q
@@ -112,13 +136,19 @@ q <- jarque.bera.test(garch.result$Res)
 # sinker(jarque.bera.test(garch.result$Res), paste0(name, '_garch_res_jb'))
 q
 # Box test
-q <- Box.test(x = garch.result$StdRes, type = 'Ljung-Box', lag = 1)
+q <- Box.test(x = garch.result$StdRes, type = 'Ljung-Box', lag = 5)
 # sinker(q, paste0(name,'_garch_res_box'))
 q
 
 # Auto correlation plot
-q <- ggAcf(garch.result$Res) + 
-  labs(title = 'ACF: GARCH Residuals') +
+q <- ggAcf(garch.result$StdRes) + 
+  labs(title = 'ACF: GARCH Standardized Residuals') +
   theme_bw()
-# printer(q, 'GARCH_Res_Acf')
+# printer(q, paste0(name,'_garch_res_acf')
+q
+
+q <- ggAcf(garch.result$StdRes^2) + 
+  labs(title = 'ACF: GARCH Squared Standardized Residuals') +
+  theme_bw()
+# printer(q, paste0(name,'_garch_res_acf_2')
 q
