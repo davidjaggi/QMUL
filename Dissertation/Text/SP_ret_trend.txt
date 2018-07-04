@@ -1,0 +1,42 @@
+Phillips-Perron Unit Root Test 
+alternative: stationary 
+ 
+Type 1: no drift no trend 
+ lag Z_rho p.value
+  11 -6973    0.01
+----- 
+ Type 2: with drift no trend 
+ lag Z_rho p.value
+  11 -6952    0.01
+----- 
+ Type 3: with drift and trend 
+ lag Z_rho p.value
+  11 -6952    0.01
+--------------- 
+Note: p-value = 0.01 means p.value <= 0.01 
+
+	Jarque Bera Test
+
+data:  ret
+X-squared = 23645, df = 2, p-value < 2.2e-16
+
+
+	 BDS Test 
+
+data:  ret 
+
+Embedding dimension =  2 3 
+
+Epsilon for close points =  0.0055 0.0111 0.0166 0.0222 
+
+Standard Normal = 
+      [ 0.0055 ] [ 0.0111 ] [ 0.0166 ] [ 0.0222 ]
+[ 2 ]    14.8760     15.991    17.3371    18.9990
+[ 3 ]    22.8683     23.887    24.5663    25.4864
+
+p-value = 
+      [ 0.0055 ] [ 0.0111 ] [ 0.0166 ] [ 0.0222 ]
+[ 2 ]          0          0          0          0
+[ 3 ]          0          0          0          0
+
+

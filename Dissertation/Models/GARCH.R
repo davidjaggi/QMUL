@@ -12,7 +12,21 @@ show(garch.fit)
 # sinker(show(garch.fit), name = paste0(name,'_garch_fit'))
 
 garch.fit@fit$matcoef
+# sinker(garch.fit@fit$matcoef, name = paste0(name,'_garch_matcoef'))
 persistence(garch.fit)
+garch.fit.stdres <- residuals(garch.fit)
+##### analyse the is fit #######################################################
+# sinker(signbias(garch.fit), paste0(name,'_garch_sign'))
+# sinker(infocriteria(garch.fit), paste0(name,'_garch_info'))
+# sinker(nyblom(garch.fit), paste0(name,'_garch_nyblom'))
+# sinker(gof(garch.fit,c(20,30,40,50)), paste0(name,'_garch_gof'))
+
+# Make the newsimpactcurve
+garch.ni <- newsimpact(object = garch.fit, z = NULL)
+
+qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
+      geom="line", main = "News Impact Curve") +
+  theme_bw()
 ##### Fix the variables to filter the oos data #################################
 garch.spec.fixed <- getspec(garch.fit)
 setfixed(garch.spec.fixed) <- as.list(coef(garch.fit))
@@ -20,6 +34,8 @@ garch.forc <- ugarchforecast(garch.spec.fixed, data = ret, n.ahead = 1,
                             n.roll = oos.num-1, out.sample = oos.num-1)
 
 plot(garch.forc)
+show(garch.forc)
+
 ##### Analyse the forecast #####################################################
 # create a time series with the estimated and the real values
 # We use the relized volatility as the squared returns
@@ -45,21 +61,18 @@ cor(garch.result$RV, garch.result$Sigma.sq,
 
 # Show the accuracy of our estimate
 accuracy(ts(garch.result$Sigma.sq), ts(garch.result$RV))
-
+# sinker(accuracy(ts(garch.result$Sigma.sq), ts(garch.result$RV)), paste0(name,'_garch_accuracy'))
 ##### Analyse the residuals ####################################################
 garch.lm <- lm(formula = garch.result$RV ~ garch.result$Sigma.sq)
 plot(garch.lm)
 summary(garch.lm)
-# sinker(summary(garch.lm), name = paste0('_garch_lm'))
+# sinker(summary(garch.lm), name = paste0(name,'_garch_lm'))
 accuracy(garch.lm)
 
 
 # Extract residuals
 garch.result$StdRes <- rstandard(garch.lm)
 garch.result$Res <- residuals(garch.lm)
-
-# sinker(accuracy(garch.lm), paste0(name,'_garch_accuracy'))
-xtable(accuracy(garch.lm))
 
 # Time series of the standardized residuals
 q <- ggplot(data = fortify(garch.result), aes(x = Index)) +

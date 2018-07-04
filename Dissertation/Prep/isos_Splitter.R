@@ -2,6 +2,7 @@
 # In this file I will split the data into an in- and out-of-sample data
 summary(ret)
 # sinker(xtable(summary(ret)), name = paste0(name,'_ret_summary'))
+# sinker(table.Stats(ret), name = paste0(name,'_ret_stats'))
 
 split_date <- '2010-01-01'
 # first lets create the is sample
@@ -10,7 +11,7 @@ is.sq <- ret.sq[paste0('/',split_date)]
 # Show summary
 summary(is)
 # sinker(xtable(summary(is)), name = paste0(name,'_is_summary'))
-
+# sinker(table.Stats(is), name = paste0(name,'_is_stats'))
 
 # now the oos data
 oos <- ret[paste0(split_date,'/')]
@@ -18,6 +19,7 @@ oos.sq <- ret.sq[paste0(split_date,'/')]
 # Show summary
 summary(oos)
 # sinker(xtable(summary(oos)), name=paste0(name,'_oos_summary'))
+# sinker(table.Stats(oos), name = paste0(name,'_oos_stats'))
 
 # there should be 2/3 of the observation oos
 is.num <- nrow(is)

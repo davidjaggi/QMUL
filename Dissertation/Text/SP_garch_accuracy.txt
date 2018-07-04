@@ -1,2 +1,2 @@
-                       ME         RMSE          MAE  MPE MAPE      MASE
-Training set 1.030629e-20 0.0001906351 8.590718e-05 -Inf  Inf 0.8043042
+                    ME         RMSE          MAE  MPE MAPE       ACF1 Theil's U
+Test set -3.057739e-06 0.0001968527 9.037315e-05 -Inf  Inf 0.07273857         0

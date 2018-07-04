@@ -25,6 +25,13 @@ x <- x['1990-01-01/2018-05-31']
 # Check the series
 head(x)
 
+q <- ggplot(fortify(x), aes(x = Index, y = x)) +
+  geom_line() +
+  labs(title = 'S&P 500', x = 'Time', y = 'Price') +
+  theme_bw()
+# printer(q, paste0(name,'_series'))
+q
+
 ##### Calculate returns ########################################################
 # Calculate returns
 ret <- diff(x = log(x), lag = 1)
