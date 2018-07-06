@@ -2,5 +2,5 @@
 	Box-Ljung test
 
 data:  coredata(ret^2)
-X-squared = 2866.9, df = 5, p-value < 2.2e-16
+X-squared = 6809.4, df = 12, p-value < 2.2e-16
 

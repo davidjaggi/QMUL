@@ -4,7 +4,7 @@ garch.spec = ugarchspec(variance.model=list(model="sGARCH", garchOrder=c(1,1)),
                        distribution.model="norm")
 
 ##### Fit the data to the in sample ############################################
-garch.fit <- ugarchfit(spec = garch.spec, data = ret, out.sample = oos.num)  
+garch.fit <- ugarchfit(spec = garch.spec, data = ret, out.sample = oos.num, )  
 plot(garch.fit)
 coef(garch.fit)
 confint(garch.fit)
@@ -12,14 +12,13 @@ show(garch.fit)
 # sinker(show(garch.fit), name = paste0(name,'_garch_fit'))
 
 garch.fit@fit$matcoef
-# sinker(garch.fit@fit$matcoef, name = paste0(name,'_garch_matcoef'))
+# sinker(garch.fit@fit$matcoef, name = paste0(name,'_garch_fit_matcoef'))
 persistence(garch.fit)
-garch.fit.stdres <- residuals(garch.fit)
 ##### analyse the is fit #######################################################
-# sinker(signbias(garch.fit), paste0(name,'_garch_sign'))
-# sinker(infocriteria(garch.fit), paste0(name,'_garch_info'))
-# sinker(nyblom(garch.fit), paste0(name,'_garch_nyblom'))
-# sinker(gof(garch.fit,c(20,30,40,50)), paste0(name,'_garch_gof'))
+# sinker(signbias(garch.fit), paste0(name,'_garch_fit_sign'))
+# sinker(infocriteria(garch.fit), paste0(name,'_garch_fit_info'))
+# sinker(nyblom(garch.fit), paste0(name,'_garch_fit_nyblom'))
+# sinker(gof(garch.fit,c(20,30,40,50)), paste0(name,'_garch_fit_gof'))
 
 # Make the newsimpactcurve
 garch.ni <- newsimpact(object = garch.fit, z = NULL)
@@ -27,7 +26,7 @@ garch.ni <- newsimpact(object = garch.fit, z = NULL)
 q <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
       geom="line", main = "News Impact Curve") +
       theme_bw()
-# printer(q, paste0(name,'_garch_news'))
+# printer(q, paste0(name,'_garch_fit_news'))
 
 garch.fit.stdres <- residuals(garch.fit, standardize = TRUE)
 q <- ggAcf(garch.fit.stdres) + 
@@ -63,18 +62,18 @@ show(garch.forc)
 ##### Analyse the forecast #####################################################
 # create a time series with the estimated and the real values
 # We use the relized volatility as the squared returns
-garch.result <- oos.sq
+garch.result <- oos
 colnames(garch.result) <- c('RV')
-garch.result$Sigma <- t(sigma(garch.forc))
+garch.result$Sigma <- t(garch.forc@forecast$sigmaFor)
 garch.result$Sigma.sq <- garch.result$Sigma^2
 
 # Plot the estimation
 q <- ggplot(data = fortify(garch.result), aes(x = Index)) +
-  geom_line(aes(y = RV)) +
-  geom_line(aes(y = Sigma.sq), colour = 'red') +
+  geom_line(aes(y = abs(RV))) +
+  geom_line(aes(y = Sigma), colour = 'red') +
   labs(title = 'Realized vs estimated volatility', x = 'Time', y = 'Volatility') +
   theme_bw()
-# printer(q, paste0(name,'_garch_realvsestd'))
+# printer(q, paste0(name,'_garch_forc_realvsestd'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
@@ -84,8 +83,13 @@ cor(garch.result$RV, garch.result$Sigma.sq,
 #            method = "spearman"), paste0(name,'_garch_cor'))
 
 # Show the accuracy of our estimate
-accuracy(ts(garch.result$Sigma.sq), ts(garch.result$RV))
+accuracy(ts(garch.result$Sigma.sq), ts(abs(garch.result$RV)))
+
+# The model is fitted to the absolute return
+# Sigma can be squared to get to the volatility
+
 # sinker(accuracy(ts(garch.result$Sigma.sq), ts(garch.result$RV)), paste0(name,'_garch_accuracy'))
+# sinker(mse(ts(garch.result$Sigma.sq), ts(garch.result$RV)), paste0(name,'_garch_forc_mse'))
 ##### Analyse the residuals ####################################################
 garch.lm <- lm(formula = garch.result$RV ~ garch.result$Sigma.sq)
 plot(garch.lm)
@@ -110,7 +114,7 @@ q
 # QQ-Plot of standardized residuals
 q <- ggplot(data = fortify(garch.result), aes(sample = StdRes)) +
   stat_qq() +
-  qqplotr::stat_qq_line() +
+  stat_qq_line() +
   labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
   theme_bw()
 # printer(q, paste0(name,'_garch_qq'))

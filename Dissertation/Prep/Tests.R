@@ -139,3 +139,11 @@ jarque.bera.test(ret)
 bds.test(ret)
 # sinker(bds.test(ret), paste0(name,'_ret_bds'))
 
+##### qqplot for returns #######################################################
+# ggplot(data = fortify(ret), aes(sample = ret)) +
+#   stat_qq() +
+#   qqplotr::stat_qq_line()
+# 
+# ggplot(data = fortify(ret), aes(sample = ret)) +
+#   stat_qq()
+
