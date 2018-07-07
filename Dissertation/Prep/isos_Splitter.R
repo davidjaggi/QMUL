@@ -8,6 +8,7 @@ split_date <- '2010-01-01'
 # first lets create the is sample
 is <- ret[paste0('/',split_date)]
 is.sq <- ret.sq[paste0('/',split_date)]
+is.abs <- abs(ret[paste0('/',split_date)])
 # Show summary
 summary(is)
 # sinker(xtable(summary(is)), name = paste0(name,'_is_summary'))
@@ -16,6 +17,7 @@ summary(is)
 # now the oos data
 oos <- ret[paste0(split_date,'/')]
 oos.sq <- ret.sq[paste0(split_date,'/')]
+oos.abs <- abs(ret[paste0(split_date,'/')])
 # Show summary
 summary(oos)
 # sinker(xtable(summary(oos)), name=paste0(name,'_oos_summary'))

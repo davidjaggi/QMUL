@@ -1,10 +1,10 @@
 ##### Specify the model ########################################################
 garch.spec = ugarchspec(variance.model=list(model="sGARCH", garchOrder=c(1,1)), 
                        mean.model=list(armaOrder=c(0,0), include.mean=TRUE),
-                       distribution.model="norm")
+                       distribution.model="std")
 
 ##### Fit the data to the in sample ############################################
-garch.fit <- ugarchfit(spec = garch.spec, data = ret, out.sample = oos.num, )  
+garch.fit <- ugarchfit(spec = garch.spec, data = ret, out.sample = oos.num)  
 plot(garch.fit)
 coef(garch.fit)
 confint(garch.fit)
@@ -44,12 +44,13 @@ q <- ggplot(data = fortify(garch.fit.stdres), aes(sample = garch.fit.stdres)) +
   qqplotr::stat_qq_line() +
   labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
   theme_bw()
-# printer(q, paste0(name,'_garch_qq'))
+# printer(q, paste0(name,'_garch_fit_qq'))
 q
 
 # Perform sharpiro wilks test
 # sinker(shapiro.test(coredata(garch.fit.stdres[1:4999,])), paste0(name,'_garch_fit_sharpiro'))
 
+plot(garch.fit, which = 8)
 ##### Fix the variables to filter the oos data #################################
 garch.spec.fixed <- getspec(garch.fit)
 setfixed(garch.spec.fixed) <- as.list(coef(garch.fit))
@@ -62,97 +63,98 @@ show(garch.forc)
 ##### Analyse the forecast #####################################################
 # create a time series with the estimated and the real values
 # We use the relized volatility as the squared returns
-garch.result <- oos
-colnames(garch.result) <- c('RV')
-garch.result$Sigma <- t(garch.forc@forecast$sigmaFor)
-garch.result$Sigma.sq <- garch.result$Sigma^2
+garch.result <- oos.abs
+colnames(garch.result) <- c('rv')
+garch.result$sigma <- t(garch.forc@forecast$sigmaFor)
+garch.result$sigma.sq <- garch.result$sigma^2
 
 # Plot the estimation
 q <- ggplot(data = fortify(garch.result), aes(x = Index)) +
-  geom_line(aes(y = abs(RV))) +
-  geom_line(aes(y = Sigma), colour = 'red') +
-  labs(title = 'Realized vs estimated volatility', x = 'Time', y = 'Volatility') +
-  theme_bw()
+  geom_line(aes(y = rv)) +
+  geom_line(aes(y = sigma), colour = 'red') +
+  labs(title = 'Realized vs estimated volatility out-of-sample', x = 'Time', y = 'Volatility') +
+  theme_bw() 
 # printer(q, paste0(name,'_garch_forc_realvsestd'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
-cor(garch.result$RV, garch.result$Sigma.sq, 
+cor(garch.result$rv, garch.result$sigma.sq, 
     method = "spearman")
-# sinker(cor(garch.result$RV, garch.result$Sigma.sq, 
-#            method = "spearman"), paste0(name,'_garch_cor'))
+# sinker(cor(garch.result$rv, garch.result$sigma.sq, method = "spearman"), paste0(name,'_garch_forc_cor'))
 
 # Show the accuracy of our estimate
-accuracy(ts(garch.result$Sigma.sq), ts(abs(garch.result$RV)))
+accuracy(ts(garch.result$sigma.sq), ts(garch.result$rv))
 
 # The model is fitted to the absolute return
 # Sigma can be squared to get to the volatility
 
-# sinker(accuracy(ts(garch.result$Sigma.sq), ts(garch.result$RV)), paste0(name,'_garch_accuracy'))
-# sinker(mse(ts(garch.result$Sigma.sq), ts(garch.result$RV)), paste0(name,'_garch_forc_mse'))
+# sinker(accuracy(ts(garch.result$sigma.sq), ts(garch.result$rv)), paste0(name,'_garch_forc_accuracy'))
+# sinker(mse(ts(garch.result$sigma.sq), ts(garch.result$rv)), paste0(name,'_garch_forc_mse'))
 ##### Analyse the residuals ####################################################
-garch.lm <- lm(formula = garch.result$RV ~ garch.result$Sigma.sq)
+garch.lm <- lm(formula = garch.result$rv ~ 0 + offset(garch.result$sigma.sq))
 plot(garch.lm)
 summary(garch.lm)
-# sinker(summary(garch.lm), name = paste0(name,'_garch_lm'))
+# sinker(summary(garch.lm), name = paste0(name,'_garch_forc_lm'))
 accuracy(garch.lm)
+caret::postResample(garch.result$sigma.sq, garch.result$rv)
 
 
+##### Analyse residuals ########################################################
 # Extract residuals
-garch.result$StdRes <- rstandard(garch.lm)
-garch.result$Res <- residuals(garch.lm)
+garch.result$stdres <- rstandard(garch.lm)
+garch.result$res <- residuals(garch.lm)
 
 # Time series of the standardized residuals
 q <- ggplot(data = fortify(garch.result), aes(x = Index)) +
-  geom_line(aes(y = StdRes)) +
+  geom_line(aes(y = stdres)) +
   labs(title = 'Standardized Residuals of GARCH Forecast', x = 'Time', 
        y = 'Standardized Residuals') +
   theme_bw()
-# printer(q, paste0(name,'_garch_stdres'))
+# printer(q, paste0(name,'_garch_forc_stdres'))
 q
 
 # QQ-Plot of standardized residuals
-q <- ggplot(data = fortify(garch.result), aes(sample = StdRes)) +
+q <- ggplot(data = fortify(garch.result), aes(sample = stdres)) +
   stat_qq() +
   stat_qq_line() +
   labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
   theme_bw()
-# printer(q, paste0(name,'_garch_qq'))
+# printer(q, paste0(name,'_garch_forc_qq'))
 q
 
 # conditional variance
 
 # Plot conditional variance
-ggplot(data = fortify(garch.result), aes(x = Index, y = Sigma)) +
+ggplot(data = fortify(garch.result), aes(x = Index, y = sigma.sq)) +
   geom_line() +
   labs(title = 'Conditional variance out-of-sample', x = 'Time', y = 'Cond. variance') +
   theme_bw()
 
 ##### Perform further tests on residuals #######################################
-q <- gghistogram(garch.result$Res) +
+q <- gghistogram(garch.result$res) +
   labs(title = 'Histogram of GARCH residuals', x = 'Residuals', y = 'Count') +
   theme_bw()
-# printer(q, paste0(name,'_garch_res_hist'))
+# printer(q, paste0(name,'_garch_forc_res_hist'))
 q
 
 # Jarque Bera test for normality
-q <- jarque.bera.test(garch.result$Res)
-# sinker(jarque.bera.test(garch.result$Res), paste0(name, '_garch_res_jb'))
+q <- jarque.bera.test(garch.result$res)
+# sinker(jarque.bera.test(garch.result$res), paste0(name, '_garch_forc_res_jb'))
 q
 # Box test
-q <- Box.test(x = garch.result$StdRes, type = 'Ljung-Box', lag = 5)
-# sinker(q, paste0(name,'_garch_res_box'))
+q <- Box.test(x = garch.result$stdres, type = 'Ljung-Box', lag = 12)
+# sinker(q, paste0(name,'_garch_forc_res_box'))
 q
 
 # Auto correlation plot
-q <- ggAcf(garch.result$StdRes) + 
+q <- ggAcf(garch.result$stdres) + 
   labs(title = 'ACF: GARCH Standardized Residuals') +
   theme_bw()
-# printer(q, paste0(name,'_garch_res_acf')
+# printer(q, paste0(name,'_garch_forc_res_acf'))
 q
 
 q <- ggAcf(garch.result$StdRes^2) + 
   labs(title = 'ACF: GARCH Squared Standardized Residuals') +
   theme_bw()
-# printer(q, paste0(name,'_garch_res_acf_2')
+# printer(q, paste0(name,'_garch_res_acf_2'))
 q

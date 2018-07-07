@@ -2,23 +2,25 @@
 # ARCH effects can be seen in squared residuals of the mean equation.
 
 # log-returns
-ggplot(fortify(ret)) +
+q <- ggplot(fortify(ret)) +
   geom_line(aes(x = Index, y = ret)) +
-  labs(title = 'Log-returns', x = 'Time', y = 'log-returns') +
+  labs(title = 'S&P 500 Log-returns', x = 'Time', y = 'log-returns') +
   theme_bw()
+# printer(q, paste0(name,'_ret_plot'))
 
 # absolute log-returns
-ggplot(fortify(ret)) +
+q <- ggplot(fortify(ret)) +
   geom_line(aes(x = Index, y = abs(ret))) +
-  labs(title = 'Log-returns', x = 'Time', y = 'absolute log-returns') +
+  labs(title = 'S&P 500 Absolute Log-returns', x = 'Time', y = 'absolute log-returns') +
   theme_bw()
+# printer(q, paste0(name,'_ret_abs_plot'))
 
 # squared log-returns
-ggplot(fortify(ret)) +
+q <- ggplot(fortify(ret)) +
   geom_line(aes(x = Index, y = ret^2)) +
-  labs(title = 'Log-returns', x = 'Time', y = 'squared log-returns') +
+  labs(title = 'S&P 500 Squared Log-returns', x = 'Time', y = 'squared log-returns') +
   theme_bw()
-
+# printer(q, paste0(name,'_ret_2_plot'))
 ##### Make a histogram of the returns ##########################################
 q <- gghistogram(fortify(ret)$ret) +
   labs(title = 'S&P 500 Histogram of log-returns', x = 'log-return', y = 'Count') +
@@ -28,17 +30,19 @@ q
 
 ##### Test the series for its properties #######################################
 # Make a qq plot to see the properties
-ggplot(data = fortify(ret), aes(sample = ret)) + 
+
+y <- quantile(fortify(ret)$ret, c(0.25, 0.75))
+x <- qnorm(c(0.25, 0.75))
+slope <- diff(y)/diff(x)
+int <- y[1L] - slope * x[1L]
+
+q <- ggplot(data = fortify(ret), aes(sample = ret)) + 
   stat_qq() +
-  stat_qq_line() +
+  geom_abline(slope = slope, intercept = int) +
   theme_bw() +
   ggtitle('QQ - Plot of the S&P 500 log-returns')
-
-
-
-##### decompose the series #####################################################
-is.decomp <- decompose(x = ts(is, frequency = 5), type = 'multiplicative')
-plot(is.decomp)
+# printer(q, paste0(name, '_ret_qq'))
+rm(y,x,slope,int)
 
 ##### Test series for autocorrelation  ACF #####################################
 # Return acf
@@ -86,12 +90,10 @@ q <- ggPacf(ret^2) +
 # population from which the sample is taken are 0, so that any observed 
 # correlations in the data result from randomness of the sampling process).
 # H1: The data are not independently distributed; they exhibit serial correlation.
-Box.test(coredata(ret), type = 'Ljung-Box', lag = 5)
+Box.test(coredata(ret^2), type = 'Ljung-Box', lag = 12)
 # Reject the null hypothesis of no ARCH effects - need to control
 # Save the outcome
-# sinker(output = Box.test(coredata(ret), type = 'Ljung-Box', lag = 5), name = paste0(name,'_ret_ljungbox'))
-
-# sinker(output = Box.test(coredata(ret^2), type = 'Ljung-Box', lag = 5), name = paste0(name,'_ret_ljungbox_2'))
+# sinker(output = Box.test(coredata(ret^2), type = 'Ljung-Box', lag = 12), name = paste0(name,'_ret_ljungbox_2'))
 ##### Run an ADF test ##########################################################
 # This file contains test which help testing the series
 # Test for stationarity
