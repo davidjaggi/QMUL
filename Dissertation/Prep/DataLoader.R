@@ -24,6 +24,7 @@ remove(sp500)
 x <- x['1990-01-01/2018-05-31']
 # Check the series
 head(x)
+summary(x)
 
 q <- ggplot(fortify(x), aes(x = Index, y = x)) +
   geom_line() +

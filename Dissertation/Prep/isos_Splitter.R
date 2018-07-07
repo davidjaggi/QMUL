@@ -2,7 +2,7 @@
 # In this file I will split the data into an in- and out-of-sample data
 summary(ret)
 # sinker(xtable(summary(ret)), name = paste0(name,'_ret_summary'))
-# sinker(table.Stats(ret), name = paste0(name,'_ret_stats'))
+sinker(xtable(table.Stats(ret), digits = 4), name = paste0(name,'_ret_stats'))
 
 split_date <- '2010-01-01'
 # first lets create the is sample
@@ -58,7 +58,7 @@ q <- ggplot() +
 
 # Plot both data series in one plot
 q <- ggplot() +
-  geom_line(data = fortify(ret.sq),aes(x = Index, y = ret.sq), color = 'black') +
-  labs(title = 'Squared daily returns as proxy', x = 'Time', y = 'Log-return') +
+  geom_line(data = fortify(ret.abs),aes(x = Index, y = ret.abs), color = 'black') +
+  labs(title = 'Absolute daily returns as proxy', x = 'Time', y = 'Log-return') +
   theme_bw()
-# printer(q, name = paste0(name,'_ret_sq'))
+# printer(q, name = paste0(name,'_ret_abs'))

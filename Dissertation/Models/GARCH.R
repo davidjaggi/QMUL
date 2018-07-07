@@ -4,10 +4,10 @@ garch.spec = ugarchspec(variance.model=list(model="sGARCH", garchOrder=c(1,1)),
                        distribution.model="std")
 
 ##### Fit the data to the in sample ############################################
-garch.fit <- ugarchfit(spec = garch.spec, data = ret, out.sample = oos.num)  
+garch.fit <- ugarchfit(spec = garch.spec, data = ret, out.sample = oos.num, 
+                       solver = 'hybrid')  
 plot(garch.fit)
 coef(garch.fit)
-confint(garch.fit)
 show(garch.fit)
 # sinker(show(garch.fit), name = paste0(name,'_garch_fit'))
 
@@ -29,6 +29,7 @@ q <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr,
 # printer(q, paste0(name,'_garch_fit_news'))
 
 garch.fit.stdres <- residuals(garch.fit, standardize = TRUE)
+
 q <- ggAcf(garch.fit.stdres) + 
       labs(title = 'S&P 500 GARCH Standardized Residuals') +
       theme_bw()
@@ -50,7 +51,6 @@ q
 # Perform sharpiro wilks test
 # sinker(shapiro.test(coredata(garch.fit.stdres[1:4999,])), paste0(name,'_garch_fit_sharpiro'))
 
-plot(garch.fit, which = 8)
 ##### Fix the variables to filter the oos data #################################
 garch.spec.fixed <- getspec(garch.fit)
 setfixed(garch.spec.fixed) <- as.list(coef(garch.fit))
@@ -90,19 +90,14 @@ accuracy(ts(garch.result$sigma.sq), ts(garch.result$rv))
 
 # sinker(accuracy(ts(garch.result$sigma.sq), ts(garch.result$rv)), paste0(name,'_garch_forc_accuracy'))
 # sinker(mse(ts(garch.result$sigma.sq), ts(garch.result$rv)), paste0(name,'_garch_forc_mse'))
-##### Analyse the residuals ####################################################
-garch.lm <- lm(formula = garch.result$rv ~ 0 + offset(garch.result$sigma.sq))
-plot(garch.lm)
-summary(garch.lm)
-# sinker(summary(garch.lm), name = paste0(name,'_garch_forc_lm'))
-accuracy(garch.lm)
-caret::postResample(garch.result$sigma.sq, garch.result$rv)
-
+# sinker(caret::postResample(garch.result$sigma.sq, garch.result$rv), paste0(name, '_garch_forc_r2'))
+# sinker(fpm(garch.forc), paste0(name, '_garch_forc_fpm'))
 
 ##### Analyse residuals ########################################################
 # Extract residuals
 garch.result$stdres <- rstandard(garch.lm)
-garch.result$res <- residuals(garch.lm)
+garch.result$res2 <- garch.result$rv - garch.result$sigma.sq
+garch.result$stdres2 <- garch.result$res2/sd(garch.result$res2)
 
 # Time series of the standardized residuals
 q <- ggplot(data = fortify(garch.result), aes(x = Index)) +
@@ -153,7 +148,7 @@ q <- ggAcf(garch.result$stdres) +
 # printer(q, paste0(name,'_garch_forc_res_acf'))
 q
 
-q <- ggAcf(garch.result$StdRes^2) + 
+q <- ggAcf(garch.result$stdres^2) + 
   labs(title = 'ACF: GARCH Squared Standardized Residuals') +
   theme_bw()
 # printer(q, paste0(name,'_garch_res_acf_2'))

@@ -1,0 +1,29 @@
+\subsection{ARMA}
+\cite{Box2008}
+% https://en.wikipedia.org/wiki/Autoregressive%E2%80%93moving-average_model
+The auto regressive moving average (ARMA) process is a combination of a moving average and an autoregressive part. The autoregressive probess AR(p) follows the following formula:
+\begin{equation}
+	X_t = c+\sum_{i=1}^{p} \varphi_iX_{t-1} + \epsilon_t
+\end{equation}
+
+The moving average process of order q follows the following formula:
+\begin{equation}
+	X_t = \mu + \epsilon_t + \sum_{i=1}^{q} \theta \epsilon_{t-1}
+\end{equation}
+
+ARMA(p,q):
+\begin{equation}
+	X_t = c+\epsilon_t + \sum_{i=1}^{p} \varphi_iX_{t-1} + \sum_{i=1}^{q} \theta \epsilon_{t-1}
+\end{equation}
+The traditional ARMA-model assumes that the $\epsilon$ is an $i.i.d.$ distributed variable following $\epsilon_t \sim N(0,\sigma^2)$ . 
+
+\subsection{ARCH}
+auto regressive conditional heteroscedasticity
+% https://en.wikipedia.org/wiki/Autoregressive_conditional_heteroskedasticity
+To apply an ARCH(q)-process a nearly stationary series has to be assumed. This assumption will be tested in section @. For notational purposes the error terms are stated as $\epsilon_t$ which are 
+\begin{equation}
+	\sigma_t^2 = c\sigma^2 + \sum_{k=1}^{m} \beta_k \epsilon_{t-k}^2
+\end{equation}
+
+
+\cite{Engle1982}
