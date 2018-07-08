@@ -23,18 +23,18 @@ persistence(egarch.fit)
 # Make the newsimpactcurve
 egarch.ni <- newsimpact(object = egarch.fit, z = NULL)
 
-q <- qplot(egarch.ni$zx, egarch.ni$zy, ylab=egarch.ni$yexpr, xlab=egarch.ni$xexpr, 
-           geom="line", main = "News Impact Curve") +
+q <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
+           geom="line", main = paste0(ser_name," EGARCH News Impact Curve")) +
   theme_bw()
 # printer(q, paste0(name,'_egarch_fit_news'))
 
 egarch.fit.stdres <- residuals(egarch.fit, standardize = TRUE)
 q <- ggAcf(egarch.fit.stdres) + 
-  labs(title = 'S&P 500 egarch Standardized Residuals') +
+  labs(title = paste0(ser_name,' EGARCH Standardized Residuals')) +
   theme_bw()
 # printer(q, paste0(name,'_egarch_fit_acf'))
 q <- ggAcf(egarch.fit.stdres^2) + 
-  labs(title = 'S&P 500 egarch Squared Standardized Residuals') +
+  labs(title = paste0(ser_name,' EGARCH Squared Standardized Residuals')) +
   theme_bw()
 # printer(q, paste0(name,'_egarch_fit_acf_2'))
 
@@ -71,7 +71,7 @@ egarch.result$sigma.sq <- egarch.result$sigma^2
 q <- ggplot(data = fortify(egarch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = 'Realized vs estimated volatility out-of-sample', x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 # printer(q, paste0(name,'_egarch_forc_realvsestd'))
 

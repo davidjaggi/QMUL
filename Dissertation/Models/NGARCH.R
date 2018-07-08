@@ -24,19 +24,19 @@ persistence(ngarch.fit)
 # Make the newsimpactcurve
 ngarch.ni <- newsimpact(object = ngarch.fit, z = NULL)
 
-q <- qplot(ngarch.ni$zx, ngarch.ni$zy, ylab=ngarch.ni$yexpr, xlab=ngarch.ni$xexpr, 
-           geom="line", main = "News Impact Curve") +
+q <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
+           geom="line", main = paste0(ser_name," NGARCH News Impact Curve")) +
   theme_bw()
 # printer(q, paste0(name,'_ngarch_fit_news'))
 
 ngarch.fit.stdres <- residuals(ngarch.fit, standardize = TRUE)
 
 q <- ggAcf(ngarch.fit.stdres) + 
-  labs(title = 'S&P 500 ngarch Standardized Residuals') +
+  labs(title = paste0(ser_name,' NGARCH Standardized Residuals')) +
   theme_bw()
 # printer(q, paste0(name,'_ngarch_fit_acf'))
 q <- ggAcf(ngarch.fit.stdres^2) + 
-  labs(title = 'S&P 500 ngarch Squared Standardized Residuals') +
+  labs(title = paste0(ser_name,' NGARCH Squared Standardized Residuals')) +
   theme_bw()
 # printer(q, paste0(name,'_ngarch_fit_acf_2'))
 
@@ -73,7 +73,7 @@ ngarch.result$sigma.sq <- ngarch.result$sigma^2
 q <- ggplot(data = fortify(ngarch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = 'Realized vs estimated volatility out-of-sample', x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 # printer(q, paste0(name,'_ngarch_forc_realvsestd'))
 
@@ -103,7 +103,7 @@ ngarch.result$stdres2 <- ngarch.result$res2/sd(ngarch.result$res2)
 # Time series of the standardized residuals
 q <- ggplot(data = fortify(ngarch.result), aes(x = Index)) +
   geom_line(aes(y = stdres)) +
-  labs(title = 'Standardized Residuals of ngarch Forecast', x = 'Time', 
+  labs(title = 'Standardized Residuals of NGARCH Forecast', x = 'Time', 
        y = 'Standardized Residuals') +
   theme_bw()
 # printer(q, paste0(name,'_ngarch_forc_stdres'))

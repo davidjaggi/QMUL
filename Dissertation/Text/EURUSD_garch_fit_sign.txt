@@ -1,0 +1,5 @@
+                    t-value       prob sig
+Sign Bias          1.385426 0.16598151    
+Negative Sign Bias 2.466479 0.01367680  **
+Positive Sign Bias 1.582439 0.11361011    
+Joint Effect       9.642925 0.02185849  **

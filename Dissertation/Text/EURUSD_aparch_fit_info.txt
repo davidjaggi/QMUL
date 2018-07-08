@@ -1,0 +1,5 @@
+                      
+Akaike       -7.454015
+Bayes        -7.445215
+Shibata      -7.454019
+Hannan-Quinn -7.450938

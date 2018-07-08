@@ -1,0 +1,17 @@
+                         
+Observations    5219.0000
+NAs                0.0000
+Minimum           -0.0463
+Quartile 1        -0.0034
+Median             0.0000
+Arithmetic Mean    0.0000
+Geometric Mean    -0.0001
+Quartile 3         0.0034
+Maximum            0.0511
+SE Mean            0.0001
+LCL Mean (0.95)   -0.0002
+UCL Mean (0.95)    0.0001
+Variance           0.0000
+Stdev              0.0063
+Skewness          -0.0522
+Kurtosis           3.5545

@@ -23,19 +23,19 @@ persistence(aparch.fit)
 # Make the newsimpactcurve
 aparch.ni <- newsimpact(object = aparch.fit, z = NULL)
 
-q <- qplot(aparch.ni$zx, aparch.ni$zy, ylab=aparch.ni$yexpr, xlab=aparch.ni$xexpr, 
-           geom="line", main = "News Impact Curve") +
+q <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
+           geom="line", main = paste0(ser_name," APARCH News Impact Curve")) +
   theme_bw()
 # printer(q, paste0(name,'_aparch_fit_news'))
 
 aparch.fit.stdres <- residuals(aparch.fit, standardize = TRUE)
 
 q <- ggAcf(aparch.fit.stdres) + 
-  labs(title = 'S&P 500 aparch Standardized Residuals') +
+  labs(title = paste0(ser_name,' APARCH Standardized Residuals')) +
   theme_bw()
 # printer(q, paste0(name,'_aparch_fit_acf'))
 q <- ggAcf(aparch.fit.stdres^2) + 
-  labs(title = 'S&P 500 aparch Squared Standardized Residuals') +
+  labs(title = paste0(ser_name,' APARCH Squared Standardized Residuals')) +
   theme_bw()
 # printer(q, paste0(name,'_aparch_fit_acf_2'))
 
@@ -72,7 +72,7 @@ aparch.result$sigma.sq <- aparch.result$sigma^2
 q <- ggplot(data = fortify(aparch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = 'Realized vs estimated volatility out-of-sample', x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 # printer(q, paste0(name,'_aparch_forc_realvsestd'))
 

@@ -4,26 +4,26 @@
 # log-returns
 q <- ggplot(fortify(ret)) +
   geom_line(aes(x = Index, y = ret)) +
-  labs(title = 'S&P 500 Log-returns', x = 'Time', y = 'log-returns') +
+  labs(title = paste0(ser_name, ' Log-returns'), x = 'Time', y = 'log-returns') +
   theme_bw()
 # printer(q, paste0(name,'_ret_plot'))
 
 # absolute log-returns
 q <- ggplot(fortify(ret)) +
   geom_line(aes(x = Index, y = abs(ret))) +
-  labs(title = 'S&P 500 Absolute Log-returns', x = 'Time', y = 'absolute log-returns') +
+  labs(title = paste0(ser_name,' Absolute Log-returns'), x = 'Time', y = 'absolute log-returns') +
   theme_bw()
 # printer(q, paste0(name,'_ret_abs_plot'))
 
 # squared log-returns
 q <- ggplot(fortify(ret)) +
   geom_line(aes(x = Index, y = ret^2)) +
-  labs(title = 'S&P 500 Squared Log-returns', x = 'Time', y = 'squared log-returns') +
+  labs(title = paste0(ser_name,' Squared Log-returns'), x = 'Time', y = 'squared log-returns') +
   theme_bw()
 # printer(q, paste0(name,'_ret_2_plot'))
 ##### Make a histogram of the returns ##########################################
 q <- gghistogram(fortify(ret)$ret) +
-  labs(title = 'S&P 500 Histogram of log-returns', x = 'log-return', y = 'Count') +
+  labs(title = paste0(ser_name,' Histogram of log-returns'), x = 'log-return', y = 'Count') +
   theme_bw()
 # printer(q, paste0(name,'_ret_hist'))
 q
@@ -40,26 +40,26 @@ q <- ggplot(data = fortify(ret), aes(sample = ret)) +
   stat_qq() +
   geom_abline(slope = slope, intercept = int) +
   theme_bw() +
-  ggtitle('QQ - Plot of the S&P 500 log-returns')
+  ggtitle(paste0('QQ - Plot of the ',ser_name,' log-returns'))
 # printer(q, paste0(name, '_ret_qq'))
 rm(y,x,slope,int)
 
 ##### Test series for autocorrelation  ACF #####################################
 # Return acf
 q <- ggAcf(ret) +
-  labs(title = 'ACF: S&P 500 log-returns', x = 'Lag', y = 'ACF') +
+  labs(title = paste0('ACF: ',ser_name,' log-returns'), x = 'Lag', y = 'ACF') +
   theme_bw()
 # printer(plot = q, paste0(name,'_acf'))
 
 # Absolute return acf
 q <- ggAcf(abs(ret)) +
-  labs(title = 'ACF: S&P 500 absolute log-returns', x = 'Lag', y = 'ACF') +
+  labs(title = paste0('ACF: ',ser_name,' absolute log-returns'), x = 'Lag', y = 'ACF') +
   theme_bw()
 # printer(q, paste0(name,'_acf_abs'))
 
 # Squared return acf  
 q <- ggAcf(ret^2) +
-  labs(title = 'ACF: S&P 500 squared log-returns', x = 'Lag', y = 'ACF') +
+  labs(title = paste0('ACF: ',ser_name,' squared log-returns'), x = 'Lag', y = 'ACF') +
   theme_bw()
 # printer(q, paste0(name,'_acf_2'))
 
@@ -67,20 +67,20 @@ q <- ggAcf(ret^2) +
 # Return PAcf
 # Take care of x axis
 q <- ggPacf(ret) +
-  labs(title = 'PACF: S&P 500 log-returns', x = 'Lag', y = 'PACF') +
+  labs(title = paste0('PACF: ',ser_name,' log-returns'), x = 'Lag', y = 'PACF') +
   theme_bw()
 # printer(q, paste0(name,'_pacf'))
 
 # Absolute return pacf
 q <- ggPacf(abs(ret)) +
-  labs(title = 'PACF: S&P 500 absolute log-returns', x = 'Lag', y = 'PACF') +
+  labs(title = paste0('PACF: ',ser_name,' absolute log-returns'), x = 'Lag', y = 'PACF') +
   theme_bw()
 # printer(q, paste0(name,'_pacf_abs'))
 
 # Squared return pacf
 # Take care of x axis
 q <- ggPacf(ret^2) +
-  labs(title = 'PACF: S&P 500 squared log-returns', x = 'Lag', y = 'PACF') +
+  labs(title = paste0('PACF: ',ser_name,' squared log-returns'), x = 'Lag', y = 'PACF') +
   theme_bw()
 # printer(q, paste0(name,'_pacf_2'))
 
@@ -118,9 +118,7 @@ shapiro.test(x = shapiro_sample)
 closeAllConnections()
 
 # Delete the series again
-rm(shapiro_sample)
-rm(q)
-
+rm(shapiro_sample, q)
 ##### stationarity test ########################################################
 aTSA::stationary.test(ret)
 # sinker(aTSA::stationary.test(ret), paste0(name,'_ret_stat'))

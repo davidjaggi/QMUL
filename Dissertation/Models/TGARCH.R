@@ -24,19 +24,19 @@ persistence(tgarch.fit)
 # Make the newsimpactcurve
 tgarch.ni <- newsimpact(object = tgarch.fit, z = NULL)
 
-q <- qplot(tgarch.ni$zx, tgarch.ni$zy, ylab=tgarch.ni$yexpr, xlab=tgarch.ni$xexpr, 
-           geom="line", main = "News Impact Curve") +
+q <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
+           geom="line", main = paste0(ser_name," TGARCH News Impact Curve")) +
   theme_bw()
 # printer(q, paste0(name,'_tgarch_fit_news'))
 
 tgarch.fit.stdres <- residuals(tgarch.fit, standardize = TRUE)
 
 q <- ggAcf(tgarch.fit.stdres) + 
-  labs(title = 'S&P 500 tgarch Standardized Residuals') +
+  labs(title = paste0(ser_name,' TGARCH Standardized Residuals')) +
   theme_bw()
 # printer(q, paste0(name,'_tgarch_fit_acf'))
 q <- ggAcf(tgarch.fit.stdres^2) + 
-  labs(title = 'S&P 500 tgarch Squared Standardized Residuals') +
+  labs(title = paste0(ser_name,' TGARCH Squared Standardized Residuals')) +
   theme_bw()
 # printer(q, paste0(name,'_tgarch_fit_acf_2'))
 
@@ -73,7 +73,7 @@ tgarch.result$sigma.sq <- tgarch.result$sigma^2
 q <- ggplot(data = fortify(tgarch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = 'Realized vs estimated volatility out-of-sample', x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 # printer(q, paste0(name,'_tgarch_forc_realvsestd'))
 

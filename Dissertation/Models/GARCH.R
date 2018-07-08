@@ -24,18 +24,18 @@ persistence(garch.fit)
 garch.ni <- newsimpact(object = garch.fit, z = NULL)
 
 q <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
-      geom="line", main = "News Impact Curve") +
+      geom="line", main = paste0(ser_name," GARCH News Impact Curve")) +
       theme_bw()
 # printer(q, paste0(name,'_garch_fit_news'))
 
 garch.fit.stdres <- residuals(garch.fit, standardize = TRUE)
 
 q <- ggAcf(garch.fit.stdres) + 
-      labs(title = 'S&P 500 GARCH Standardized Residuals') +
+      labs(title = paste0(ser_name,' GARCH Standardized Residuals')) +
       theme_bw()
 # printer(q, paste0(name,'_garch_fit_acf'))
 q <- ggAcf(garch.fit.stdres^2) + 
-  labs(title = 'S&P 500 GARCH Squared Standardized Residuals') +
+  labs(title = paste0(ser_name,' GARCH Squared Standardized Residuals')) +
   theme_bw()
 # printer(q, paste0(name,'_garch_fit_acf_2'))
 
@@ -72,7 +72,7 @@ garch.result$sigma.sq <- garch.result$sigma^2
 q <- ggplot(data = fortify(garch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = 'Realized vs estimated volatility out-of-sample', x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 # printer(q, paste0(name,'_garch_forc_realvsestd'))
 
