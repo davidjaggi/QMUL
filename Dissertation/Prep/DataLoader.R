@@ -11,40 +11,54 @@ source('Dissertation/Prep/Functions.R')
 # saveSymbols(Symbols = sp500, file.path = 'Dissertation/Data/sp500.csv')
 
 ##### Import SP500 #############################################################
-name <- 'SP'
+name <- 'SPX'
 ser_name <- 'S&P 500'
 
 # Load the data
-sp500 <- read.csv(file = 'Dissertation/Data/SP500.csv')
+price <- read.csv(file = 'Dissertation/Data/Price_Data.csv')
 # convoert it into an xts
-colnames(sp500) <- c('Date','Close')
-x <- as.xts(x = sp500$Close, order.by = as.POSIXct(sp500$Date, tryFormat = "%d/%m/%Y"))
-remove(sp500)
+# colnames(sp500) <- c('Date','Close')
+x <- as.xts(x = price$SPX, order.by = as.POSIXct(price$Date, 
+                                                 tryFormat = "%d/%m/%Y"))
+rm(price)
 
-##### Import EURUSD ############################################################
-name <- 'EURUSD'
-ser_name <- 'EUR/USD'
+##### Import FTSE ##############################################################
+name <- 'FTSE'
+ser_name <- 'FTSE'
 
 # Load the data
-eurusd <- read.csv(file = 'Dissertation/Data/EURUSD.csv')
+price <- read.csv(file = 'Dissertation/Data/Price_Data.csv')
 # convoert it into an xts
-colnames(eurusd) <- c('Date','Close')
-x <- as.xts(x = eurusd$Close, order.by = as.POSIXct(eurusd$Date, tryFormat = "%d/%m/%Y"))
-remove(eurusd)
+# colnames(sp500) <- c('Date','Close')
+x <- as.xts(x = price$UKX, order.by = as.POSIXct(price$Date, 
+                                                 tryFormat = "%d/%m/%Y"))
+remove(price)
+
+##### Import DAX ##############################################################
+name <- 'DAX'
+ser_name <- 'DAX'
+
+# Load the data
+price <- read.csv(file = 'Dissertation/Data/Price_Data.csv')
+# convoert it into an xts
+# colnames(sp500) <- c('Date','Close')
+x <- as.xts(x = price$DAX, order.by = as.POSIXct(price$Date, 
+                                                 tryFormat = "%d/%m/%Y"))
+remove(price)
 
 ##### Adjust series ############################################################
 # crop the time series
-x <- x['1990-01-01/2018-05-31']
+x <- x['1990-01-01/2018-06-31']
 # Check the series
 head(x)
 summary(x)
 
-q <- ggplot(fortify(x), aes(x = Index, y = x)) +
+dl1 <- ggplot(fortify(x), aes(x = Index, y = x)) +
   geom_line() +
   labs(title = paste0(ser_name,' Series'), x = 'Time', y = 'Price') +
   theme_bw()
-# printer(q, paste0(name,'_series'))
-q
+printer(dl1, name, paste0(name,'_series'))
+dl1
 
 ##### Calculate returns ########################################################
 # Calculate returns
@@ -61,4 +75,5 @@ ret.abs <- abs(ret)
 # x_tidy <- tidy(x)
 
 ##### Split data into is and oos ###############################################
+rm(dl1)
 source('Dissertation/Prep/isos_Splitter.R')

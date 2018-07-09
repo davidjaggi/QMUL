@@ -1,7 +1,0 @@
-
-	Approximate Cox-Stuart trend test
-
-data:  coredata(ret)
-D+ = 1869, p-value = 0.2996
-alternative hypothesis: data have a increasing trend
-

@@ -1,0 +1,17 @@
+% latex table generated in R 3.5.0 by xtable 1.8-2 package
+% Mon Jul 09 14:16:53 2018
+\begin{table}[ht]
+\centering
+\begin{tabular}{rll}
+  \hline
+ &     Index &      ret \\ 
+  \hline
+X & Min.   :1990-01-03 00:00:00   & Min.   :-0.0946951   \\ 
+  X.1 & 1st Qu.:1997-02-28 18:00:00   & 1st Qu.:-0.0045439   \\ 
+  X.2 & Median :2004-04-26 12:00:00   & Median : 0.0005642   \\ 
+  X.3 & Mean   :2004-04-13 05:21:34   & Mean   : 0.0002906   \\ 
+  X.4 & 3rd Qu.:2011-05-24 18:00:00   & 3rd Qu.: 0.0056281   \\ 
+  X.5 & Max.   :2018-07-03 00:00:00   & Max.   : 0.1095720   \\ 
+   \hline
+\end{tabular}
+\end{table}

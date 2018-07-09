@@ -1,6 +1,0 @@
-
-	Jarque Bera Test
-
-data:  ret
-X-squared = 2882.9, df = 2, p-value < 2.2e-16
-

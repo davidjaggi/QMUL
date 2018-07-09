@@ -1,6 +1,0 @@
-
-	Box-Ljung test
-
-data:  garch.result$stdres
-X-squared = 1126.1, df = 12, p-value < 2.2e-16
-

@@ -1,6 +1,0 @@
-
-	Box-Ljung test
-
-data:  coredata(ret^2)
-X-squared = 962.97, df = 12, p-value < 2.2e-16
-
