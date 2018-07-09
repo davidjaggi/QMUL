@@ -1,3 +1,5 @@
+subfolder <- 'NGARCH'
+
 ##### Specify the model ########################################################
 ngarch.spec = ugarchspec(variance.model=list(model="fGARCH", garchOrder=c(1,1), 
                                              submodel = 'NGARCH'), 
@@ -7,50 +9,50 @@ ngarch.spec = ugarchspec(variance.model=list(model="fGARCH", garchOrder=c(1,1),
 ##### Fit the data to the in sample ############################################
 ngarch.fit <- ugarchfit(spec = ngarch.spec, data = ret, out.sample = oos.num, 
                        solver = 'hybrid')  
-plot(ngarch.fit)
+# plot(ngarch.fit)
 coef(ngarch.fit)
 show(ngarch.fit)
-# sinker(show(ngarch.fit), name = paste0(name,'_ngarch_fit'))
+sinker(show(ngarch.fit), folder, subfolder, name = paste0(name,'_ngarch_fit'))
 
 ngarch.fit@fit$matcoef
-# sinker(ngarch.fit@fit$matcoef, name = paste0(name,'_ngarch_fit_matcoef'))
+sinker(ngarch.fit@fit$matcoef, folder, subfolder, name = paste0(name,'_ngarch_fit_matcoef'))
 persistence(ngarch.fit)
 ##### analyse the is fit #######################################################
-# sinker(signbias(ngarch.fit), paste0(name,'_ngarch_fit_sign'))
-# sinker(infocriteria(ngarch.fit), paste0(name,'_ngarch_fit_info'))
-# sinker(nyblom(ngarch.fit), paste0(name,'_ngarch_fit_nyblom'))
-# sinker(gof(ngarch.fit,c(20,30,40,50)), paste0(name,'_ngarch_fit_gof'))
+sinker(signbias(ngarch.fit), folder, subfolder, paste0(name,'_ngarch_fit_sign'))
+sinker(infocriteria(ngarch.fit), folder, subfolder, paste0(name,'_ngarch_fit_info'))
+sinker(nyblom(ngarch.fit), folder, subfolder, paste0(name,'_ngarch_fit_nyblom'))
+sinker(gof(ngarch.fit,c(20,30,40,50)), folder, subfolder, paste0(name,'_ngarch_fit_gof'))
 
 # Make the newsimpactcurve
 ngarch.ni <- newsimpact(object = ngarch.fit, z = NULL)
 
-q <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
+n1 <- qplot(ngarch.ni$zx, ngarch.ni$zy, ylab = ngarch.ni$yexpr, xlab = ngarch.ni$xexpr, 
            geom="line", main = paste0(ser_name," NGARCH News Impact Curve")) +
   theme_bw()
-# printer(q, paste0(name,'_ngarch_fit_news'))
+printer(n1, folder, subfolder, paste0(name,'_ngarch_fit_news'))
 
 ngarch.fit.stdres <- residuals(ngarch.fit, standardize = TRUE)
-
-q <- ggAcf(ngarch.fit.stdres) + 
+n2 <- ggAcf(ngarch.fit.stdres) + 
   labs(title = paste0(ser_name,' NGARCH Standardized Residuals')) +
   theme_bw()
-# printer(q, paste0(name,'_ngarch_fit_acf'))
-q <- ggAcf(ngarch.fit.stdres^2) + 
+printer(n2, folder, subfolder, paste0(name,'_ngarch_fit_acf'))
+
+n3 <- ggAcf(ngarch.fit.stdres^2) + 
   labs(title = paste0(ser_name,' NGARCH Squared Standardized Residuals')) +
   theme_bw()
-# printer(q, paste0(name,'_ngarch_fit_acf_2'))
+printer(n3, folder, subfolder, paste0(name,'_ngarch_fit_acf_2'))
 
 # QQ-Plot of standardized residuals
-q <- ggplot(data = fortify(ngarch.fit.stdres), aes(sample = ngarch.fit.stdres)) +
+n4 <- ggplot(data = fortify(ngarch.fit.stdres), aes(sample = ngarch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
   labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
   theme_bw()
-# printer(q, paste0(name,'_ngarch_fit_qq'))
-q
+printer(n4, folder, subfolder, paste0(name,'_ngarch_fit_qq'))
 
 # Perform sharpiro wilks test
-# sinker(shapiro.test(coredata(ngarch.fit.stdres[1:4999,])), paste0(name,'_ngarch_fit_sharpiro'))
+
+sinker(shapiro.test(coredata(ngarch.fit.stdres)), folder, subfolder, paste0(name,'_ngarch_fit_sharpiro'))
 
 ##### Fix the variables to filter the oos data #################################
 ngarch.spec.fixed <- getspec(ngarch.fit)
@@ -58,7 +60,7 @@ setfixed(ngarch.spec.fixed) <- as.list(coef(ngarch.fit))
 ngarch.forc <- ugarchforecast(ngarch.spec.fixed, data = ret, n.ahead = 1, 
                              n.roll = oos.num-1, out.sample = oos.num-1)
 
-plot(ngarch.forc)
+# plot(ngarch.forc)
 show(ngarch.forc)
 
 ##### Analyse the forecast #####################################################
@@ -70,12 +72,12 @@ ngarch.result$sigma <- t(ngarch.forc@forecast$sigmaFor)
 ngarch.result$sigma.sq <- ngarch.result$sigma^2
 
 # Plot the estimation
-q <- ggplot(data = fortify(ngarch.result), aes(x = Index)) +
+n5 <- ggplot(data = fortify(ngarch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
   theme_bw() 
-# printer(q, paste0(name,'_ngarch_forc_realvsestd'))
+printer(n5, folder, subfolder, paste0(name,'_ngarch_forc_realvsestd'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
@@ -89,11 +91,13 @@ accuracy(ts(ngarch.result$sigma.sq), ts(ngarch.result$rv))
 # The model is fitted to the absolute return
 # Sigma can be squared to get to the volatility
 
-# sinker(accuracy(ts(ngarch.result$sigma.sq), ts(ngarch.result$rv)), paste0(name,'_ngarch_forc_accuracy'))
-# sinker(mse(ts(ngarch.result$sigma.sq), ts(ngarch.result$rv)), paste0(name,'_ngarch_forc_mse'))
-# sinker(caret::postResample(ngarch.result$sigma.sq, ngarch.result$rv), paste0(name, '_ngarch_forc_r2'))
-# sinker(fpm(ngarch.forc), paste0(name, '_ngarch_forc_fpm'))
+sinker(accuracy(ts(ngarch.result$sigma.sq), ts(ngarch.result$rv)), folder, subfolder, paste0(name,'_ngarch_forc_accuracy'))
+sinker(mse(ts(ngarch.result$sigma.sq), ts(ngarch.result$rv)), folder, subfolder, paste0(name,'_ngarch_forc_mse'))
+sinker(caret::postResample(ngarch.result$sigma.sq, ngarch.result$rv), folder, subfolder, paste0(name, '_ngarch_forc_r2'))
+sinker(fpm(ngarch.forc), folder, subfolder, paste0(name, '_ngarch_forc_fpm'))
 
+rm(n1,n2,n3,n4,n5, subfolder)
+rm(list = ls(pattern = '^ngarch.'))
 ##### Analyse residuals ########################################################
 # Extract residuals
 ngarch.result$stdres <- rstandard(ngarch.lm)

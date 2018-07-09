@@ -1,3 +1,5 @@
+subfolder <- 'APARCH'
+
 ##### Specify the model ########################################################
 aparch.spec = ugarchspec(variance.model=list(model="apARCH", garchOrder=c(1,1)), 
                          mean.model=list(armaOrder=c(0,0), include.mean=TRUE),
@@ -6,50 +8,50 @@ aparch.spec = ugarchspec(variance.model=list(model="apARCH", garchOrder=c(1,1)),
 ##### Fit the data to the in sample ############################################
 aparch.fit <- ugarchfit(spec = aparch.spec, data = ret, out.sample = oos.num, 
                         solver = 'hybrid')  
-plot(aparch.fit)
+# plot(aparch.fit)
 coef(aparch.fit)
 show(aparch.fit)
-# sinker(show(aparch.fit), name = paste0(name,'_aparch_fit'))
+sinker(show(aparch.fit), folder, subfolder, name = paste0(name,'_aparch_fit'))
 
 aparch.fit@fit$matcoef
-# sinker(aparch.fit@fit$matcoef, name = paste0(name,'_aparch_fit_matcoef'))
+sinker(aparch.fit@fit$matcoef, folder, subfolder, name = paste0(name,'_aparch_fit_matcoef'))
 persistence(aparch.fit)
 ##### analyse the is fit #######################################################
-# sinker(signbias(aparch.fit), paste0(name,'_aparch_fit_sign'))
-# sinker(infocriteria(aparch.fit), paste0(name,'_aparch_fit_info'))
-# sinker(nyblom(aparch.fit), paste0(name,'_aparch_fit_nyblom'))
-# sinker(gof(aparch.fit,c(20,30,40,50)), paste0(name,'_aparch_fit_gof'))
+sinker(signbias(aparch.fit), folder, subfolder, paste0(name,'_aparch_fit_sign'))
+sinker(infocriteria(aparch.fit), folder, subfolder, paste0(name,'_aparch_fit_info'))
+sinker(nyblom(aparch.fit), folder, subfolder, paste0(name,'_aparch_fit_nyblom'))
+sinker(gof(aparch.fit,c(20,30,40,50)), folder, subfolder, paste0(name,'_aparch_fit_gof'))
 
 # Make the newsimpactcurve
 aparch.ni <- newsimpact(object = aparch.fit, z = NULL)
 
-q <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
+a1 <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
            geom="line", main = paste0(ser_name," APARCH News Impact Curve")) +
   theme_bw()
-# printer(q, paste0(name,'_aparch_fit_news'))
+printer(a1, folder, subfolder, paste0(name,'_aparch_fit_news'))
 
-aparch.fit.stdres <- residuals(aparch.fit, standardize = TRUE)
 
-q <- ggAcf(aparch.fit.stdres) + 
+a2 <- ggAcf(aparch.fit.stdres) + 
   labs(title = paste0(ser_name,' APARCH Standardized Residuals')) +
   theme_bw()
-# printer(q, paste0(name,'_aparch_fit_acf'))
-q <- ggAcf(aparch.fit.stdres^2) + 
+printer(a2, folder, subfolder, paste0(name,'_aparch_fit_acf'))
+
+a3 <- ggAcf(aparch.fit.stdres^2) + 
   labs(title = paste0(ser_name,' APARCH Squared Standardized Residuals')) +
   theme_bw()
-# printer(q, paste0(name,'_aparch_fit_acf_2'))
+printer(a3, folder, subfolder, paste0(name,'_aparch_fit_acf_2'))
 
 # QQ-Plot of standardized residuals
-q <- ggplot(data = fortify(aparch.fit.stdres), aes(sample = aparch.fit.stdres)) +
+a4 <- ggplot(data = fortify(aparch.fit.stdres), aes(sample = aparch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
   labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
   theme_bw()
-# printer(q, paste0(name,'_aparch_fit_qq'))
-q
+printer(a4, folder, subfolder, paste0(name,'_aparch_fit_qq'))
 
 # Perform sharpiro wilks test
-# sinker(shapiro.test(coredata(aparch.fit.stdres[1:4999,])), paste0(name,'_aparch_fit_sharpiro'))
+aparch.fit.stdres <- residuals(aparch.fit, standardize = TRUE)
+sinker(shapiro.test(coredata(aparch.fit.stdres)), folder, subfolder, paste0(name,'_aparch_fit_sharpiro'))
 
 ##### Fix the variables to filter the oos data #################################
 aparch.spec.fixed <- getspec(aparch.fit)
@@ -57,7 +59,7 @@ setfixed(aparch.spec.fixed) <- as.list(coef(aparch.fit))
 aparch.forc <- ugarchforecast(aparch.spec.fixed, data = ret, n.ahead = 1, 
                              n.roll = oos.num-1, out.sample = oos.num-1)
 
-plot(aparch.forc)
+# plot(aparch.forc)
 show(aparch.forc)
 
 ##### Analyse the forecast #####################################################
@@ -69,18 +71,18 @@ aparch.result$sigma <- t(aparch.forc@forecast$sigmaFor)
 aparch.result$sigma.sq <- aparch.result$sigma^2
 
 # Plot the estimation
-q <- ggplot(data = fortify(aparch.result), aes(x = Index)) +
+a5 <- ggplot(data = fortify(aparch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
   theme_bw() 
-# printer(q, paste0(name,'_aparch_forc_realvsestd'))
+printer(a5, folder, subfolder, paste0(name,'_aparch_forc_realvsestd'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
 cor(aparch.result$rv, aparch.result$sigma.sq, 
     method = "spearman")
-# sinker(cor(aparch.result$rv, aparch.result$sigma.sq, method = "spearman"), paste0(name,'_aparch_forc_cor'))
+sinker(cor(aparch.result$rv, aparch.result$sigma.sq, method = "spearman"), folder, subfolder, paste0(name,'_aparch_forc_cor'))
 
 # Show the accuracy of our estimate
 accuracy(ts(aparch.result$sigma.sq), ts(aparch.result$rv))
@@ -88,11 +90,13 @@ accuracy(ts(aparch.result$sigma.sq), ts(aparch.result$rv))
 # The model is fitted to the absolute return
 # Sigma can be squared to get to the volatility
 
-# sinker(accuracy(ts(aparch.result$sigma.sq), ts(aparch.result$rv)), paste0(name,'_aparch_forc_accuracy'))
-# sinker(mse(ts(aparch.result$sigma.sq), ts(aparch.result$rv)), paste0(name,'_aparch_forc_mse'))
-# sinker(caret::postResample(aparch.result$sigma.sq, aparch.result$rv), paste0(name, '_aparch_forc_r2'))
-# sinker(fpm(aparch.forc), paste0(name, '_aparch_forc_fpm'))
+sinker(accuracy(ts(aparch.result$sigma.sq), ts(aparch.result$rv)),folder, subfolder, paste0(name,'_aparch_forc_accuracy'))
+sinker(mse(ts(aparch.result$sigma.sq), ts(aparch.result$rv)), folder, subfolder, paste0(name,'_aparch_forc_mse'))
+sinker(caret::postResample(aparch.result$sigma.sq, aparch.result$rv), folder, subfolder, paste0(name, '_aparch_forc_r2'))
+sinker(fpm(aparch.forc), folder, subfolder, paste0(name, '_aparch_forc_fpm'))
 
+rm(a1,a2,a3,a4,a5,subfolder)
+rm(list = ls(pattern = '^aparch.'))
 ##### Analyse residuals ########################################################
 # Extract residuals
 aparch.result$stdres <- rstandard(aparch.lm)

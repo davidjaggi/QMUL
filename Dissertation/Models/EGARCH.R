@@ -1,3 +1,5 @@
+subfolder <- 'EGARCH'
+
 ##### Specify the model ########################################################
 egarch.spec = ugarchspec(variance.model=list(model="eGARCH", garchOrder=c(1,1)), 
                         mean.model=list(armaOrder=c(0,0), include.mean=TRUE),
@@ -6,49 +8,49 @@ egarch.spec = ugarchspec(variance.model=list(model="eGARCH", garchOrder=c(1,1)),
 ##### Fit the data to the in sample ############################################
 egarch.fit <- ugarchfit(spec = egarch.spec, data = ret, out.sample = oos.num,
                         solver = 'hybrid')  
-plot(egarch.fit)
-coef(egarch.fit)
-show(egarch.fit)
-# sinker(show(egarch.fit), name = paste0(name,'_egarch_fit'))
+# plot(egarch.fit)
+# coef(egarch.fit)
+# show(egarch.fit)
+sinker(show(egarch.fit), folder, subfolder, name = paste0(name,'_egarch_fit'))
 
 egarch.fit@fit$matcoef
-# sinker(egarch.fit@fit$matcoef, name = paste0(name,'_egarch_fit_matcoef'))
+sinker(egarch.fit@fit$matcoef, folder, subfolder, name = paste0(name,'_egarch_fit_matcoef'))
 persistence(egarch.fit)
 ##### analyse the is fit #######################################################
-# sinker(signbias(egarch.fit), paste0(name,'_egarch_fit_sign'))
-# sinker(infocriteria(egarch.fit), paste0(name,'_egarch_fit_info'))
-# sinker(nyblom(egarch.fit), paste0(name,'_egarch_fit_nyblom'))
-# sinker(gof(egarch.fit,c(20,30,40,50)), paste0(name,'_egarch_fit_gof'))
+sinker(signbias(egarch.fit), folder, subfolder, paste0(name,'_egarch_fit_sign'))
+sinker(infocriteria(egarch.fit), folder, subfolder, paste0(name,'_egarch_fit_info'))
+sinker(nyblom(egarch.fit), folder, subfolder, paste0(name,'_egarch_fit_nyblom'))
+sinker(gof(egarch.fit,c(20,30,40,50)), folder, subfolder, paste0(name,'_egarch_fit_gof'))
 
 # Make the newsimpactcurve
 egarch.ni <- newsimpact(object = egarch.fit, z = NULL)
 
-q <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
+e1 <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
            geom="line", main = paste0(ser_name," EGARCH News Impact Curve")) +
   theme_bw()
-# printer(q, paste0(name,'_egarch_fit_news'))
+printer(e1, folder, subfolder, paste0(name,'_egarch_fit_news'))
 
 egarch.fit.stdres <- residuals(egarch.fit, standardize = TRUE)
-q <- ggAcf(egarch.fit.stdres) + 
+e2 <- ggAcf(egarch.fit.stdres) + 
   labs(title = paste0(ser_name,' EGARCH Standardized Residuals')) +
   theme_bw()
-# printer(q, paste0(name,'_egarch_fit_acf'))
-q <- ggAcf(egarch.fit.stdres^2) + 
+printer(e2, folder, subfolder, paste0(name,'_egarch_fit_acf'))
+
+e3 <- ggAcf(egarch.fit.stdres^2) + 
   labs(title = paste0(ser_name,' EGARCH Squared Standardized Residuals')) +
   theme_bw()
-# printer(q, paste0(name,'_egarch_fit_acf_2'))
+printer(e3, folder, subfolder, paste0(name,'_egarch_fit_acf_2'))
 
 # QQ-Plot of standardized residuals
-q <- ggplot(data = fortify(egarch.fit.stdres), aes(sample = egarch.fit.stdres)) +
+e4 <- ggplot(data = fortify(egarch.fit.stdres), aes(sample = egarch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
   labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
   theme_bw()
-# printer(q, paste0(name,'_egarch_fit_qq'))
-q
+printer(e4, folder, subfolder, paste0(name,'_egarch_fit_qq'))
 
 # Perform sharpiro wilks test
-# sinker(shapiro.test(coredata(egarch.fit.stdres[1:4999,])), paste0(name,'_egarch_fit_sharpiro'))
+sinker(shapiro.test(coredata(egarch.fit.stdres)), folder, subfolder, paste0(name,'_egarch_fit_sharpiro'))
 
 ##### Fix the variables to filter the oos data #################################
 egarch.spec.fixed <- getspec(egarch.fit)
@@ -56,7 +58,7 @@ setfixed(egarch.spec.fixed) <- as.list(coef(egarch.fit))
 egarch.forc <- ugarchforecast(egarch.spec.fixed, data = ret, n.ahead = 1, 
                              n.roll = oos.num-1, out.sample = oos.num-1)
 
-plot(egarch.forc)
+# plot(egarch.forc)
 show(egarch.forc)
 
 ##### Analyse the forecast #####################################################
@@ -68,18 +70,18 @@ egarch.result$sigma <- t(egarch.forc@forecast$sigmaFor)
 egarch.result$sigma.sq <- egarch.result$sigma^2
 
 # Plot the estimation
-q <- ggplot(data = fortify(egarch.result), aes(x = Index)) +
+e5 <- ggplot(data = fortify(egarch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
   theme_bw() 
-# printer(q, paste0(name,'_egarch_forc_realvsestd'))
+printer(e5, folder, subfolder, paste0(name,'_egarch_forc_realvsestd'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
 cor(egarch.result$rv, egarch.result$sigma.sq, 
     method = "spearman")
-# sinker(cor(egarch.result$rv, egarch.result$sigma.sq, method = "spearman"), paste0(name,'_egarch_forc_cor'))
+sinker(cor(egarch.result$rv, egarch.result$sigma.sq, method = "spearman"), folder, subfolder, paste0(name,'_egarch_forc_cor'))
 
 # Show the accuracy of our estimate
 accuracy(ts(egarch.result$sigma.sq), ts(egarch.result$rv))
@@ -87,10 +89,13 @@ accuracy(ts(egarch.result$sigma.sq), ts(egarch.result$rv))
 # The model is fitted to the absolute return
 # Sigma can be squared to get to the volatility
 
-# sinker(accuracy(ts(egarch.result$sigma.sq), ts(egarch.result$rv)), paste0(name,'_egarch_forc_accuracy'))
-# sinker(mse(ts(egarch.result$sigma.sq), ts(egarch.result$rv)), paste0(name,'_egarch_forc_mse'))
-# sinker(caret::postResample(egarch.result$sigma.sq, egarch.result$rv), paste0(name, '_egarch_forc_r2'))
-# sinker(fpm(egarch.forc), paste0(name, '_egarch_forc_fpm'))
+sinker(accuracy(ts(egarch.result$sigma.sq), ts(egarch.result$rv)), folder, subfolder, paste0(name,'_egarch_forc_accuracy'))
+sinker(mse(ts(egarch.result$sigma.sq), ts(egarch.result$rv)), folder, subfolder, paste0(name,'_egarch_forc_mse'))
+sinker(caret::postResample(egarch.result$sigma.sq, egarch.result$rv), folder, subfolder, paste0(name, '_egarch_forc_r2'))
+sinker(fpm(egarch.forc), folder, subfolder, paste0(name, '_egarch_forc_fpm'))
+
+rm(e1,e2,e3,e4,e5,subfolder)
+rm(list = ls(pattern = '^egarch.'))
 ##### Analyse the residuals ####################################################
 egarch.lm <- lm(formula = egarch.result$rv ~ 0 + offset(egarch.result$sigma.sq))
 plot(egarch.lm)

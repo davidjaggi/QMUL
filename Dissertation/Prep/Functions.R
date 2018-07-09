@@ -1,21 +1,21 @@
 ##### Printer function to save pictures as png #################################
 # This file contains useful functions which help to write the dissertation
-printer <- function(fig, folder, name){
+printer <- function(fig, folder, subfolder, name){
   # name is the filename
   # plot is the plot which will be saved
   # path is the path under which the figure will be saved
-  path = paste0('Dissertation/Figures/',folder,'/',name,'.png')
+  path = paste0('Dissertation/Figures/',folder,'/', subfolder,'/',name,'.png')
   png(filename=path, height = 960, width = 1440, res = 300)
     plot(fig)
   dev.off()
 }
 
 ##### Sinker function to save output to txt ####################################
-sinker <- function(output, folder, name){
+sinker <- function(output, folder, subfolder, name){
   # name is the name of the file
   # output is the stuff which should be saved
   # path is the path to which the file will be saved
-  path = paste0('Dissertation/Text/',folder,'/',name,'.txt')
+  path = paste0('Dissertation/Text/',folder,'/', subfolder, '/',name,'.txt')
   sink(path)
   print(output)
   sink()

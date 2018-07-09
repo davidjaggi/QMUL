@@ -1,3 +1,5 @@
+subfolder <- 'GARCH'
+
 ##### Specify the model ########################################################
 garch.spec = ugarchspec(variance.model=list(model="sGARCH", garchOrder=c(1,1)), 
                        mean.model=list(armaOrder=c(0,0), include.mean=TRUE),
@@ -6,50 +8,49 @@ garch.spec = ugarchspec(variance.model=list(model="sGARCH", garchOrder=c(1,1)),
 ##### Fit the data to the in sample ############################################
 garch.fit <- ugarchfit(spec = garch.spec, data = ret, out.sample = oos.num, 
                        solver = 'hybrid')  
-plot(garch.fit)
-coef(garch.fit)
-show(garch.fit)
-# sinker(show(garch.fit), name = paste0(name,'_garch_fit'))
+# plot(garch.fit)
+# coef(garch.fit)
+# show(garch.fit)
+sinker(show(garch.fit), folder, subfolder, name = paste0(name,'_garch_fit'))
 
 garch.fit@fit$matcoef
-# sinker(garch.fit@fit$matcoef, name = paste0(name,'_garch_fit_matcoef'))
+sinker(garch.fit@fit$matcoef, folder, subfolder, name = paste0(name,'_garch_fit_matcoef'))
 persistence(garch.fit)
 ##### analyse the is fit #######################################################
-# sinker(signbias(garch.fit), paste0(name,'_garch_fit_sign'))
-# sinker(infocriteria(garch.fit), paste0(name,'_garch_fit_info'))
-# sinker(nyblom(garch.fit), paste0(name,'_garch_fit_nyblom'))
-# sinker(gof(garch.fit,c(20,30,40,50)), paste0(name,'_garch_fit_gof'))
+sinker(signbias(garch.fit), folder, subfolder,paste0(name,'_garch_fit_sign'))
+sinker(infocriteria(garch.fit),folder, subfolder, paste0(name,'_garch_fit_info'))
+sinker(nyblom(garch.fit),folder, subfolder, paste0(name,'_garch_fit_nyblom'))
+sinker(gof(garch.fit,c(20,30,40,50)),folder, subfolder, paste0(name,'_garch_fit_gof'))
 
 # Make the newsimpactcurve
 garch.ni <- newsimpact(object = garch.fit, z = NULL)
 
-q <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
+g1 <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
       geom="line", main = paste0(ser_name," GARCH News Impact Curve")) +
       theme_bw()
-# printer(q, paste0(name,'_garch_fit_news'))
+printer(g1,folder, subfolder,paste0(name,'_garch_fit_news'))
 
-garch.fit.stdres <- residuals(garch.fit, standardize = TRUE)
-
-q <- ggAcf(garch.fit.stdres) + 
+g2 <- ggAcf(garch.fit.stdres) + 
       labs(title = paste0(ser_name,' GARCH Standardized Residuals')) +
       theme_bw()
-# printer(q, paste0(name,'_garch_fit_acf'))
-q <- ggAcf(garch.fit.stdres^2) + 
+printer(g2, folder, subfolder,paste0(name,'_garch_fit_acf'))
+
+g3 <- ggAcf(garch.fit.stdres^2) + 
   labs(title = paste0(ser_name,' GARCH Squared Standardized Residuals')) +
   theme_bw()
-# printer(q, paste0(name,'_garch_fit_acf_2'))
+printer(g3, folder, subfolder,paste0(name,'_garch_fit_acf_2'))
 
 # QQ-Plot of standardized residuals
-q <- ggplot(data = fortify(garch.fit.stdres), aes(sample = garch.fit.stdres)) +
+g4 <- ggplot(data = fortify(garch.fit.stdres), aes(sample = garch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
   labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
   theme_bw()
-# printer(q, paste0(name,'_garch_fit_qq'))
-q
+printer(g4, folder, subfolder,paste0(name,'_garch_fit_qq'))
 
 # Perform sharpiro wilks test
-# sinker(shapiro.test(coredata(garch.fit.stdres[1:4999,])), paste0(name,'_garch_fit_sharpiro'))
+garch.fit.stdres <- residuals(garch.fit, standardize = TRUE)
+sinker(shapiro.test(coredata(garch.fit.stdres)), folder, subfolder,paste0(name,'_garch_fit_sharpiro'))
 
 ##### Fix the variables to filter the oos data #################################
 garch.spec.fixed <- getspec(garch.fit)
@@ -57,7 +58,7 @@ setfixed(garch.spec.fixed) <- as.list(coef(garch.fit))
 garch.forc <- ugarchforecast(garch.spec.fixed, data = ret, n.ahead = 1, 
                             n.roll = oos.num-1, out.sample = oos.num-1)
 
-plot(garch.forc)
+# plot(garch.forc)
 show(garch.forc)
 
 ##### Analyse the forecast #####################################################
@@ -69,18 +70,19 @@ garch.result$sigma <- t(garch.forc@forecast$sigmaFor)
 garch.result$sigma.sq <- garch.result$sigma^2
 
 # Plot the estimation
-q <- ggplot(data = fortify(garch.result), aes(x = Index)) +
+g5 <- ggplot(data = fortify(garch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
   theme_bw() 
-# printer(q, paste0(name,'_garch_forc_realvsestd'))
+printer(g5, folder, subfolder,paste0(name,'_garch_forc_realvsestd'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
 cor(garch.result$rv, garch.result$sigma.sq, 
     method = "spearman")
-# sinker(cor(garch.result$rv, garch.result$sigma.sq, method = "spearman"), paste0(name,'_garch_forc_cor'))
+sinker(cor(garch.result$rv, garch.result$sigma.sq, method = "spearman"), folder, subfolder,
+       paste0(name,'_garch_forc_cor'))
 
 # Show the accuracy of our estimate
 accuracy(ts(garch.result$sigma.sq), ts(garch.result$rv))
@@ -88,10 +90,13 @@ accuracy(ts(garch.result$sigma.sq), ts(garch.result$rv))
 # The model is fitted to the absolute return
 # Sigma can be squared to get to the volatility
 
-# sinker(accuracy(ts(garch.result$sigma.sq), ts(garch.result$rv)), paste0(name,'_garch_forc_accuracy'))
-# sinker(mse(ts(garch.result$sigma.sq), ts(garch.result$rv)), paste0(name,'_garch_forc_mse'))
-# sinker(caret::postResample(garch.result$sigma.sq, garch.result$rv), paste0(name, '_garch_forc_r2'))
-# sinker(fpm(garch.forc), paste0(name, '_garch_forc_fpm'))
+sinker(accuracy(ts(garch.result$sigma.sq), ts(garch.result$rv)), folder, subfolder,paste0(name,'_garch_forc_accuracy'))
+sinker(mse(ts(garch.result$sigma.sq), ts(garch.result$rv)), folder, subfolder,paste0(name,'_garch_forc_mse'))
+sinker(caret::postResample(garch.result$sigma.sq, garch.result$rv), folder, subfolder,paste0(name,'_garch_forc_r2'))
+sinker(fpm(garch.forc), folder, subfolder,paste0(name, '_garch_forc_fpm'))
+
+rm(g1,g2,g3,g4,g5,subfolder)
+rm(list = ls(pattern = 'garch.'))
 
 ##### Analyse residuals ########################################################
 # Extract residuals

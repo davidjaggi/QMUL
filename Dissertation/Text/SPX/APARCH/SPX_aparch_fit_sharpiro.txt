@@ -1,0 +1,14 @@
+
+*------------------------------------*
+*       GARCH Model Forecast         *
+*------------------------------------*
+Model: apARCH
+Horizon: 1
+Roll Steps: 2079
+Out of Sample: 1
+
+0-roll forecast [T0=]:
+       Series    Sigma
+T+1 0.0003679 0.007672
+
+

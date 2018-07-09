@@ -13,6 +13,8 @@ source('Dissertation/Prep/Functions.R')
 ##### Import SP500 #############################################################
 name <- 'SPX'
 ser_name <- 'S&P 500'
+folder <- 'SPX'
+subfolder <- 'DataLoader'
 
 # Load the data
 price <- read.csv(file = 'Dissertation/Data/Price_Data.csv')
@@ -32,7 +34,7 @@ price <- read.csv(file = 'Dissertation/Data/Price_Data.csv')
 # colnames(sp500) <- c('Date','Close')
 x <- as.xts(x = price$UKX, order.by = as.POSIXct(price$Date, 
                                                  tryFormat = "%d/%m/%Y"))
-remove(price)
+rm(price)
 
 ##### Import DAX ##############################################################
 name <- 'DAX'
@@ -44,7 +46,7 @@ price <- read.csv(file = 'Dissertation/Data/Price_Data.csv')
 # colnames(sp500) <- c('Date','Close')
 x <- as.xts(x = price$DAX, order.by = as.POSIXct(price$Date, 
                                                  tryFormat = "%d/%m/%Y"))
-remove(price)
+rm(price)
 
 ##### Adjust series ############################################################
 # crop the time series
@@ -57,8 +59,8 @@ dl1 <- ggplot(fortify(x), aes(x = Index, y = x)) +
   geom_line() +
   labs(title = paste0(ser_name,' Series'), x = 'Time', y = 'Price') +
   theme_bw()
-printer(dl1, name, paste0(name,'_series'))
-dl1
+printer(dl1, folder, subfolder, paste0(name,'_series'))
+
 
 ##### Calculate returns ########################################################
 # Calculate returns
@@ -75,5 +77,5 @@ ret.abs <- abs(ret)
 # x_tidy <- tidy(x)
 
 ##### Split data into is and oos ###############################################
-rm(dl1)
+rm(dl1, subfolder)
 source('Dissertation/Prep/isos_Splitter.R')

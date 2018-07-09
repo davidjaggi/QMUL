@@ -1,3 +1,5 @@
+subfolder <- 'TGARCH'
+
 ##### Specify the model ########################################################
 tgarch.spec = ugarchspec(variance.model=list(model="fGARCH", garchOrder=c(1,1), 
                                              submodel = 'TGARCH'), 
@@ -7,50 +9,50 @@ tgarch.spec = ugarchspec(variance.model=list(model="fGARCH", garchOrder=c(1,1),
 ##### Fit the data to the in sample ############################################
 tgarch.fit <- ugarchfit(spec = tgarch.spec, data = ret, out.sample = oos.num, 
                        solver = 'hybrid')  
-plot(tgarch.fit)
+# plot(tgarch.fit)
 coef(tgarch.fit)
 show(tgarch.fit)
-# sinker(show(tgarch.fit), name = paste0(name,'_tgarch_fit'))
+sinker(show(tgarch.fit), folder, subfolder, name = paste0(name,'_tgarch_fit'))
 
 tgarch.fit@fit$matcoef
-# sinker(tgarch.fit@fit$matcoef, name = paste0(name,'_tgarch_fit_matcoef'))
+sinker(tgarch.fit@fit$matcoef, folder, subfolder, name = paste0(name,'_tgarch_fit_matcoef'))
 persistence(tgarch.fit)
 ##### analyse the is fit #######################################################
-# sinker(signbias(tgarch.fit), paste0(name,'_tgarch_fit_sign'))
-# sinker(infocriteria(tgarch.fit), paste0(name,'_tgarch_fit_info'))
-# sinker(nyblom(tgarch.fit), paste0(name,'_tgarch_fit_nyblom'))
-# sinker(gof(tgarch.fit,c(20,30,40,50)), paste0(name,'_tgarch_fit_gof'))
+sinker(signbias(tgarch.fit), folder, subfolder, paste0(name,'_tgarch_fit_sign'))
+sinker(infocriteria(tgarch.fit), folder, subfolder, paste0(name,'_tgarch_fit_info'))
+sinker(nyblom(tgarch.fit), folder, subfolder, paste0(name,'_tgarch_fit_nyblom'))
+sinker(gof(tgarch.fit,c(20,30,40,50)), folder, subfolder, paste0(name,'_tgarch_fit_gof'))
 
 # Make the newsimpactcurve
 tgarch.ni <- newsimpact(object = tgarch.fit, z = NULL)
 
-q <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
+t1 <- qplot(tgarch.ni$zx, tgarch.ni$zy, ylab = tgarch.ni$yexpr, xlab= tgarch.ni$xexpr, 
            geom="line", main = paste0(ser_name," TGARCH News Impact Curve")) +
   theme_bw()
-# printer(q, paste0(name,'_tgarch_fit_news'))
+printer(t1, folder, subfolder, paste0(name,'_tgarch_fit_news'))
 
 tgarch.fit.stdres <- residuals(tgarch.fit, standardize = TRUE)
 
-q <- ggAcf(tgarch.fit.stdres) + 
+t2 <- ggAcf(tgarch.fit.stdres) + 
   labs(title = paste0(ser_name,' TGARCH Standardized Residuals')) +
   theme_bw()
-# printer(q, paste0(name,'_tgarch_fit_acf'))
-q <- ggAcf(tgarch.fit.stdres^2) + 
+printer(t2, folder, subfolder, paste0(name,'_tgarch_fit_acf'))
+
+t3 <- ggAcf(tgarch.fit.stdres^2) + 
   labs(title = paste0(ser_name,' TGARCH Squared Standardized Residuals')) +
   theme_bw()
-# printer(q, paste0(name,'_tgarch_fit_acf_2'))
+printer(t3, folder, subfolder, paste0(name,'_tgarch_fit_acf_2'))
 
 # QQ-Plot of standardized residuals
-q <- ggplot(data = fortify(tgarch.fit.stdres), aes(sample = tgarch.fit.stdres)) +
+t4 <- ggplot(data = fortify(tgarch.fit.stdres), aes(sample = tgarch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
   labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
   theme_bw()
-# printer(q, paste0(name,'_tgarch_fit_qq'))
-q
+printer(t4, folder, subfolder, paste0(name,'_tgarch_fit_qq'))
 
 # Perform sharpiro wilks test
-# sinker(shapiro.test(coredata(tgarch.fit.stdres[1:4999,])), paste0(name,'_tgarch_fit_sharpiro'))
+sinker(shapiro.test(coredata(tgarch.fit.stdres)),folder, subfolder, paste0(name,'_tgarch_fit_sharpiro'))
 
 ##### Fix the variables to filter the oos data #################################
 tgarch.spec.fixed <- getspec(tgarch.fit)
@@ -58,7 +60,7 @@ setfixed(tgarch.spec.fixed) <- as.list(coef(tgarch.fit))
 tgarch.forc <- ugarchforecast(tgarch.spec.fixed, data = ret, n.ahead = 1, 
                              n.roll = oos.num-1, out.sample = oos.num-1)
 
-plot(tgarch.forc)
+# plot(tgarch.forc)
 show(tgarch.forc)
 
 ##### Analyse the forecast #####################################################
@@ -70,18 +72,18 @@ tgarch.result$sigma <- t(tgarch.forc@forecast$sigmaFor)
 tgarch.result$sigma.sq <- tgarch.result$sigma^2
 
 # Plot the estimation
-q <- ggplot(data = fortify(tgarch.result), aes(x = Index)) +
+t5 <- ggplot(data = fortify(tgarch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
   theme_bw() 
-# printer(q, paste0(name,'_tgarch_forc_realvsestd'))
+printer(t5, folder, subfolder, paste0(name,'_tgarch_forc_realvsestd'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
 cor(tgarch.result$rv, tgarch.result$sigma.sq, 
     method = "spearman")
-# sinker(cor(tgarch.result$rv, tgarch.result$sigma.sq, method = "spearman"), paste0(name,'_tgarch_forc_cor'))
+sinker(cor(tgarch.result$rv, tgarch.result$sigma.sq, method = "spearman"), folder, subfolder, paste0(name,'_tgarch_forc_cor'))
 
 # Show the accuracy of our estimate
 accuracy(ts(tgarch.result$sigma.sq), ts(tgarch.result$rv))
@@ -89,11 +91,13 @@ accuracy(ts(tgarch.result$sigma.sq), ts(tgarch.result$rv))
 # The model is fitted to the absolute return
 # Sigma can be squared to get to the volatility
 
-# sinker(accuracy(ts(tgarch.result$sigma.sq), ts(tgarch.result$rv)), paste0(name,'_tgarch_forc_accuracy'))
-# sinker(mse(ts(tgarch.result$sigma.sq), ts(tgarch.result$rv)), paste0(name,'_tgarch_forc_mse'))
-# sinker(caret::postResample(tgarch.result$sigma.sq, tgarch.result$rv), paste0(name, '_tgarch_forc_r2'))
-# sinker(fpm(tgarch.forc), paste0(name, '_tgarch_forc_fpm'))
+sinker(accuracy(ts(tgarch.result$sigma.sq), ts(tgarch.result$rv)), folder, subfolder, paste0(name,'_tgarch_forc_accuracy'))
+sinker(mse(ts(tgarch.result$sigma.sq), ts(tgarch.result$rv)), folder, subfolder, paste0(name,'_tgarch_forc_mse'))
+sinker(caret::postResample(tgarch.result$sigma.sq, tgarch.result$rv), folder, subfolder, paste0(name, '_tgarch_forc_r2'))
+sinker(fpm(tgarch.forc), folder, subfolder, paste0(name, '_tgarch_forc_fpm'))
 
+rm(t1,t2,t3,t4,t5,subfolder)
+rm(list = ls(pattern = '^tgarch.'))
 ##### Analyse residuals ########################################################
 # Extract residuals
 tgarch.result$stdres <- rstandard(tgarch.lm)
