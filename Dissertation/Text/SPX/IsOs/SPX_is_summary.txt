@@ -1,17 +1,17 @@
 % latex table generated in R 3.5.0 by xtable 1.8-2 package
-% Mon Jul 09 14:46:56 2018
+% Mon Jul 09 16:41:30 2018
 \begin{table}[ht]
 \centering
 \begin{tabular}{rll}
   \hline
  &     Index &       is \\ 
   \hline
-X & Min.   :1990-01-03 00:00:00   & Min.   :-0.0946951   \\ 
-  X.1 & 1st Qu.:1995-01-11 06:00:00   & 1st Qu.:-0.0051670   \\ 
-  X.2 & Median :2000-01-22 12:00:00   & Median : 0.0005451   \\ 
-  X.3 & Mean   :2000-01-11 15:39:35   & Mean   : 0.0002342   \\ 
-  X.4 & 3rd Qu.:2005-01-18 18:00:00   & 3rd Qu.: 0.0058387   \\ 
-  X.5 & Max.   :2009-12-30 00:00:00   & Max.   : 0.1095720   \\ 
+X & Min.   :1990-01-03 00:00:00   & Min.   :-0.0979098   \\ 
+  X.1 & 1st Qu.:1995-01-11 06:00:00   & 1st Qu.:-0.0071411   \\ 
+  X.2 & Median :2000-01-22 12:00:00   & Median : 0.0008488   \\ 
+  X.3 & Mean   :2000-01-11 15:39:35   & Mean   : 0.0002439   \\ 
+  X.4 & 3rd Qu.:2005-01-18 18:00:00   & 3rd Qu.: 0.0082225   \\ 
+  X.5 & Max.   :2009-12-30 00:00:00   & Max.   : 0.1079747   \\ 
    \hline
 \end{tabular}
 \end{table}

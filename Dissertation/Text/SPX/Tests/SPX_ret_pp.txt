@@ -1,0 +1,20 @@
+Phillips-Perron Unit Root Test 
+alternative: stationary 
+ 
+Type 1: no drift no trend 
+ lag Z_rho p.value
+  11 -6671    0.01
+----- 
+ Type 2: with drift no trend 
+ lag Z_rho p.value
+  11 -6661    0.01
+----- 
+ Type 3: with drift and trend 
+ lag Z_rho p.value
+  11 -6661    0.01
+--------------- 
+Note: p-value = 0.01 means p.value <= 0.01 
+       lag     Z_rho p.value
+type 1  11 -6670.630    0.01
+type 2  11 -6661.171    0.01
+type 3  11 -6661.154    0.01

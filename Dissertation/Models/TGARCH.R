@@ -77,7 +77,15 @@ t5 <- ggplot(data = fortify(tgarch.result), aes(x = Index)) +
   geom_line(aes(y = sigma), colour = 'red') +
   labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
   theme_bw() 
-printer(t5, folder, subfolder, paste0(name,'_tgarch_forc_realvsestd'))
+printer(t5, folder, subfolder, paste0(name,'_tgarch_forc_rve'))
+
+t5.1 <- ggplot(data = fortify(tgarch.result), aes(x = as.Date(Index))) +
+  geom_line(aes(y = rv)) +
+  geom_line(aes(y = sigma), colour = 'red') +
+  scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
+  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample zoomed in'), x = 'Time', y = 'Volatility') +
+  theme_bw() 
+printer(t5.1, folder, subfolder,paste0(name,'_tgarch_forc_rve_zoom'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
@@ -98,63 +106,63 @@ sinker(fpm(tgarch.forc), folder, subfolder, paste0(name, '_tgarch_forc_fpm'))
 
 rm(t1,t2,t3,t4,t5,subfolder)
 rm(list = ls(pattern = '^tgarch.'))
-##### Analyse residuals ########################################################
-# Extract residuals
-tgarch.result$stdres <- rstandard(tgarch.lm)
-tgarch.result$res2 <- tgarch.result$rv - tgarch.result$sigma.sq
-tgarch.result$stdres2 <- tgarch.result$res2/sd(tgarch.result$res2)
-
-# Time series of the standardized residuals
-q <- ggplot(data = fortify(tgarch.result), aes(x = Index)) +
-  geom_line(aes(y = stdres)) +
-  labs(title = 'Standardized Residuals of tgarch Forecast', x = 'Time', 
-       y = 'Standardized Residuals') +
-  theme_bw()
-# printer(q, paste0(name,'_tgarch_forc_stdres'))
-q
-
-# QQ-Plot of standardized residuals
-q <- ggplot(data = fortify(tgarch.result), aes(sample = stdres)) +
-  stat_qq() +
-  stat_qq_line() +
-  labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
-  theme_bw()
-# printer(q, paste0(name,'_tgarch_forc_qq'))
-q
-
-# conditional variance
-
-# Plot conditional variance
-ggplot(data = fortify(tgarch.result), aes(x = Index, y = sigma.sq)) +
-  geom_line() +
-  labs(title = 'Conditional variance out-of-sample', x = 'Time', y = 'Cond. variance') +
-  theme_bw()
-
-##### Perform further tests on residuals #######################################
-q <- gghistogram(tgarch.result$res) +
-  labs(title = 'Histogram of tgarch residuals', x = 'Residuals', y = 'Count') +
-  theme_bw()
-# printer(q, paste0(name,'_tgarch_forc_res_hist'))
-q
-
-# Jarque Bera test for normality
-q <- jarque.bera.test(tgarch.result$res)
-# sinker(jarque.bera.test(tgarch.result$res), paste0(name, '_tgarch_forc_res_jb'))
-q
-# Box test
-q <- Box.test(x = tgarch.result$stdres, type = 'Ljung-Box', lag = 12)
-# sinker(q, paste0(name,'_tgarch_forc_res_box'))
-q
-
-# Auto correlation plot
-q <- ggAcf(tgarch.result$stdres) + 
-  labs(title = 'ACF: tgarch Standardized Residuals') +
-  theme_bw()
-# printer(q, paste0(name,'_tgarch_forc_res_acf'))
-q
-
-q <- ggAcf(tgarch.result$stdres^2) + 
-  labs(title = 'ACF: tgarch Squared Standardized Residuals') +
-  theme_bw()
-# printer(q, paste0(name,'_tgarch_res_acf_2'))
-q
+# ##### Analyse residuals ########################################################
+# # Extract residuals
+# tgarch.result$stdres <- rstandard(tgarch.lm)
+# tgarch.result$res2 <- tgarch.result$rv - tgarch.result$sigma.sq
+# tgarch.result$stdres2 <- tgarch.result$res2/sd(tgarch.result$res2)
+# 
+# # Time series of the standardized residuals
+# q <- ggplot(data = fortify(tgarch.result), aes(x = Index)) +
+#   geom_line(aes(y = stdres)) +
+#   labs(title = 'Standardized Residuals of tgarch Forecast', x = 'Time', 
+#        y = 'Standardized Residuals') +
+#   theme_bw()
+# # printer(q, paste0(name,'_tgarch_forc_stdres'))
+# q
+# 
+# # QQ-Plot of standardized residuals
+# q <- ggplot(data = fortify(tgarch.result), aes(sample = stdres)) +
+#   stat_qq() +
+#   stat_qq_line() +
+#   labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
+#   theme_bw()
+# # printer(q, paste0(name,'_tgarch_forc_qq'))
+# q
+# 
+# # conditional variance
+# 
+# # Plot conditional variance
+# ggplot(data = fortify(tgarch.result), aes(x = Index, y = sigma.sq)) +
+#   geom_line() +
+#   labs(title = 'Conditional variance out-of-sample', x = 'Time', y = 'Cond. variance') +
+#   theme_bw()
+# 
+# ##### Perform further tests on residuals #######################################
+# q <- gghistogram(tgarch.result$res) +
+#   labs(title = 'Histogram of tgarch residuals', x = 'Residuals', y = 'Count') +
+#   theme_bw()
+# # printer(q, paste0(name,'_tgarch_forc_res_hist'))
+# q
+# 
+# # Jarque Bera test for normality
+# q <- jarque.bera.test(tgarch.result$res)
+# # sinker(jarque.bera.test(tgarch.result$res), paste0(name, '_tgarch_forc_res_jb'))
+# q
+# # Box test
+# q <- Box.test(x = tgarch.result$stdres, type = 'Ljung-Box', lag = 12)
+# # sinker(q, paste0(name,'_tgarch_forc_res_box'))
+# q
+# 
+# # Auto correlation plot
+# q <- ggAcf(tgarch.result$stdres) + 
+#   labs(title = 'ACF: tgarch Standardized Residuals') +
+#   theme_bw()
+# # printer(q, paste0(name,'_tgarch_forc_res_acf'))
+# q
+# 
+# q <- ggAcf(tgarch.result$stdres^2) + 
+#   labs(title = 'ACF: tgarch Squared Standardized Residuals') +
+#   theme_bw()
+# # printer(q, paste0(name,'_tgarch_res_acf_2'))
+# q

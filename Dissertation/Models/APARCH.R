@@ -13,9 +13,9 @@ coef(aparch.fit)
 show(aparch.fit)
 sinker(show(aparch.fit), folder, subfolder, name = paste0(name,'_aparch_fit'))
 
-aparch.fit@fit$matcoef
+# aparch.fit@fit$matcoef
 sinker(aparch.fit@fit$matcoef, folder, subfolder, name = paste0(name,'_aparch_fit_matcoef'))
-persistence(aparch.fit)
+# persistence(aparch.fit)
 ##### analyse the is fit #######################################################
 sinker(signbias(aparch.fit), folder, subfolder, paste0(name,'_aparch_fit_sign'))
 sinker(infocriteria(aparch.fit), folder, subfolder, paste0(name,'_aparch_fit_info'))
@@ -25,12 +25,13 @@ sinker(gof(aparch.fit,c(20,30,40,50)), folder, subfolder, paste0(name,'_aparch_f
 # Make the newsimpactcurve
 aparch.ni <- newsimpact(object = aparch.fit, z = NULL)
 
-a1 <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
+a1 <- qplot(aparch.ni$zx, aparch.ni$zy, ylab = aparch.ni$yexpr, xlab = aparch.ni$xexpr, 
            geom="line", main = paste0(ser_name," APARCH News Impact Curve")) +
   theme_bw()
 printer(a1, folder, subfolder, paste0(name,'_aparch_fit_news'))
 
 
+aparch.fit.stdres <- residuals(aparch.fit, standardize = TRUE)
 a2 <- ggAcf(aparch.fit.stdres) + 
   labs(title = paste0(ser_name,' APARCH Standardized Residuals')) +
   theme_bw()
@@ -50,7 +51,6 @@ a4 <- ggplot(data = fortify(aparch.fit.stdres), aes(sample = aparch.fit.stdres))
 printer(a4, folder, subfolder, paste0(name,'_aparch_fit_qq'))
 
 # Perform sharpiro wilks test
-aparch.fit.stdres <- residuals(aparch.fit, standardize = TRUE)
 sinker(shapiro.test(coredata(aparch.fit.stdres)), folder, subfolder, paste0(name,'_aparch_fit_sharpiro'))
 
 ##### Fix the variables to filter the oos data #################################
@@ -76,7 +76,15 @@ a5 <- ggplot(data = fortify(aparch.result), aes(x = Index)) +
   geom_line(aes(y = sigma), colour = 'red') +
   labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
   theme_bw() 
-printer(a5, folder, subfolder, paste0(name,'_aparch_forc_realvsestd'))
+printer(a5, folder, subfolder, paste0(name,'_aparch_forc_rve'))
+
+a5.1 <- ggplot(data = fortify(aparch.result), aes(x = as.Date(Index))) +
+  geom_line(aes(y = rv)) +
+  geom_line(aes(y = sigma), colour = 'red') +
+  scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
+  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample zoomed in'), x = 'Time', y = 'Volatility') +
+  theme_bw() 
+printer(a5.1, folder, subfolder,paste0(name,'_aparch_forc_rve_zoom'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
@@ -97,63 +105,63 @@ sinker(fpm(aparch.forc), folder, subfolder, paste0(name, '_aparch_forc_fpm'))
 
 rm(a1,a2,a3,a4,a5,subfolder)
 rm(list = ls(pattern = '^aparch.'))
-##### Analyse residuals ########################################################
-# Extract residuals
-aparch.result$stdres <- rstandard(aparch.lm)
-aparch.result$res2 <- aparch.result$rv - aparch.result$sigma.sq
-aparch.result$stdres2 <- aparch.result$res2/sd(aparch.result$res2)
-
-# Time series of the standardized residuals
-q <- ggplot(data = fortify(aparch.result), aes(x = Index)) +
-  geom_line(aes(y = stdres)) +
-  labs(title = 'Standardized Residuals of aparch Forecast', x = 'Time', 
-       y = 'Standardized Residuals') +
-  theme_bw()
-# printer(q, paste0(name,'_aparch_forc_stdres'))
-q
-
-# QQ-Plot of standardized residuals
-q <- ggplot(data = fortify(aparch.result), aes(sample = stdres)) +
-  stat_qq() +
-  stat_qq_line() +
-  labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
-  theme_bw()
-# printer(q, paste0(name,'_aparch_forc_qq'))
-q
-
-# conditional variance
-
-# Plot conditional variance
-ggplot(data = fortify(aparch.result), aes(x = Index, y = sigma.sq)) +
-  geom_line() +
-  labs(title = 'Conditional variance out-of-sample', x = 'Time', y = 'Cond. variance') +
-  theme_bw()
-
-##### Perform further tests on residuals #######################################
-q <- gghistogram(aparch.result$res) +
-  labs(title = 'Histogram of aparch residuals', x = 'Residuals', y = 'Count') +
-  theme_bw()
-# printer(q, paste0(name,'_aparch_forc_res_hist'))
-q
-
-# Jarque Bera test for normality
-q <- jarque.bera.test(aparch.result$res)
-# sinker(jarque.bera.test(aparch.result$res), paste0(name, '_aparch_forc_res_jb'))
-q
-# Box test
-q <- Box.test(x = aparch.result$stdres, type = 'Ljung-Box', lag = 12)
-# sinker(q, paste0(name,'_aparch_forc_res_box'))
-q
-
-# Auto correlation plot
-q <- ggAcf(aparch.result$stdres) + 
-  labs(title = 'ACF: aparch Standardized Residuals') +
-  theme_bw()
-# printer(q, paste0(name,'_aparch_forc_res_acf'))
-q
-
-q <- ggAcf(aparch.result$stdres^2) + 
-  labs(title = 'ACF: APARCH Squared Standardized Residuals') +
-  theme_bw()
-# printer(q, paste0(name,'_aparch_res_acf_2'))
-q
+# ##### Analyse residuals ########################################################
+# # Extract residuals
+# aparch.result$stdres <- rstandard(aparch.lm)
+# aparch.result$res2 <- aparch.result$rv - aparch.result$sigma.sq
+# aparch.result$stdres2 <- aparch.result$res2/sd(aparch.result$res2)
+# 
+# # Time series of the standardized residuals
+# q <- ggplot(data = fortify(aparch.result), aes(x = Index)) +
+#   geom_line(aes(y = stdres)) +
+#   labs(title = 'Standardized Residuals of aparch Forecast', x = 'Time', 
+#        y = 'Standardized Residuals') +
+#   theme_bw()
+# # printer(q, paste0(name,'_aparch_forc_stdres'))
+# q
+# 
+# # QQ-Plot of standardized residuals
+# q <- ggplot(data = fortify(aparch.result), aes(sample = stdres)) +
+#   stat_qq() +
+#   stat_qq_line() +
+#   labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
+#   theme_bw()
+# # printer(q, paste0(name,'_aparch_forc_qq'))
+# q
+# 
+# # conditional variance
+# 
+# # Plot conditional variance
+# ggplot(data = fortify(aparch.result), aes(x = Index, y = sigma.sq)) +
+#   geom_line() +
+#   labs(title = 'Conditional variance out-of-sample', x = 'Time', y = 'Cond. variance') +
+#   theme_bw()
+# 
+# ##### Perform further tests on residuals #######################################
+# q <- gghistogram(aparch.result$res) +
+#   labs(title = 'Histogram of aparch residuals', x = 'Residuals', y = 'Count') +
+#   theme_bw()
+# # printer(q, paste0(name,'_aparch_forc_res_hist'))
+# q
+# 
+# # Jarque Bera test for normality
+# q <- jarque.bera.test(aparch.result$res)
+# # sinker(jarque.bera.test(aparch.result$res), paste0(name, '_aparch_forc_res_jb'))
+# q
+# # Box test
+# q <- Box.test(x = aparch.result$stdres, type = 'Ljung-Box', lag = 12)
+# # sinker(q, paste0(name,'_aparch_forc_res_box'))
+# q
+# 
+# # Auto correlation plot
+# q <- ggAcf(aparch.result$stdres) + 
+#   labs(title = 'ACF: aparch Standardized Residuals') +
+#   theme_bw()
+# # printer(q, paste0(name,'_aparch_forc_res_acf'))
+# q
+# 
+# q <- ggAcf(aparch.result$stdres^2) + 
+#   labs(title = 'ACF: APARCH Squared Standardized Residuals') +
+#   theme_bw()
+# # printer(q, paste0(name,'_aparch_res_acf_2'))
+# q

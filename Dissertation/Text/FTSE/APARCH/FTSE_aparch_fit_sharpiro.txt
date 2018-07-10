@@ -1,0 +1,6 @@
+
+	Shapiro-Wilk normality test
+
+data:  coredata(aparch.fit.stdres)
+W = 0.99545, p-value = 3.375e-11
+

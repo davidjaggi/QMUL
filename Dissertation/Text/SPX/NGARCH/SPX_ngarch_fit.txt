@@ -12,67 +12,67 @@ Distribution	: std
 
 Optimal Parameters
 ------------------------------------
-        Estimate  Std. Error  t value Pr(>|t|)
-mu      0.000583    0.000109   5.3348        0
-omega   0.000001    0.000000   5.5078        0
-alpha1  0.058428    0.007329   7.9724        0
-beta1   0.941340    0.007650 123.0484        0
-lambda  1.925743    0.027968  68.8540        0
-shape   7.439269    0.754534   9.8594        0
+        Estimate  Std. Error    t value Pr(>|t|)
+mu      0.000754    0.000147   5.132999  0.00000
+omega   0.000000    0.000000   0.099274  0.92092
+alpha1  0.079305    0.008695   9.121019  0.00000
+beta1   0.934495    0.007132 131.034553  0.00000
+lambda  1.666460    0.016030 103.955995  0.00000
+shape   7.671393    0.734482  10.444636  0.00000
 
 Robust Standard Errors:
-        Estimate  Std. Error  t value Pr(>|t|)
-mu      0.000583    0.000094   6.2245        0
-omega   0.000001    0.000000   6.0071        0
-alpha1  0.058428    0.010057   5.8095        0
-beta1   0.941340    0.010402  90.4994        0
-lambda  1.925743    0.072066  26.7221        0
-shape   7.439269    0.796780   9.3367        0
+        Estimate  Std. Error   t value Pr(>|t|)
+mu      0.000754    0.000147  5.120984  0.00000
+omega   0.000000    0.000000  0.064791  0.94834
+alpha1  0.079305    0.012535  6.326437  0.00000
+beta1   0.934495    0.010079 92.720088  0.00000
+lambda  1.666460    0.066576 25.030811  0.00000
+shape   7.671393    0.936002  8.195918  0.00000
 
-LogLikelihood : 15861.89 
+LogLikelihood : 14473.31 
 
 Information Criteria
 ------------------------------------
                     
-Akaike       -6.5063
-Bayes        -6.4983
-Shibata      -6.5063
-Hannan-Quinn -6.5035
+Akaike       -5.9365
+Bayes        -5.9285
+Shibata      -5.9365
+Hannan-Quinn -5.9337
 
 Weighted Ljung-Box Test on Standardized Residuals
 ------------------------------------
                         statistic p-value
-Lag[1]                  0.0007206 0.97858
-Lag[2*(p+q)+(p+q)-1][2] 1.2380609 0.42707
-Lag[4*(p+q)+(p+q)-1][5] 6.4405628 0.07072
+Lag[1]                    0.01358  0.9072
+Lag[2*(p+q)+(p+q)-1][2]   0.89762  0.5327
+Lag[4*(p+q)+(p+q)-1][5]   4.60945  0.1872
 d.o.f=0
 H0 : No serial correlation
 
 Weighted Ljung-Box Test on Standardized Squared Residuals
 ------------------------------------
                         statistic p-value
-Lag[1]                     0.5533  0.4570
-Lag[2*(p+q)+(p+q)-1][5]    1.6063  0.7137
-Lag[4*(p+q)+(p+q)-1][9]    2.3785  0.8553
+Lag[1]                      0.270  0.6034
+Lag[2*(p+q)+(p+q)-1][5]     3.731  0.2895
+Lag[4*(p+q)+(p+q)-1][9]     4.896  0.4448
 d.o.f=2
 
 Weighted ARCH LM Tests
 ------------------------------------
             Statistic Shape Scale P-Value
-ARCH Lag[3]   0.01241 0.500 2.000  0.9113
-ARCH Lag[5]   0.66916 1.440 1.667  0.8328
-ARCH Lag[7]   1.13098 2.315 1.543  0.8914
+ARCH Lag[3]     4.497 0.500 2.000 0.03396
+ARCH Lag[5]     4.713 1.440 1.667 0.11969
+ARCH Lag[7]     4.919 2.315 1.543 0.23280
 
 Nyblom stability test
 ------------------------------------
-Joint Statistic:  1081.722
-Individual Statistics:               
-mu       0.1122
-omega  150.7687
-alpha1   0.3522
-beta1    0.1992
-lambda   0.2734
-shape    0.4841
+Joint Statistic:  46.7754
+Individual Statistics:              
+mu     0.31313
+omega  8.23248
+alpha1 0.07666
+beta1  0.03946
+lambda 0.34260
+shape  0.50911
 
 Asymptotic Critical Values (10% 5% 1%)
 Joint Statistic:     	 1.49 1.68 2.12
@@ -81,22 +81,22 @@ Individual Statistic:	 0.35 0.47 0.75
 Sign Bias Test
 ------------------------------------
                    t-value      prob sig
-Sign Bias           1.3970 0.1624874    
-Negative Sign Bias  0.1602 0.8726936    
-Positive Sign Bias  2.8976 0.0037772 ***
-Joint Effect       21.8497 0.0000701 ***
+Sign Bias           1.3881 0.1651569    
+Negative Sign Bias  0.8629 0.3882279    
+Positive Sign Bias  2.7965 0.0051857 ***
+Joint Effect       19.1478 0.0002548 ***
 
 
 Adjusted Pearson Goodness-of-Fit Test:
 ------------------------------------
   group statistic p-value(g-1)
-1    20     45.04    0.0006767
-2    30     52.51    0.0047770
-3    40     67.44    0.0031434
-4    50     70.48    0.0238218
+1    20     43.73    1.030e-03
+2    30     71.84    1.692e-05
+3    40     64.71    5.969e-03
+4    50     90.73    2.690e-04
 
 
-Elapsed time : 2.110975 
+Elapsed time : 3.116467 
 
 
 *---------------------------------*
@@ -112,67 +112,67 @@ Distribution	: std
 
 Optimal Parameters
 ------------------------------------
-        Estimate  Std. Error  t value Pr(>|t|)
-mu      0.000583    0.000109   5.3348        0
-omega   0.000001    0.000000   5.5078        0
-alpha1  0.058428    0.007329   7.9724        0
-beta1   0.941340    0.007650 123.0484        0
-lambda  1.925743    0.027968  68.8540        0
-shape   7.439269    0.754534   9.8594        0
+        Estimate  Std. Error    t value Pr(>|t|)
+mu      0.000754    0.000147   5.132999  0.00000
+omega   0.000000    0.000000   0.099274  0.92092
+alpha1  0.079305    0.008695   9.121019  0.00000
+beta1   0.934495    0.007132 131.034553  0.00000
+lambda  1.666460    0.016030 103.955995  0.00000
+shape   7.671393    0.734482  10.444636  0.00000
 
 Robust Standard Errors:
-        Estimate  Std. Error  t value Pr(>|t|)
-mu      0.000583    0.000094   6.2245        0
-omega   0.000001    0.000000   6.0071        0
-alpha1  0.058428    0.010057   5.8095        0
-beta1   0.941340    0.010402  90.4994        0
-lambda  1.925743    0.072066  26.7221        0
-shape   7.439269    0.796780   9.3367        0
+        Estimate  Std. Error   t value Pr(>|t|)
+mu      0.000754    0.000147  5.120984  0.00000
+omega   0.000000    0.000000  0.064791  0.94834
+alpha1  0.079305    0.012535  6.326437  0.00000
+beta1   0.934495    0.010079 92.720088  0.00000
+lambda  1.666460    0.066576 25.030811  0.00000
+shape   7.671393    0.936002  8.195918  0.00000
 
-LogLikelihood : 15861.89 
+LogLikelihood : 14473.31 
 
 Information Criteria
 ------------------------------------
                     
-Akaike       -6.5063
-Bayes        -6.4983
-Shibata      -6.5063
-Hannan-Quinn -6.5035
+Akaike       -5.9365
+Bayes        -5.9285
+Shibata      -5.9365
+Hannan-Quinn -5.9337
 
 Weighted Ljung-Box Test on Standardized Residuals
 ------------------------------------
                         statistic p-value
-Lag[1]                  0.0007206 0.97858
-Lag[2*(p+q)+(p+q)-1][2] 1.2380609 0.42707
-Lag[4*(p+q)+(p+q)-1][5] 6.4405628 0.07072
+Lag[1]                    0.01358  0.9072
+Lag[2*(p+q)+(p+q)-1][2]   0.89762  0.5327
+Lag[4*(p+q)+(p+q)-1][5]   4.60945  0.1872
 d.o.f=0
 H0 : No serial correlation
 
 Weighted Ljung-Box Test on Standardized Squared Residuals
 ------------------------------------
                         statistic p-value
-Lag[1]                     0.5533  0.4570
-Lag[2*(p+q)+(p+q)-1][5]    1.6063  0.7137
-Lag[4*(p+q)+(p+q)-1][9]    2.3785  0.8553
+Lag[1]                      0.270  0.6034
+Lag[2*(p+q)+(p+q)-1][5]     3.731  0.2895
+Lag[4*(p+q)+(p+q)-1][9]     4.896  0.4448
 d.o.f=2
 
 Weighted ARCH LM Tests
 ------------------------------------
             Statistic Shape Scale P-Value
-ARCH Lag[3]   0.01241 0.500 2.000  0.9113
-ARCH Lag[5]   0.66916 1.440 1.667  0.8328
-ARCH Lag[7]   1.13098 2.315 1.543  0.8914
+ARCH Lag[3]     4.497 0.500 2.000 0.03396
+ARCH Lag[5]     4.713 1.440 1.667 0.11969
+ARCH Lag[7]     4.919 2.315 1.543 0.23280
 
 Nyblom stability test
 ------------------------------------
-Joint Statistic:  1081.722
-Individual Statistics:               
-mu       0.1122
-omega  150.7687
-alpha1   0.3522
-beta1    0.1992
-lambda   0.2734
-shape    0.4841
+Joint Statistic:  46.7754
+Individual Statistics:              
+mu     0.31313
+omega  8.23248
+alpha1 0.07666
+beta1  0.03946
+lambda 0.34260
+shape  0.50911
 
 Asymptotic Critical Values (10% 5% 1%)
 Joint Statistic:     	 1.49 1.68 2.12
@@ -181,20 +181,20 @@ Individual Statistic:	 0.35 0.47 0.75
 Sign Bias Test
 ------------------------------------
                    t-value      prob sig
-Sign Bias           1.3970 0.1624874    
-Negative Sign Bias  0.1602 0.8726936    
-Positive Sign Bias  2.8976 0.0037772 ***
-Joint Effect       21.8497 0.0000701 ***
+Sign Bias           1.3881 0.1651569    
+Negative Sign Bias  0.8629 0.3882279    
+Positive Sign Bias  2.7965 0.0051857 ***
+Joint Effect       19.1478 0.0002548 ***
 
 
 Adjusted Pearson Goodness-of-Fit Test:
 ------------------------------------
   group statistic p-value(g-1)
-1    20     45.04    0.0006767
-2    30     52.51    0.0047770
-3    40     67.44    0.0031434
-4    50     70.48    0.0238218
+1    20     43.73    1.030e-03
+2    30     71.84    1.692e-05
+3    40     64.71    5.969e-03
+4    50     90.73    2.690e-04
 
 
-Elapsed time : 2.110975 
+Elapsed time : 3.116467 
 

@@ -1,0 +1,21 @@
+$IndividualStat
+            [,1]
+mu     0.1119639
+omega  0.1529592
+alpha1 0.2545957
+beta1  0.1592111
+gamma1 2.3978072
+delta  0.1455248
+shape  0.5534451
+
+$JointStat
+[1] 3.029065
+
+$IndividualCritical
+  10%    5%    1% 
+0.353 0.470 0.748 
+
+$JointCritical
+ 10%   5%   1% 
+1.69 1.90 2.35 
+

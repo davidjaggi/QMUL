@@ -1,0 +1,7 @@
+
+	Approximate Cox-Stuart trend test
+
+data:  coredata(ret)
+D- = 1759, p-value = 0.2434
+alternative hypothesis: data have a decreasing trend
+

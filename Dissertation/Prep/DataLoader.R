@@ -20,13 +20,15 @@ subfolder <- 'DataLoader'
 price <- read.csv(file = 'Dissertation/Data/Price_Data.csv')
 # convoert it into an xts
 # colnames(sp500) <- c('Date','Close')
-x <- as.xts(x = price$SPX, order.by = as.POSIXct(price$Date, 
+x <- as.xts(x = price$SPX, order.by = as.POSIXct(price$Date,
                                                  tryFormat = "%d/%m/%Y"))
 rm(price)
 
 ##### Import FTSE ##############################################################
 name <- 'FTSE'
 ser_name <- 'FTSE'
+folder <- 'FTSE'
+subfolder <- 'DataLoader'
 
 # Load the data
 price <- read.csv(file = 'Dissertation/Data/Price_Data.csv')
@@ -39,12 +41,14 @@ rm(price)
 ##### Import DAX ##############################################################
 name <- 'DAX'
 ser_name <- 'DAX'
+folder <- 'DAX'
+subfolder <- 'DataLoader'
 
 # Load the data
 price <- read.csv(file = 'Dissertation/Data/Price_Data.csv')
 # convoert it into an xts
 # colnames(sp500) <- c('Date','Close')
-x <- as.xts(x = price$DAX, order.by = as.POSIXct(price$Date, 
+x <- as.xts(x = price$DAX, order.by = as.POSIXct(price$Date,
                                                  tryFormat = "%d/%m/%Y"))
 rm(price)
 

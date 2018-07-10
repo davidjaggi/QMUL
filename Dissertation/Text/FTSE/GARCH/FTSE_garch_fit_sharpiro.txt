@@ -1,0 +1,6 @@
+
+	Shapiro-Wilk normality test
+
+data:  coredata(garch.fit.stdres)
+W = 0.99533, p-value = 2.161e-11
+
