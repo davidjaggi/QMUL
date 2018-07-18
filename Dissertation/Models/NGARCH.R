@@ -100,7 +100,7 @@ accuracy(ts(ngarch.result$sigma.sq), ts(ngarch.result$rv))
 # Sigma can be squared to get to the volatility
 
 sinker(accuracy(ts(ngarch.result$sigma.sq), ts(ngarch.result$rv)), folder, subfolder, paste0(name,'_ngarch_forc_accuracy'))
-sinker(mse(ts(ngarch.result$sigma.sq), ts(ngarch.result$rv)), folder, subfolder, paste0(name,'_ngarch_forc_mse'))
+sinker(rmse(ts(ngarch.result$sigma.sq), ts(ngarch.result$rv)), folder, subfolder, paste0(name,'_ngarch_forc_rmse'))
 sinker(caret::postResample(ngarch.result$sigma.sq, ngarch.result$rv), folder, subfolder, paste0(name, '_ngarch_forc_r2'))
 sinker(fpm(ngarch.forc), folder, subfolder, paste0(name, '_ngarch_forc_fpm'))
 
