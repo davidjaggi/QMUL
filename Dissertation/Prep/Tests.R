@@ -94,6 +94,7 @@ printer(test11, folder, subfolder, paste0(name,'_pacf_2'))
 Box.test(coredata(ret^2), type = 'Ljung-Box', lag = 12)
 # Reject the null hypothesis of no ARCH effects - need to control
 # Save the outcome
+sinker(output = Box.test(coredata(ret), type = 'Ljung-Box', lag = 12), folder, subfolder, name = paste0(name,'_ret_ljungbox'))
 sinker(output = Box.test(coredata(ret^2), type = 'Ljung-Box', lag = 12), folder, subfolder, name = paste0(name,'_ret_ljungbox_2'))
 ##### Run an ADF test ##########################################################
 # This file contains test which help testing the series
