@@ -2,5 +2,5 @@
 	Jarque Bera Test
 
 data:  ret
-X-squared = 6463.3, df = 2, p-value < 2.2e-16
+X-squared = 21310, df = 2, p-value < 2.2e-16
 

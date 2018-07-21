@@ -2,6 +2,6 @@
 	Approximate Cox-Stuart trend test
 
 data:  coredata(ret)
-D- = 1759, p-value = 0.2434
+D- = 1770, p-value = 0.1388
 alternative hypothesis: data have a decreasing trend
 

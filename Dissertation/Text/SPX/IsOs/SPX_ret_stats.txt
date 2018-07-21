@@ -1,27 +1,27 @@
 % latex table generated in R 3.5.0 by xtable 1.8-2 package
-% Mon Jul 09 16:41:30 2018
+% Sat Jul 21 14:45:24 2018
 \begin{table}[ht]
 \centering
 \begin{tabular}{rr}
   \hline
  &  \\ 
   \hline
-Observations & 6954.0000 \\ 
+Observations & 6952.0000 \\ 
   NAs & 0.0000 \\ 
-  Minimum & -0.0979 \\ 
-  Quartile 1 & -0.0066 \\ 
-  Median & 0.0009 \\ 
+  Minimum & -0.0947 \\ 
+  Quartile 1 & -0.0045 \\ 
+  Median & 0.0006 \\ 
   Arithmetic Mean & 0.0003 \\ 
   Geometric Mean & 0.0002 \\ 
-  Quartile 3 & 0.0076 \\ 
-  Maximum & 0.1080 \\ 
-  SE Mean & 0.0002 \\ 
-  LCL Mean (0.95) & -0.0001 \\ 
+  Quartile 3 & 0.0056 \\ 
+  Maximum & 0.1096 \\ 
+  SE Mean & 0.0001 \\ 
+  LCL Mean (0.95) & 0.0000 \\ 
   UCL Mean (0.95) & 0.0006 \\ 
-  Variance & 0.0002 \\ 
-  Stdev & 0.0144 \\ 
-  Skewness & -0.1538 \\ 
-  Kurtosis & 4.7130 \\ 
+  Variance & 0.0001 \\ 
+  Stdev & 0.0112 \\ 
+  Skewness & -0.2378 \\ 
+  Kurtosis & 8.5638 \\ 
    \hline
 \end{tabular}
 \end{table}

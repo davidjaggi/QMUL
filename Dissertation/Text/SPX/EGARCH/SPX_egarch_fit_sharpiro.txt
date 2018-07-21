@@ -2,5 +2,5 @@
 	Shapiro-Wilk normality test
 
 data:  coredata(egarch.fit.stdres)
-W = 0.97978, p-value < 2.2e-16
+W = 0.98484, p-value < 2.2e-16
 

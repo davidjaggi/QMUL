@@ -54,9 +54,11 @@ rm(price)
 
 ##### Adjust series ############################################################
 # crop the time series
-x <- x['1990-01-01/2018-06-31']
+x <- x['1990-01-01/']
+x <- x['/2018-06-30']
 # Check the series
 head(x)
+tail(x)
 summary(x)
 
 dl1 <- ggplot(fortify(x), aes(x = Index, y = x)) +

@@ -2,20 +2,20 @@ KPSS Unit Root Test
 alternative: nonstationary 
  
 Type 1: no drift no trend 
- lag  stat p.value
-  19 0.947     0.1
+ lag stat p.value
+  19 2.13  0.0247
 ----- 
  Type 2: with drift no trend 
- lag   stat p.value
-  19 0.0537     0.1
+ lag stat p.value
+  19 0.11     0.1
 ----- 
  Type 1: with drift and trend 
- lag   stat p.value
-  19 0.0544     0.1
+ lag  stat p.value
+  19 0.101     0.1
 ----------- 
 Note: p.value = 0.01 means p.value <= 0.01 
     : p.value = 0.10 means p.value >= 0.10 
-       lag       kpss p.value
-type 1  19 0.94683034     0.1
-type 2  19 0.05372646     0.1
-type 3  19 0.05443953     0.1
+       lag      kpss    p.value
+type 1  19 2.1255545 0.02473129
+type 2  19 0.1096438 0.10000000
+type 3  19 0.1008692 0.10000000
