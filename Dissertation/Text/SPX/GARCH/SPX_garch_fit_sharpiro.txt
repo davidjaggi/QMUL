@@ -2,5 +2,5 @@
 	Shapiro-Wilk normality test
 
 data:  coredata(garch.fit.stdres)
-W = 0.98441, p-value < 2.2e-16
+W = 0.98461, p-value < 2.2e-16
 

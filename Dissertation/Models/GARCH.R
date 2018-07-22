@@ -3,7 +3,7 @@ subfolder <- 'GARCH'
 ##### Specify the model ########################################################
 garch.spec = ugarchspec(variance.model=list(model="sGARCH", garchOrder=c(1,1)), 
                        mean.model=list(armaOrder=c(0,0), include.mean=TRUE),
-                       distribution.model="std")
+                       distribution.model="sged")
 
 ##### Fit the data to the in sample ############################################
 garch.fit <- ugarchfit(spec = garch.spec, data = ret, out.sample = oos.num, 

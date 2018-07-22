@@ -1,2 +1,2 @@
-    sigma.sq
-rv 0.4301152
+   sigma.sq
+rv 0.434246

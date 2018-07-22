@@ -1,9 +1,9 @@
 source('Dissertation/Prep/Packages.R')
 source('Dissertation/Prep/Functions.R')
 
-tseries <- 'SPX' # SPX, FTSE, DAX
+# tseries <- 'SPX' # SPX, FTSE, DAX
 # tseries <- 'FTSE'
-# tseries <- 'DAX'
+tseries <- 'DAX'
 
 source('Dissertation/Prep/DataLoader.R')  
 source('Dissertation/Prep/isos_Splitter.R')

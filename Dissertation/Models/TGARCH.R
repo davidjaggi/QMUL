@@ -4,7 +4,7 @@ subfolder <- 'TGARCH'
 tgarch.spec = ugarchspec(variance.model=list(model="fGARCH", garchOrder=c(1,1), 
                                              submodel = 'TGARCH'), 
                          mean.model=list(armaOrder=c(0,0), include.mean=TRUE),
-                         distribution.model="std")
+                         distribution.model="sged")
 
 ##### Fit the data to the in sample ############################################
 tgarch.fit <- ugarchfit(spec = tgarch.spec, data = ret, out.sample = oos.num, 

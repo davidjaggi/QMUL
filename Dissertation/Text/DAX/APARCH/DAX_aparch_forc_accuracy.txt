@@ -1,2 +1,2 @@
-                  ME       RMSE         MAE      MPE     MAPE      ACF1 Theil's U
-Test set 0.008820706 0.01232997 0.008822501 88.32306 100.7246 0.1732623 0.9878404
+                  ME       RMSE         MAE      MPE    MAPE      ACF1 Theil's U
+Test set 0.008810338 0.01231752 0.008812628 87.47592 101.224 0.1717327 0.9866014

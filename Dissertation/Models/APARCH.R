@@ -3,7 +3,7 @@ subfolder <- 'APARCH'
 ##### Specify the model ########################################################
 aparch.spec = ugarchspec(variance.model=list(model="apARCH", garchOrder=c(1,1)), 
                          mean.model=list(armaOrder=c(0,0), include.mean=TRUE),
-                         distribution.model="std")
+                         distribution.model="sged")
 
 ##### Fit the data to the in sample ############################################
 aparch.fit <- ugarchfit(spec = aparch.spec, data = ret, out.sample = oos.num, 
