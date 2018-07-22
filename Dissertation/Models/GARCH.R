@@ -15,6 +15,7 @@ sinker(show(garch.fit), folder, subfolder, name = paste0(name,'_garch_fit'))
 
 # garch.fit@fit$matcoef
 sinker(garch.fit@fit$matcoef, folder, subfolder, name = paste0(name,'_garch_fit_matcoef'))
+sinker(persistence(garch.fit), folder, subfolder, name = paste0(name,'_garch_fit_pers'))
 # persistence(garch.fit)
 ##### analyse the is fit #######################################################
 sinker(signbias(garch.fit), folder, subfolder,paste0(name,'_garch_fit_sign'))
@@ -104,7 +105,7 @@ sinker(rmse(ts(garch.result$sigma.sq), ts(garch.result$rv)), folder, subfolder,p
 sinker(caret::postResample(garch.result$sigma.sq, garch.result$rv), folder, subfolder,paste0(name,'_garch_forc_r2'))
 sinker(fpm(garch.forc), folder, subfolder,paste0(name, '_garch_forc_fpm'))
 
-rm(g1,g2,g3,g4,g5,subfolder)
+rm(g1,g2,g3,g4,g5,g5.1,subfolder)
 rm(list = ls(pattern = 'garch.'))
 
 ##### Analyse residuals ########################################################

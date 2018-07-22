@@ -1,12 +1,12 @@
 % latex table generated in R 3.5.0 by xtable 1.8-2 package
-% Mon Jul 09 16:39:17 2018
+% Sat Jul 21 15:16:46 2018
 \begin{table}[ht]
 \centering
 \begin{tabular}{rr}
   \hline
  &  \\ 
   \hline
-Observations & 6954.0000 \\ 
+Observations & 6952.0000 \\ 
   NAs & 0.0000 \\ 
   Minimum & -0.0979 \\ 
   Quartile 1 & -0.0066 \\ 
@@ -20,8 +20,8 @@ Observations & 6954.0000 \\
   UCL Mean (0.95) & 0.0006 \\ 
   Variance & 0.0002 \\ 
   Stdev & 0.0144 \\ 
-  Skewness & -0.1538 \\ 
-  Kurtosis & 4.7130 \\ 
+  Skewness & -0.1537 \\ 
+  Kurtosis & 4.7119 \\ 
    \hline
 \end{tabular}
 \end{table}

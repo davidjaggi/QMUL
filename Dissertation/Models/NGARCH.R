@@ -14,9 +14,10 @@ coef(ngarch.fit)
 show(ngarch.fit)
 sinker(show(ngarch.fit), folder, subfolder, name = paste0(name,'_ngarch_fit'))
 
-ngarch.fit@fit$matcoef
+# ngarch.fit@fit$matcoef
 sinker(ngarch.fit@fit$matcoef, folder, subfolder, name = paste0(name,'_ngarch_fit_matcoef'))
-persistence(ngarch.fit)
+sinker(persistence(ngarch.fit), folder, subfolder, name = paste0(name,'_ngarch_fit_pers'))
+# persistence(ngarch.fit)
 ##### analyse the is fit #######################################################
 sinker(signbias(ngarch.fit), folder, subfolder, paste0(name,'_ngarch_fit_sign'))
 sinker(infocriteria(ngarch.fit), folder, subfolder, paste0(name,'_ngarch_fit_info'))
@@ -104,7 +105,7 @@ sinker(rmse(ts(ngarch.result$sigma.sq), ts(ngarch.result$rv)), folder, subfolder
 sinker(caret::postResample(ngarch.result$sigma.sq, ngarch.result$rv), folder, subfolder, paste0(name, '_ngarch_forc_r2'))
 sinker(fpm(ngarch.forc), folder, subfolder, paste0(name, '_ngarch_forc_fpm'))
 
-rm(n1,n2,n3,n4,n5, subfolder)
+rm(n1,n2,n3,n4,n5, n5.1, subfolder)
 rm(list = ls(pattern = '^ngarch.'))
 # ##### Analyse residuals ########################################################
 # # Extract residuals

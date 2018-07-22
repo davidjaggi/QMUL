@@ -10,7 +10,9 @@ source('Dissertation/Prep/Functions.R')
 # saveRDS(object = sp500, file = 'Dissertation/Data/SP500.rds')
 # saveSymbols(Symbols = sp500, file.path = 'Dissertation/Data/sp500.csv')
 
+
 ##### Import SP500 #############################################################
+if (tseries == 'SPX'){
 name <- 'SPX'
 ser_name <- 'S&P 500'
 folder <- 'SPX'
@@ -23,8 +25,10 @@ price <- read.csv(file = 'Dissertation/Data/Price_Data.csv')
 x <- as.xts(x = price$SPX, order.by = as.POSIXct(price$Date,
                                                  tryFormat = "%d/%m/%Y"))
 rm(price)
+}
 
 ##### Import FTSE ##############################################################
+if (tseries == 'FTSE'){
 name <- 'FTSE'
 ser_name <- 'FTSE'
 folder <- 'FTSE'
@@ -37,8 +41,9 @@ price <- read.csv(file = 'Dissertation/Data/Price_Data.csv')
 x <- as.xts(x = price$UKX, order.by = as.POSIXct(price$Date, 
                                                  tryFormat = "%d/%m/%Y"))
 rm(price)
-
-##### Import DAX ##############################################################
+}
+##### Import DAX ###############################################################
+if (tseries == 'DAX'){
 name <- 'DAX'
 ser_name <- 'DAX'
 folder <- 'DAX'
@@ -51,7 +56,7 @@ price <- read.csv(file = 'Dissertation/Data/Price_Data.csv')
 x <- as.xts(x = price$DAX, order.by = as.POSIXct(price$Date,
                                                  tryFormat = "%d/%m/%Y"))
 rm(price)
-
+}
 ##### Adjust series ############################################################
 # crop the time series
 x <- x['1990-01-01/']
@@ -84,4 +89,3 @@ ret.abs <- abs(ret)
 
 ##### Split data into is and oos ###############################################
 rm(dl1, subfolder)
-source('Dissertation/Prep/isos_Splitter.R')

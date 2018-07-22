@@ -15,6 +15,7 @@ sinker(show(egarch.fit), folder, subfolder, name = paste0(name,'_egarch_fit'))
 
 # egarch.fit@fit$matcoef
 sinker(egarch.fit@fit$matcoef, folder, subfolder, name = paste0(name,'_egarch_fit_matcoef'))
+sinker(persistence(egarch.fit), folder, subfolder, name = paste0(name,'_egarch_fit_pers'))
 # persistence(egarch.fit)
 ##### analyse the is fit #######################################################
 sinker(signbias(egarch.fit), folder, subfolder, paste0(name,'_egarch_fit_sign'))
@@ -102,7 +103,7 @@ sinker(rmse(ts(egarch.result$sigma.sq), ts(egarch.result$rv)), folder, subfolder
 sinker(caret::postResample(egarch.result$sigma.sq, egarch.result$rv), folder, subfolder, paste0(name, '_egarch_forc_r2'))
 sinker(fpm(egarch.forc), folder, subfolder, paste0(name, '_egarch_forc_fpm'))
 
-rm(e1,e2,e3,e4,e5,subfolder)
+rm(e1,e2,e3,e4,e5, e5.1,subfolder)
 rm(list = ls(pattern = '^egarch.'))
 # ##### Analyse the residuals ####################################################
 # egarch.lm <- lm(formula = egarch.result$rv ~ 0 + offset(egarch.result$sigma.sq))

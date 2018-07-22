@@ -2,5 +2,5 @@
 	Shapiro-Wilk normality test
 
 data:  shapiro_sample
-W = 0.94322, p-value < 2.2e-16
+W = 0.94323, p-value < 2.2e-16
 

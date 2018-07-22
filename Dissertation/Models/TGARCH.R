@@ -14,9 +14,10 @@ coef(tgarch.fit)
 show(tgarch.fit)
 sinker(show(tgarch.fit), folder, subfolder, name = paste0(name,'_tgarch_fit'))
 
-tgarch.fit@fit$matcoef
+# tgarch.fit@fit$matcoef
 sinker(tgarch.fit@fit$matcoef, folder, subfolder, name = paste0(name,'_tgarch_fit_matcoef'))
-persistence(tgarch.fit)
+sinker(persistence(tgarch.fit), folder, subfolder, name = paste0(name,'_tgarch_fit_pers'))
+# persistence(tgarch.fit)
 ##### analyse the is fit #######################################################
 sinker(signbias(tgarch.fit), folder, subfolder, paste0(name,'_tgarch_fit_sign'))
 sinker(infocriteria(tgarch.fit), folder, subfolder, paste0(name,'_tgarch_fit_info'))
@@ -104,7 +105,7 @@ sinker(rmse(ts(tgarch.result$sigma.sq), ts(tgarch.result$rv)), folder, subfolder
 sinker(caret::postResample(tgarch.result$sigma.sq, tgarch.result$rv), folder, subfolder, paste0(name, '_tgarch_forc_r2'))
 sinker(fpm(tgarch.forc), folder, subfolder, paste0(name, '_tgarch_forc_fpm'))
 
-rm(t1,t2,t3,t4,t5,subfolder)
+rm(t1,t2,t3,t4,t5,t5.1,subfolder)
 rm(list = ls(pattern = '^tgarch.'))
 # ##### Analyse residuals ########################################################
 # # Extract residuals

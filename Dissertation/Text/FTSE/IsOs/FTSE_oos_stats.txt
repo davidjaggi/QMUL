@@ -1,5 +1,5 @@
                          
-Observations    2080.0000
+Observations    2078.0000
 NAs                0.0000
 Minimum           -0.0478
 Quartile 1        -0.0047
@@ -9,9 +9,9 @@ Geometric Mean     0.0001
 Quartile 3         0.0054
 Maximum            0.0503
 SE Mean            0.0002
-LCL Mean (0.95)   -0.0003
+LCL Mean (0.95)   -0.0002
 UCL Mean (0.95)    0.0006
 Variance           0.0001
 Stdev              0.0097
-Skewness          -0.1640
-Kurtosis           2.3258
+Skewness          -0.1643
+Kurtosis           2.3293

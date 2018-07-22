@@ -6,16 +6,16 @@ Type 1: no drift no trend
   19 0.827     0.1
 ----- 
  Type 2: with drift no trend 
- lag   stat p.value
-  19 0.0766     0.1
+ lag  stat p.value
+  19 0.076     0.1
 ----- 
  Type 1: with drift and trend 
  lag   stat p.value
-  19 0.0504     0.1
+  19 0.0509     0.1
 ----------- 
 Note: p.value = 0.01 means p.value <= 0.01 
     : p.value = 0.10 means p.value >= 0.10 
        lag       kpss p.value
-type 1  19 0.82748181     0.1
-type 2  19 0.07660505     0.1
-type 3  19 0.05042022     0.1
+type 1  19 0.82725881     0.1
+type 2  19 0.07597355     0.1
+type 3  19 0.05089732     0.1

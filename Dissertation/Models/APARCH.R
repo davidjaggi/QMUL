@@ -15,6 +15,7 @@ sinker(show(aparch.fit), folder, subfolder, name = paste0(name,'_aparch_fit'))
 
 # aparch.fit@fit$matcoef
 sinker(aparch.fit@fit$matcoef, folder, subfolder, name = paste0(name,'_aparch_fit_matcoef'))
+sinker(persistence(aparch.fit), folder, subfolder, name = paste0(name,'_aparch_fit_pers'))
 # persistence(aparch.fit)
 ##### analyse the is fit #######################################################
 sinker(signbias(aparch.fit), folder, subfolder, paste0(name,'_aparch_fit_sign'))
@@ -103,7 +104,7 @@ sinker(rmse(ts(aparch.result$sigma.sq), ts(aparch.result$rv)), folder, subfolder
 sinker(caret::postResample(aparch.result$sigma.sq, aparch.result$rv), folder, subfolder, paste0(name, '_aparch_forc_r2'))
 sinker(fpm(aparch.forc), folder, subfolder, paste0(name, '_aparch_forc_fpm'))
 
-rm(a1,a2,a3,a4,a5,subfolder)
+rm(a1,a2,a3,a4,a5, a5.1,subfolder)
 rm(list = ls(pattern = '^aparch.'))
 # ##### Analyse residuals ########################################################
 # # Extract residuals
