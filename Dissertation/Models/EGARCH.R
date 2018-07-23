@@ -25,6 +25,7 @@ sinker(gof(egarch.fit,c(20,30,40,50)), folder, subfolder, paste0(name,'_egarch_f
 
 # Make the newsimpactcurve
 egarch.ni <- newsimpact(object = egarch.fit, z = NULL)
+impact.all$EGARCH <- as.data.frame(c(egarch.ni$zy))
 
 e1 <- qplot(egarch.ni$zx, egarch.ni$zy, ylab = egarch.ni$yexpr, xlab = egarch.ni$xexpr, 
            geom="line", main = paste0(ser_name," EGARCH News Impact Curve")) +
@@ -60,7 +61,7 @@ egarch.forc <- ugarchforecast(egarch.spec.fixed, data = ret, n.ahead = 1,
                              n.roll = oos.num-1, out.sample = oos.num-1)
 
 # plot(egarch.forc)
-show(egarch.forc)
+# show(egarch.forc)
 
 ##### Analyse the forecast #####################################################
 # create a time series with the estimated and the real values

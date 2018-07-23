@@ -28,6 +28,10 @@ garch.ni <- newsimpact(object = garch.fit, z = NULL)
 
 impact <- garch.ni
 
+impact.all <- as.data.frame(c(garch.ni$zx))
+colnames(impact.all) <- c('x')
+impact.all$GARCH <- as.data.frame(c(garch.ni$zy))
+
 g1 <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
       geom="line", main = paste0(ser_name," GARCH News Impact Curve")) +
       theme_bw()
@@ -62,7 +66,7 @@ garch.forc <- ugarchforecast(garch.spec.fixed, data = ret, n.ahead = 1,
                             n.roll = oos.num-1, out.sample = oos.num-1)
 
 # plot(garch.forc)
-show(garch.forc)
+# show(garch.forc)
 
 ##### Analyse the forecast #####################################################
 # create a time series with the estimated and the real values
@@ -100,7 +104,6 @@ sinker(cor(garch.result$rv, garch.result$sigma.sq, method = "spearman"), folder,
 
 # The model is fitted to the absolute return
 # Sigma can be squared to get to the volatility
-
 sinker(accuracy(ts(garch.result$sigma.sq), ts(garch.result$rv)), folder, subfolder,paste0(name,'_garch_forc_accuracy'))
 sinker(rmse(ts(garch.result$sigma.sq), ts(garch.result$rv)), folder, subfolder,paste0(name,'_garch_forc_rmse'))
 sinker(caret::postResample(garch.result$sigma.sq, garch.result$rv), folder, subfolder,paste0(name,'_garch_forc_r2'))

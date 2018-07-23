@@ -10,8 +10,8 @@ ngarch.spec = ugarchspec(variance.model=list(model="fGARCH", garchOrder=c(1,1),
 ngarch.fit <- ugarchfit(spec = ngarch.spec, data = ret, out.sample = oos.num, 
                        solver = 'hybrid')  
 # plot(ngarch.fit)
-coef(ngarch.fit)
-show(ngarch.fit)
+# coef(ngarch.fit)
+# show(ngarch.fit)
 sinker(show(ngarch.fit), folder, subfolder, name = paste0(name,'_ngarch_fit'))
 
 # ngarch.fit@fit$matcoef
@@ -26,6 +26,7 @@ sinker(gof(ngarch.fit,c(20,30,40,50)), folder, subfolder, paste0(name,'_ngarch_f
 
 # Make the newsimpactcurve
 ngarch.ni <- newsimpact(object = ngarch.fit, z = NULL)
+impact.all$NGARCH <- as.data.frame(c(ngarch.ni$zy))
 
 n1 <- qplot(ngarch.ni$zx, ngarch.ni$zy, ylab = ngarch.ni$yexpr, xlab = ngarch.ni$xexpr, 
            geom="line", main = paste0(ser_name," NGARCH News Impact Curve")) +
@@ -91,12 +92,12 @@ printer(n5.1, folder, subfolder,paste0(name,'_ngarch_forc_rve_zoom'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
-cor(ngarch.result$rv, ngarch.result$sigma.sq, 
-    method = "spearman")
+# cor(ngarch.result$rv, ngarch.result$sigma.sq, 
+#     method = "spearman")
 # sinker(cor(ngarch.result$rv, ngarch.result$sigma.sq, method = "spearman"), paste0(name,'_ngarch_forc_cor'))
 
 # Show the accuracy of our estimate
-accuracy(ts(ngarch.result$sigma.sq), ts(ngarch.result$rv))
+# accuracy(ts(ngarch.result$sigma.sq), ts(ngarch.result$rv))
 
 # The model is fitted to the absolute return
 # Sigma can be squared to get to the volatility

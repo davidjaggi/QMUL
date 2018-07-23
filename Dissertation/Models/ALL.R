@@ -13,6 +13,21 @@ all1 <- ggplot(data = fortify(oos.all), aes(x = as.Date(Index))) +
   scale_colour_manual(name="Models",
                       values=c(RV="black", GARCH="red", EGARCH="green3", TGARCH = 'blue', NGARCH = 'magenta', APARCH = 'yellow'))
 printer(all1, folder, subfolder,paste0(name,'_all_forc_rve_zoom'))
+rm(oos.all)
 
-rm(all1)
+colnames(impact.all) <- c('x','GARCH','EGARCH','TGARCH','NGARCH','APARCH')
+all2 <- ggplot(data = impact.all, aes(x = x)) +
+  geom_line(aes(y = GARCH, colour = 'GARCH')) +
+  geom_line(aes(y = EGARCH, colour = 'EGARCH')) +
+  geom_line(aes(y = TGARCH, colour = 'TGARCH'))+
+  geom_line(aes(y = NGARCH, colour = 'NGARCH')) +
+  geom_line(aes(y = APARCH, colour = 'APARCH')) +
+  labs(title = paste0(ser_name,' News Impact Curve'), x = 'epsilon[t - 1]', y = 'sigma[t]^2') +
+  theme_bw() +
+  scale_colour_manual(name="Models",
+                      values=c(RV="black", GARCH="red", EGARCH="green3", TGARCH = 'blue', NGARCH = 'magenta', APARCH = 'yellow'))
+
+printer(all2, folder, subfolder,paste0(name,'_all_fit_news'))
+
+rm(all1, all2)
 rm(subfolder)

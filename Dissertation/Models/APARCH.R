@@ -25,6 +25,7 @@ sinker(gof(aparch.fit,c(20,30,40,50)), folder, subfolder, paste0(name,'_aparch_f
 
 # Make the newsimpactcurve
 aparch.ni <- newsimpact(object = aparch.fit, z = NULL)
+impact.all$APGARCH <- as.data.frame(c(aparch.ni$zy))
 
 a1 <- qplot(aparch.ni$zx, aparch.ni$zy, ylab = aparch.ni$yexpr, xlab = aparch.ni$xexpr, 
            geom="line", main = paste0(ser_name," APARCH News Impact Curve")) +
@@ -61,7 +62,7 @@ aparch.forc <- ugarchforecast(aparch.spec.fixed, data = ret, n.ahead = 1,
                              n.roll = oos.num-1, out.sample = oos.num-1)
 
 # plot(aparch.forc)
-show(aparch.forc)
+# show(aparch.forc)
 
 ##### Analyse the forecast #####################################################
 # create a time series with the estimated and the real values
@@ -95,7 +96,7 @@ cor(aparch.result$rv, aparch.result$sigma.sq,
 sinker(cor(aparch.result$rv, aparch.result$sigma.sq, method = "spearman"), folder, subfolder, paste0(name,'_aparch_forc_cor'))
 
 # Show the accuracy of our estimate
-accuracy(ts(aparch.result$sigma.sq), ts(aparch.result$rv))
+# accuracy(ts(aparch.result$sigma.sq), ts(aparch.result$rv))
 
 # The model is fitted to the absolute return
 # Sigma can be squared to get to the volatility

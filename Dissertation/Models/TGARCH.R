@@ -10,8 +10,8 @@ tgarch.spec = ugarchspec(variance.model=list(model="fGARCH", garchOrder=c(1,1),
 tgarch.fit <- ugarchfit(spec = tgarch.spec, data = ret, out.sample = oos.num, 
                        solver = 'hybrid')  
 # plot(tgarch.fit)
-coef(tgarch.fit)
-show(tgarch.fit)
+# coef(tgarch.fit)
+# show(tgarch.fit)
 sinker(show(tgarch.fit), folder, subfolder, name = paste0(name,'_tgarch_fit'))
 
 # tgarch.fit@fit$matcoef
@@ -26,6 +26,7 @@ sinker(gof(tgarch.fit,c(20,30,40,50)), folder, subfolder, paste0(name,'_tgarch_f
 
 # Make the newsimpactcurve
 tgarch.ni <- newsimpact(object = tgarch.fit, z = NULL)
+impact.all$TGARCH <- as.data.frame(c(tgarch.ni$zy))
 
 t1 <- qplot(tgarch.ni$zx, tgarch.ni$zy, ylab = tgarch.ni$yexpr, xlab= tgarch.ni$xexpr, 
            geom="line", main = paste0(ser_name," TGARCH News Impact Curve")) +
@@ -62,7 +63,7 @@ tgarch.forc <- ugarchforecast(tgarch.spec.fixed, data = ret, n.ahead = 1,
                              n.roll = oos.num-1, out.sample = oos.num-1)
 
 # plot(tgarch.forc)
-show(tgarch.forc)
+# show(tgarch.forc)
 
 ##### Analyse the forecast #####################################################
 # create a time series with the estimated and the real values
