@@ -2,7 +2,7 @@
 subfolder <- 'IsOs'
 
 # In this file I will split the data into an in- and out-of-sample data
-summary(ret)
+# summary(ret)
 
 sinker(xtable(summary(ret)), folder, subfolder, name = paste0(name,'_ret_summary'))
 sinker(xtable(table.Stats(ret), digits = 4), folder, subfolder, name = paste0(name,'_ret_stats'))
@@ -13,7 +13,7 @@ is <- ret[paste0('/',split_date)]
 is.sq <- ret.sq[paste0('/',split_date)]
 is.abs <- abs(ret[paste0('/',split_date)])
 # Show summary
-summary(is)
+# summary(is)
 
 sinker(xtable(summary(is)), folder, subfolder, name = paste0(name,'_is_summary'))
 sinker(table.Stats(is), folder, subfolder, name = paste0(name,'_is_stats'))
@@ -23,7 +23,10 @@ oos <- ret[paste0(split_date,'/')]
 oos.sq <- ret.sq[paste0(split_date,'/')]
 oos.abs <- abs(ret[paste0(split_date,'/')])
 # Show summary
-summary(oos)
+# summary(oos)
+
+oos.all <- oos.abs
+colnames(oos.all) <- "RV"
 
 sinker(xtable(summary(oos)), folder, subfolder, name=paste0(name,'_oos_summary'))
 sinker(table.Stats(oos), folder, subfolder,name = paste0(name,'_oos_stats'))

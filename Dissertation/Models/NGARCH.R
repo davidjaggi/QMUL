@@ -62,7 +62,7 @@ ngarch.forc <- ugarchforecast(ngarch.spec.fixed, data = ret, n.ahead = 1,
                              n.roll = oos.num-1, out.sample = oos.num-1)
 
 # plot(ngarch.forc)
-show(ngarch.forc)
+# show(ngarch.forc)
 
 ##### Analyse the forecast #####################################################
 # create a time series with the estimated and the real values
@@ -71,6 +71,7 @@ ngarch.result <- oos.abs
 colnames(ngarch.result) <- c('rv')
 ngarch.result$sigma <- t(ngarch.forc@forecast$sigmaFor)
 ngarch.result$sigma.sq <- ngarch.result$sigma^2
+oos.all$NGARCH <- ngarch.result$sigma
 
 # Plot the estimation
 n5 <- ggplot(data = fortify(ngarch.result), aes(x = Index)) +

@@ -15,4 +15,6 @@ source('Dissertation/Models/TGARCH.R')
 source('Dissertation/Models/NGARCH.R')
 source('Dissertation/Models/APARCH.R')
 
+source('Dissertation/Models/ALL.R')
+
 rm(tseries)

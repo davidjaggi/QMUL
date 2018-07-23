@@ -70,6 +70,7 @@ aparch.result <- oos.abs
 colnames(aparch.result) <- c('rv')
 aparch.result$sigma <- t(aparch.forc@forecast$sigmaFor)
 aparch.result$sigma.sq <- aparch.result$sigma^2
+oos.all$APARCH <- aparch.result$sigma
 
 # Plot the estimation
 a5 <- ggplot(data = fortify(aparch.result), aes(x = Index)) +

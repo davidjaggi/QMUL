@@ -71,6 +71,7 @@ garch.result <- oos.abs
 colnames(garch.result) <- c('rv')
 garch.result$sigma <- t(garch.forc@forecast$sigmaFor)
 garch.result$sigma.sq <- garch.result$sigma^2
+oos.all$GARCH <- garch.result$sigma
 
 # Plot the estimation
 g5 <- ggplot(data = fortify(garch.result), aes(x = Index)) +
@@ -89,13 +90,13 @@ g5.1 <- ggplot(data = fortify(garch.result), aes(x = as.Date(Index))) +
 printer(g5.1, folder, subfolder,paste0(name,'_garch_forc_rve_zoom'))
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
-cor(garch.result$rv, garch.result$sigma.sq, 
-    method = "spearman")
+# cor(garch.result$rv, garch.result$sigma.sq, 
+#     method = "spearman")
 sinker(cor(garch.result$rv, garch.result$sigma.sq, method = "spearman"), folder, subfolder,
        paste0(name,'_garch_forc_cor'))
 
 # Show the accuracy of our estimate
-accuracy(ts(garch.result$sigma.sq), ts(garch.result$rv))
+# accuracy(ts(garch.result$sigma.sq), ts(garch.result$rv))
 
 # The model is fitted to the absolute return
 # Sigma can be squared to get to the volatility

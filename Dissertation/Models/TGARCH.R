@@ -71,6 +71,7 @@ tgarch.result <- oos.abs
 colnames(tgarch.result) <- c('rv')
 tgarch.result$sigma <- t(tgarch.forc@forecast$sigmaFor)
 tgarch.result$sigma.sq <- tgarch.result$sigma^2
+oos.all$TGARCH <- tgarch.result$sigma
 
 # Plot the estimation
 t5 <- ggplot(data = fortify(tgarch.result), aes(x = Index)) +
@@ -90,12 +91,12 @@ printer(t5.1, folder, subfolder,paste0(name,'_tgarch_forc_rve_zoom'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
-cor(tgarch.result$rv, tgarch.result$sigma.sq, 
-    method = "spearman")
+# cor(tgarch.result$rv, tgarch.result$sigma.sq, 
+#     method = "spearman")
 sinker(cor(tgarch.result$rv, tgarch.result$sigma.sq, method = "spearman"), folder, subfolder, paste0(name,'_tgarch_forc_cor'))
 
 # Show the accuracy of our estimate
-accuracy(ts(tgarch.result$sigma.sq), ts(tgarch.result$rv))
+# accuracy(ts(tgarch.result$sigma.sq), ts(tgarch.result$rv))
 
 # The model is fitted to the absolute return
 # Sigma can be squared to get to the volatility
