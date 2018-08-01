@@ -107,6 +107,12 @@ sinker(rmse(ts(tgarch.result$sigma.sq), ts(tgarch.result$rv)), folder, subfolder
 sinker(caret::postResample(tgarch.result$sigma.sq, tgarch.result$rv), folder, subfolder, paste0(name, '_tgarch_forc_r2'))
 sinker(fpm(tgarch.forc), folder, subfolder, paste0(name, '_tgarch_forc_fpm'))
 
+##### Save residuals ###########################################################
+fit_res_tgarch <- residuals(tgarch.fit)
+forc_res_tgarch <- tgarch.result$rv - tgarch.result$sigma.sq
+
+
+##### Delete series ############################################################
 rm(t1,t2,t3,t4,t5,t5.1,subfolder)
 rm(list = ls(pattern = '^tgarch.'))
 # ##### Analyse residuals ########################################################

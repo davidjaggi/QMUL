@@ -108,7 +108,15 @@ sinker(accuracy(ts(garch.result$sigma.sq), ts(garch.result$rv)), folder, subfold
 sinker(rmse(ts(garch.result$sigma.sq), ts(garch.result$rv)), folder, subfolder,paste0(name,'_garch_forc_rmse'))
 sinker(caret::postResample(garch.result$sigma.sq, garch.result$rv), folder, subfolder,paste0(name,'_garch_forc_r2'))
 sinker(fpm(garch.forc), folder, subfolder,paste0(name, '_garch_forc_fpm'))
+# QLIKE(sigmafc = garch.result$sigma.sq, garch.result$rv)
+# QLIKE(sigmafc = garch.result$sigma, garch.result$rv)
 
+##### Save residuals ###########################################################
+fit_res_garch <- residuals(garch.fit)
+forc_res_garch <- garch.result$rv - garch.result$sigma.sq
+
+
+##### Delete series ############################################################
 rm(g1,g2,g3,g4,g5,g5.1,subfolder)
 rm(list = ls(pattern = 'garch.'))
 

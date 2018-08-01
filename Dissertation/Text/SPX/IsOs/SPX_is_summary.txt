@@ -1,5 +1,5 @@
 % latex table generated in R 3.5.0 by xtable 1.8-2 package
-% Mon Jul 23 17:07:18 2018
+% Tue Jul 31 13:48:15 2018
 \begin{table}[ht]
 \centering
 \begin{tabular}{rll}

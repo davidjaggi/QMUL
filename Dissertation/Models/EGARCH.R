@@ -105,7 +105,13 @@ sinker(rmse(ts(egarch.result$sigma.sq), ts(egarch.result$rv)), folder, subfolder
 sinker(caret::postResample(egarch.result$sigma.sq, egarch.result$rv), folder, subfolder, paste0(name, '_egarch_forc_r2'))
 sinker(fpm(egarch.forc), folder, subfolder, paste0(name, '_egarch_forc_fpm'))
 
-rm(e1,e2,e3,e4,e5, e5.1,subfolder)
+##### Save residuals ###########################################################
+fit_res_egarch <- residuals(egarch.fit)
+forc_res_egarch <- egarch.result$rv - egarch.result$sigma.sq
+
+
+##### Delete series ############################################################
+rm(e1,e2,e3,e4,e5,e5.1,subfolder)
 rm(list = ls(pattern = '^egarch.'))
 # ##### Analyse the residuals ####################################################
 # egarch.lm <- lm(formula = egarch.result$rv ~ 0 + offset(egarch.result$sigma.sq))

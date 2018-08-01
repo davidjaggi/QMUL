@@ -30,7 +30,7 @@ rm(price)
 ##### Import FTSE ##############################################################
 if (tseries == 'FTSE'){
 name <- 'FTSE'
-ser_name <- 'FTSE'
+ser_name <- 'FTSE 100'
 folder <- 'FTSE'
 subfolder <- 'DataLoader'
 

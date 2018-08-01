@@ -9,8 +9,8 @@ aparch.spec = ugarchspec(variance.model=list(model="apARCH", garchOrder=c(1,1)),
 aparch.fit <- ugarchfit(spec = aparch.spec, data = ret, out.sample = oos.num, 
                         solver = 'hybrid')  
 # plot(aparch.fit)
-coef(aparch.fit)
-show(aparch.fit)
+# coef(aparch.fit)
+# show(aparch.fit)
 sinker(show(aparch.fit), folder, subfolder, name = paste0(name,'_aparch_fit'))
 
 # aparch.fit@fit$matcoef
@@ -91,8 +91,8 @@ printer(a5.1, folder, subfolder,paste0(name,'_aparch_forc_rve_zoom'))
 
 ##### Test the volatility forecast #############################################
 # Show the correlation between the forecast and the realized volatility
-cor(aparch.result$rv, aparch.result$sigma.sq, 
-    method = "spearman")
+# cor(aparch.result$rv, aparch.result$sigma.sq, 
+#     method = "spearman")
 sinker(cor(aparch.result$rv, aparch.result$sigma.sq, method = "spearman"), folder, subfolder, paste0(name,'_aparch_forc_cor'))
 
 # Show the accuracy of our estimate
@@ -106,6 +106,12 @@ sinker(rmse(ts(aparch.result$sigma.sq), ts(aparch.result$rv)), folder, subfolder
 sinker(caret::postResample(aparch.result$sigma.sq, aparch.result$rv), folder, subfolder, paste0(name, '_aparch_forc_r2'))
 sinker(fpm(aparch.forc), folder, subfolder, paste0(name, '_aparch_forc_fpm'))
 
+##### Save residuals ###########################################################
+fit_res_aparch <- residuals(aparch.fit)
+forc_res_aparch <- aparch.result$rv - aparch.result$sigma.sq
+
+
+##### Delete series ############################################################
 rm(a1,a2,a3,a4,a5, a5.1,subfolder)
 rm(list = ls(pattern = '^aparch.'))
 # ##### Analyse residuals ########################################################

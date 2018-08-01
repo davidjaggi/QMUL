@@ -107,6 +107,12 @@ sinker(rmse(ts(ngarch.result$sigma.sq), ts(ngarch.result$rv)), folder, subfolder
 sinker(caret::postResample(ngarch.result$sigma.sq, ngarch.result$rv), folder, subfolder, paste0(name, '_ngarch_forc_r2'))
 sinker(fpm(ngarch.forc), folder, subfolder, paste0(name, '_ngarch_forc_fpm'))
 
+##### Save residuals ###########################################################
+fit_res_ngarch <- residuals(ngarch.fit)
+forc_res_ngarch <- ngarch.result$rv - ngarch.result$sigma.sq
+
+
+##### Delete series ############################################################
 rm(n1,n2,n3,n4,n5, n5.1, subfolder)
 rm(list = ls(pattern = '^ngarch.'))
 # ##### Analyse residuals ########################################################

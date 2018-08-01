@@ -36,9 +36,11 @@ MSE<-function(sigmafc,RV){
 
 #QLIKE
 QLIKE<-function(sigmafc,RV){
-  varfc=sigmafc^2
-  QLIKE=sum(
-    (RV/varfc-log(RV/varfc)-1)
-  )
-  return(QLIKE)
+  p1 <- log(sigmafc)
+  p2 <- log(RV/sigmafc)
+  p3 <- p1-p2
+  p3[is.infinite(p3)] <- NA
+  p3 <- na.omit(p3)
+  return(mean(p3))
 }
+
