@@ -28,7 +28,8 @@ sinker(gof(tgarch.fit,c(20,30,40,50)), folder, subfolder, paste0(name,'_tgarch_f
 tgarch.ni <- newsimpact(object = tgarch.fit, z = NULL)
 impact.all$TGARCH <- as.data.frame(c(tgarch.ni$zy))
 
-t1 <- qplot(tgarch.ni$zx, tgarch.ni$zy, ylab = tgarch.ni$yexpr, xlab= tgarch.ni$xexpr, 
+t1 <- qplot(tgarch.ni$zx, tgarch.ni$zy, ylab = tgarch.ni$yexpr, 
+            xlab = tgarch.ni$xexpr, 
            geom="line", main = paste0(ser_name," TGARCH News Impact Curve")) +
   theme_bw()
 printer(t1, folder, subfolder, paste0(name,'_tgarch_fit_news'))
@@ -49,7 +50,7 @@ printer(t3, folder, subfolder, paste0(name,'_tgarch_fit_acf_2'))
 t4 <- ggplot(data = fortify(tgarch.fit.stdres), aes(sample = tgarch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
+  labs(title = 'QQ-Plot: Standardized Residuals', y = 'Sample') +
   theme_bw()
 printer(t4, folder, subfolder, paste0(name,'_tgarch_fit_qq'))
 
@@ -78,7 +79,7 @@ oos.all$TGARCH <- tgarch.result$sigma
 t5 <- ggplot(data = fortify(tgarch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs Estimated Volatility OOS'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(t5, folder, subfolder, paste0(name,'_tgarch_forc_rve'))
 
@@ -86,7 +87,7 @@ t5.1 <- ggplot(data = fortify(tgarch.result), aes(x = as.Date(Index))) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
-  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample zoomed in'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs Estimated Volatility OOS Zoom'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(t5.1, folder, subfolder,paste0(name,'_tgarch_forc_rve_zoom'))
 

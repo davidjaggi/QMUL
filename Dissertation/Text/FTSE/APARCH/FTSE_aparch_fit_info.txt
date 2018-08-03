@@ -1,5 +1,5 @@
                       
-Akaike       -6.459953
-Bayes        -6.449298
-Shibata      -6.459959
-Hannan-Quinn -6.456214
+Akaike       -6.467513
+Bayes        -6.456858
+Shibata      -6.467518
+Hannan-Quinn -6.463773

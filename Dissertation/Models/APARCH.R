@@ -1,9 +1,14 @@
 subfolder <- 'APARCH'
 
 ##### Specify the model ########################################################
-aparch.spec = ugarchspec(variance.model=list(model="apARCH", garchOrder=c(1,1)), 
+aparch.spec = ugarchspec(variance.model=list(model="fGARCH", garchOrder=c(1,1), 
+                                             submodel = 'APARCH'), 
                          mean.model=list(armaOrder=c(0,0), include.mean=TRUE),
                          distribution.model="sged")
+
+# aparch.spec = ugarchspec(variance.model=list(model="fGARCH", garchOrder=c(1,1), submodel = 'APARCH'), 
+#                          mean.model=list(armaOrder=c(0,0), include.mean=TRUE),
+#                          distribution.model="sged")
 
 ##### Fit the data to the in sample ############################################
 aparch.fit <- ugarchfit(spec = aparch.spec, data = ret, out.sample = oos.num, 
@@ -27,7 +32,8 @@ sinker(gof(aparch.fit,c(20,30,40,50)), folder, subfolder, paste0(name,'_aparch_f
 aparch.ni <- newsimpact(object = aparch.fit, z = NULL)
 impact.all$APGARCH <- as.data.frame(c(aparch.ni$zy))
 
-a1 <- qplot(aparch.ni$zx, aparch.ni$zy, ylab = aparch.ni$yexpr, xlab = aparch.ni$xexpr, 
+a1 <- qplot(aparch.ni$zx, aparch.ni$zy, ylab = aparch.ni$yexpr, 
+            xlab = aparch.ni$xexpr, 
            geom="line", main = paste0(ser_name," APARCH News Impact Curve")) +
   theme_bw()
 printer(a1, folder, subfolder, paste0(name,'_aparch_fit_news'))
@@ -48,7 +54,7 @@ printer(a3, folder, subfolder, paste0(name,'_aparch_fit_acf_2'))
 a4 <- ggplot(data = fortify(aparch.fit.stdres), aes(sample = aparch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
+  labs(title = 'QQ-Plot: Standardized Residuals', y = 'Sample') +
   theme_bw()
 printer(a4, folder, subfolder, paste0(name,'_aparch_fit_qq'))
 
@@ -77,7 +83,7 @@ oos.all$APARCH <- aparch.result$sigma
 a5 <- ggplot(data = fortify(aparch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs Estimated Volatility OOS'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(a5, folder, subfolder, paste0(name,'_aparch_forc_rve'))
 
@@ -85,7 +91,7 @@ a5.1 <- ggplot(data = fortify(aparch.result), aes(x = as.Date(Index))) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
-  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample zoomed in'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs Estimated Volatility OOS Zoom'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(a5.1, folder, subfolder,paste0(name,'_aparch_forc_rve_zoom'))
 

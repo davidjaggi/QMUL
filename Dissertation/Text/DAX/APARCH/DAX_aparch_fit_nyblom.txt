@@ -1,16 +1,16 @@
 $IndividualStat
-             [,1]
-mu     0.17666871
-omega  0.02548371
-alpha1 0.08464586
-beta1  0.15013555
-gamma1 0.46790906
-delta  0.02900668
-skew   0.28428007
-shape  0.36950175
+            [,1]
+mu     0.3904969
+omega  0.1329776
+alpha1 0.2824487
+beta1  0.1765165
+eta11  0.9207603
+lambda 0.1414922
+skew   0.3048116
+shape  0.5554545
 
 $JointStat
-[1] 3.640649
+[1] 2.639484
 
 $IndividualCritical
   10%    5%    1% 

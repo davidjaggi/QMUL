@@ -28,7 +28,8 @@ sinker(gof(ngarch.fit,c(20,30,40,50)), folder, subfolder, paste0(name,'_ngarch_f
 ngarch.ni <- newsimpact(object = ngarch.fit, z = NULL)
 impact.all$NGARCH <- as.data.frame(c(ngarch.ni$zy))
 
-n1 <- qplot(ngarch.ni$zx, ngarch.ni$zy, ylab = ngarch.ni$yexpr, xlab = ngarch.ni$xexpr, 
+n1 <- qplot(ngarch.ni$zx, ngarch.ni$zy, ylab = ngarch.ni$yexpr, 
+            xlab = ngarch.ni$xexpr, 
            geom="line", main = paste0(ser_name," NGARCH News Impact Curve")) +
   theme_bw()
 printer(n1, folder, subfolder, paste0(name,'_ngarch_fit_news'))
@@ -48,7 +49,7 @@ printer(n3, folder, subfolder, paste0(name,'_ngarch_fit_acf_2'))
 n4 <- ggplot(data = fortify(ngarch.fit.stdres), aes(sample = ngarch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
+  labs(title = 'QQ-Plot: Standardized Residuals', y = 'Sample') +
   theme_bw()
 printer(n4, folder, subfolder, paste0(name,'_ngarch_fit_qq'))
 
@@ -78,7 +79,7 @@ oos.all$NGARCH <- ngarch.result$sigma
 n5 <- ggplot(data = fortify(ngarch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs Estimated Volatility OOS'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(n5, folder, subfolder, paste0(name,'_ngarch_forc_rve'))
 
@@ -86,7 +87,7 @@ n5.1 <- ggplot(data = fortify(ngarch.result), aes(x = as.Date(Index))) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
-  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample zoomed in'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs Estimated Volatility OOS Zoom'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(n5.1, folder, subfolder,paste0(name,'_ngarch_forc_rve_zoom'))
 

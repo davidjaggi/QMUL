@@ -27,7 +27,8 @@ sinker(gof(egarch.fit,c(20,30,40,50)), folder, subfolder, paste0(name,'_egarch_f
 egarch.ni <- newsimpact(object = egarch.fit, z = NULL)
 impact.all$EGARCH <- as.data.frame(c(egarch.ni$zy))
 
-e1 <- qplot(egarch.ni$zx, egarch.ni$zy, ylab = egarch.ni$yexpr, xlab = egarch.ni$xexpr, 
+e1 <- qplot(egarch.ni$zx, egarch.ni$zy, ylab = egarch.ni$yexpr, 
+            xlab = egarch.ni$xexpr, 
            geom="line", main = paste0(ser_name," EGARCH News Impact Curve")) +
   theme_bw()
 printer(e1, folder, subfolder, paste0(name,'_egarch_fit_news'))
@@ -47,7 +48,7 @@ printer(e3, folder, subfolder, paste0(name,'_egarch_fit_acf_2'))
 e4 <- ggplot(data = fortify(egarch.fit.stdres), aes(sample = egarch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
+  labs(title = 'QQ-Plot: Standardized Residuals', y = 'Sample') +
   theme_bw()
 printer(e4, folder, subfolder, paste0(name,'_egarch_fit_qq'))
 
@@ -76,7 +77,7 @@ oos.all$EGARCH <- egarch.result$sigma
 e5 <- ggplot(data = fortify(egarch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs Estimated Volatility OOS'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(e5, folder, subfolder, paste0(name,'_egarch_forc_rve'))
 
@@ -84,7 +85,7 @@ e5.1 <- ggplot(data = fortify(egarch.result), aes(x = as.Date(Index))) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
-  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample zoomed in'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs Estimated Volatility OOS Zoom'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(e5.1, folder, subfolder,paste0(name,'_egarch_forc_rve_zoom'))
 

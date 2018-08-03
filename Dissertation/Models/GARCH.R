@@ -32,7 +32,8 @@ impact.all <- as.data.frame(c(garch.ni$zx))
 colnames(impact.all) <- c('x')
 impact.all$GARCH <- as.data.frame(c(garch.ni$zy))
 
-g1 <- qplot(garch.ni$zx, garch.ni$zy, ylab=garch.ni$yexpr, xlab=garch.ni$xexpr, 
+g1 <- qplot(garch.ni$zx, garch.ni$zy, ylab = garch.ni$yexpr, 
+            xlab = garch.ni$xexpr, 
       geom="line", main = paste0(ser_name," GARCH News Impact Curve")) +
       theme_bw()
 printer(g1,folder, subfolder,paste0(name,'_garch_fit_news'))
@@ -52,7 +53,7 @@ printer(g3, folder, subfolder,paste0(name,'_garch_fit_acf_2'))
 g4 <- ggplot(data = fortify(garch.fit.stdres), aes(sample = garch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
+  labs(title = 'QQ-Plot: Standardized Residuals', y = 'Sample') +
   theme_bw()
 printer(g4, folder, subfolder,paste0(name,'_garch_fit_qq'))
 
@@ -81,7 +82,7 @@ oos.all$GARCH <- garch.result$sigma
 g5 <- ggplot(data = fortify(garch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs Estimated Volatility OOS'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(g5, folder, subfolder,paste0(name,'_garch_forc_rve'))
 
@@ -89,7 +90,7 @@ g5.1 <- ggplot(data = fortify(garch.result), aes(x = as.Date(Index))) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
-  labs(title = paste0(ser_name,' Realized vs estimated volatility out-of-sample zoomed in'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' Realized vs Estimated Volatility OOS Zoom'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(g5.1, folder, subfolder,paste0(name,'_garch_forc_rve_zoom'))
 ##### Test the volatility forecast #############################################

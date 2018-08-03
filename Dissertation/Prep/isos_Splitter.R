@@ -42,17 +42,17 @@ rm(split_date)
 
 isos1 <- ggplot(data = fortify(is), aes(x = Index, y = is)) +
   geom_line() +
-  ggtitle(paste0(ser_name,' In-sample log-returns')) +
+  ggtitle(paste0(ser_name,' In-Sample Returns')) +
   xlab('Time') +
-  ylab('log-returns') +
+  ylab('Log-Return') +
   theme_bw()
 printer(isos1, folder, subfolder,name = paste0(name,'_ret_is'))
 
 isos2 <- ggplot(data = fortify(oos), aes(x = Index, y = oos)) +
   geom_line() +
-  ggtitle(paste0(ser_name,' Out-of-sample log-returns')) +
+  ggtitle(paste0(ser_name,' Out-of-Sample Returns')) +
   xlab('Time') +
-  ylab('log-returns') +
+  ylab('Log-Return') +
   theme_bw()
 printer(isos2, folder, subfolder,name = paste0(name,'_ret_oos'))
  
@@ -60,14 +60,14 @@ printer(isos2, folder, subfolder,name = paste0(name,'_ret_oos'))
 isos3 <- ggplot() +
   geom_line(data = fortify(is),aes(x = Index, y = is), color = 'black') +
   geom_line(data = fortify(oos),aes(x = Index, y = oos), color = 'red') +
-  labs(title = paste0(ser_name, ' In- and Out-of-Sample Split'), x = 'Time', y = 'Log-return') +
+  labs(title = paste0(ser_name, ' In- and Out-of-Sample Split'), x = 'Time', y = 'Log-Return') +
   theme_bw()
 printer(isos3, folder, subfolder,name = paste0(name,'_isos_split'))
 
 # Plot both data series in one plot
 isos4 <- ggplot() +
   geom_line(data = fortify(ret.abs),aes(x = Index, y = ret.abs), color = 'black') +
-  labs(title = paste0(ser_name,' Absolute daily returns as proxy'), x = 'Time', y = 'Log-return') +
+  labs(title = paste0(ser_name,' Absolute Daily Returns'), x = 'Time', y = 'Log-Return') +
   theme_bw()
 printer(isos4, folder, subfolder,name = paste0(name,'_ret_abs'))
 
