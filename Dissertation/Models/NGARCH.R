@@ -49,7 +49,7 @@ printer(n3, folder, subfolder, paste0(name,'_ngarch_fit_acf_2'))
 n4 <- ggplot(data = fortify(ngarch.fit.stdres), aes(sample = ngarch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot: Standardized Residuals', y = 'Sample') +
+  labs(title = 'QQ-Plot: Standardized Residuals', y = 'Sample', x = 'Theoretical') +
   theme_bw()
 printer(n4, folder, subfolder, paste0(name,'_ngarch_fit_qq'))
 

@@ -48,7 +48,7 @@ printer(e3, folder, subfolder, paste0(name,'_egarch_fit_acf_2'))
 e4 <- ggplot(data = fortify(egarch.fit.stdres), aes(sample = egarch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot: Standardized Residuals', y = 'Sample') +
+  labs(title = 'QQ-Plot: Standardized Residuals', y = 'Sample', x = 'Theoretical') +
   theme_bw()
 printer(e4, folder, subfolder, paste0(name,'_egarch_fit_qq'))
 

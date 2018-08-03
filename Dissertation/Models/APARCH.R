@@ -54,7 +54,7 @@ printer(a3, folder, subfolder, paste0(name,'_aparch_fit_acf_2'))
 a4 <- ggplot(data = fortify(aparch.fit.stdres), aes(sample = aparch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot: Standardized Residuals', y = 'Sample') +
+  labs(title = 'QQ-Plot: Standardized Residuals', y = 'Sample', x = 'Theoretical') +
   theme_bw()
 printer(a4, folder, subfolder, paste0(name,'_aparch_fit_qq'))
 
