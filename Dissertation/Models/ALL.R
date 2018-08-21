@@ -18,7 +18,7 @@ all1 <- ggplot(data = fortify(oos.all), aes(x = as.Date(Index))) +
   geom_line(aes(y = APARCH, colour = 'APARCH')) +
   ylim(0,xl) +
   scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
-  labs(title = paste0(ser_name,' Realized vs estimated volatility OOS'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,' realized vs estimated volatility OOS'), x = 'Time', y = 'Volatility') +
   theme_bw() +
   scale_colour_manual(name="Models",
                       values=c(RV="black", 
