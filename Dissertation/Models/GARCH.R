@@ -40,20 +40,20 @@ printer(g1,folder, subfolder,paste0(name,'_garch_fit_news'))
 
 garch.fit.stdres <- residuals(garch.fit, standardize = TRUE)
 g2 <- ggAcf(garch.fit.stdres) + 
-      labs(title = paste0(ser_name,': GARCH standardized residuals')) +
+      labs(title = paste0(ser_name,': GARCH standardised residuals')) +
       theme_bw()
 printer(g2, folder, subfolder,paste0(name,'_garch_fit_acf'))
 
 g3 <- ggAcf(garch.fit.stdres^2) + 
-  labs(title = paste0(ser_name,': GARCH squared standardized residuals')) +
+  labs(title = paste0(ser_name,': GARCH squared standardised residuals')) +
   theme_bw()
 printer(g3, folder, subfolder,paste0(name,'_garch_fit_acf_2'))
 
-# QQ-Plot of standardized residuals
+# QQ-Plot of standardised residuals
 g4 <- ggplot(data = fortify(garch.fit.stdres), aes(sample = garch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot: GARCH standardized residuals', y = 'Sample', x = 'Theoretical') +
+  labs(title = 'QQ-Plot: GARCH standardised residuals', y = 'Sample', x = 'Theoretical') +
   theme_bw()
 printer(g4, folder, subfolder,paste0(name,'_garch_fit_qq'))
 
@@ -127,20 +127,20 @@ rm(list = ls(pattern = 'garch.'))
 # garch.result$res2 <- garch.result$rv - garch.result$sigma.sq
 # garch.result$stdres2 <- garch.result$res2/sd(garch.result$res2)
 # 
-# # Time series of the standardized residuals
+# # Time series of the standardised residuals
 # q <- ggplot(data = fortify(garch.result), aes(x = Index)) +
 #   geom_line(aes(y = stdres)) +
-#   labs(title = 'Standardized Residuals of GARCH Forecast', x = 'Time', 
-#        y = 'Standardized Residuals') +
+#   labs(title = 'standardised Residuals of GARCH Forecast', x = 'Time', 
+#        y = 'standardised Residuals') +
 #   theme_bw()
 # # printer(q, paste0(name,'_garch_forc_stdres'))
 # q
 # 
-# # QQ-Plot of standardized residuals
+# # QQ-Plot of standardised residuals
 # q <- ggplot(data = fortify(garch.result), aes(sample = stdres)) +
 #   stat_qq() +
 #   stat_qq_line() +
-#   labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
+#   labs(title = 'QQ-Plot of standardised Residuals', y = 'sample') +
 #   theme_bw()
 # # printer(q, paste0(name,'_garch_forc_qq'))
 # q
@@ -171,13 +171,13 @@ rm(list = ls(pattern = 'garch.'))
 # 
 # # Auto correlation plot
 # q <- ggAcf(garch.result$stdres) + 
-#   labs(title = 'ACF: GARCH Standardized Residuals') +
+#   labs(title = 'ACF: GARCH standardised Residuals') +
 #   theme_bw()
 # # printer(q, paste0(name,'_garch_forc_res_acf'))
 # q
 # 
 # q <- ggAcf(garch.result$stdres^2) + 
-#   labs(title = 'ACF: GARCH Squared Standardized Residuals') +
+#   labs(title = 'ACF: GARCH Squared standardised Residuals') +
 #   theme_bw()
 # # printer(q, paste0(name,'_garch_res_acf_2'))
 # q

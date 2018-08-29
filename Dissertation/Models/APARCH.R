@@ -44,20 +44,20 @@ printer(a1, folder, subfolder, paste0(name,'_aparch_fit_news'))
 
 aparch.fit.stdres <- residuals(aparch.fit, standardize = TRUE)
 a2 <- ggAcf(aparch.fit.stdres) + 
-  labs(title = paste0(ser_name,': APARCH standardized residuals')) +
+  labs(title = paste0(ser_name,': APARCH standardised residuals')) +
   theme_bw()
 printer(a2, folder, subfolder, paste0(name,'_aparch_fit_acf'))
 
 a3 <- ggAcf(aparch.fit.stdres^2) + 
-  labs(title = paste0(ser_name,': APARCH squared standardized residuals')) +
+  labs(title = paste0(ser_name,': APARCH squared standardised residuals')) +
   theme_bw()
 printer(a3, folder, subfolder, paste0(name,'_aparch_fit_acf_2'))
 
-# QQ-Plot of standardized residuals
+# QQ-Plot of standardised residuals
 a4 <- ggplot(data = fortify(aparch.fit.stdres), aes(sample = aparch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot: APARCH standardized residuals', y = 'Sample', x = 'Theoretical') +
+  labs(title = 'QQ-Plot: APARCH standardised residuals', y = 'Sample', x = 'Theoretical') +
   theme_bw()
 printer(a4, folder, subfolder, paste0(name,'_aparch_fit_qq'))
 
@@ -129,20 +129,20 @@ rm(list = ls(pattern = '^aparch.'))
 # aparch.result$res2 <- aparch.result$rv - aparch.result$sigma.sq
 # aparch.result$stdres2 <- aparch.result$res2/sd(aparch.result$res2)
 # 
-# # Time series of the standardized residuals
+# # Time series of the standardised residuals
 # q <- ggplot(data = fortify(aparch.result), aes(x = Index)) +
 #   geom_line(aes(y = stdres)) +
-#   labs(title = 'Standardized Residuals of aparch Forecast', x = 'Time', 
-#        y = 'Standardized Residuals') +
+#   labs(title = 'standardised Residuals of aparch Forecast', x = 'Time', 
+#        y = 'standardised Residuals') +
 #   theme_bw()
 # # printer(q, paste0(name,'_aparch_forc_stdres'))
 # q
 # 
-# # QQ-Plot of standardized residuals
+# # QQ-Plot of standardised residuals
 # q <- ggplot(data = fortify(aparch.result), aes(sample = stdres)) +
 #   stat_qq() +
 #   stat_qq_line() +
-#   labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
+#   labs(title = 'QQ-Plot of standardised Residuals', y = 'sample') +
 #   theme_bw()
 # # printer(q, paste0(name,'_aparch_forc_qq'))
 # q
@@ -173,13 +173,13 @@ rm(list = ls(pattern = '^aparch.'))
 # 
 # # Auto correlation plot
 # q <- ggAcf(aparch.result$stdres) + 
-#   labs(title = 'ACF: aparch Standardized Residuals') +
+#   labs(title = 'ACF: aparch standardised Residuals') +
 #   theme_bw()
 # # printer(q, paste0(name,'_aparch_forc_res_acf'))
 # q
 # 
 # q <- ggAcf(aparch.result$stdres^2) + 
-#   labs(title = 'ACF: APARCH Squared Standardized Residuals') +
+#   labs(title = 'ACF: APARCH Squared standardised Residuals') +
 #   theme_bw()
 # # printer(q, paste0(name,'_aparch_res_acf_2'))
 # q

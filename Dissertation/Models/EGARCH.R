@@ -35,20 +35,20 @@ printer(e1, folder, subfolder, paste0(name,'_egarch_fit_news'))
 
 egarch.fit.stdres <- residuals(egarch.fit, standardize = TRUE)
 e2 <- ggAcf(egarch.fit.stdres) + 
-  labs(title = paste0(ser_name,': EGARCH standardized residuals')) +
+  labs(title = paste0(ser_name,': EGARCH standardised residuals')) +
   theme_bw()
 printer(e2, folder, subfolder, paste0(name,'_egarch_fit_acf'))
 
 e3 <- ggAcf(egarch.fit.stdres^2) + 
-  labs(title = paste0(ser_name,': EGARCH squared standardized residuals')) +
+  labs(title = paste0(ser_name,': EGARCH squared standardised residuals')) +
   theme_bw()
 printer(e3, folder, subfolder, paste0(name,'_egarch_fit_acf_2'))
 
-# QQ-Plot of standardized residuals
+# QQ-Plot of standardised residuals
 e4 <- ggplot(data = fortify(egarch.fit.stdres), aes(sample = egarch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot: EGARCH standardized residuals', y = 'Sample', x = 'Theoretical') +
+  labs(title = 'QQ-Plot: EGARCH standardised residuals', y = 'Sample', x = 'Theoretical') +
   theme_bw()
 printer(e4, folder, subfolder, paste0(name,'_egarch_fit_qq'))
 
@@ -128,20 +128,20 @@ rm(list = ls(pattern = '^egarch.'))
 # egarch.result$stdres <- rstandard(egarch.lm)
 # egarch.result$res <- residuals(egarch.lm)
 # 
-# # Time series of the standardized residuals
+# # Time series of the standardised residuals
 # q <- ggplot(data = fortify(egarch.result), aes(x = Index)) +
 #   geom_line(aes(y = stdres)) +
-#   labs(title = 'Standardized Residuals of egarch Forecast', x = 'Time', 
-#        y = 'Standardized Residuals') +
+#   labs(title = 'standardised Residuals of egarch Forecast', x = 'Time', 
+#        y = 'standardised Residuals') +
 #   theme_bw()
 # # printer(q, paste0(name,'_egarch_forc_stdres'))
 # q
 # 
-# # QQ-Plot of standardized residuals
+# # QQ-Plot of standardised residuals
 # q <- ggplot(data = fortify(egarch.result), aes(sample = stdres)) +
 #   stat_qq() +
 #   stat_qq_line() +
-#   labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
+#   labs(title = 'QQ-Plot of standardised Residuals', y = 'sample') +
 #   theme_bw()
 # # printer(q, paste0(name,'_egarch_forc_qq'))
 # q
@@ -172,13 +172,13 @@ rm(list = ls(pattern = '^egarch.'))
 # 
 # # Auto correlation plot
 # q <- ggAcf(egarch.result$stdres) + 
-#   labs(title = 'ACF: egarch Standardized Residuals') +
+#   labs(title = 'ACF: egarch standardised Residuals') +
 #   theme_bw()
 # # printer(q, paste0(name,'_egarch_forc_res_acf'))
 # q
 # 
 # q <- ggAcf(egarch.result$stdres^2) + 
-#   labs(title = 'ACF: egarch Squared Standardized Residuals') +
+#   labs(title = 'ACF: egarch Squared standardised Residuals') +
 #   theme_bw()
 # # printer(q, paste0(name,'_egarch_res_acf_2'))
 # q

@@ -36,20 +36,20 @@ printer(n1, folder, subfolder, paste0(name,'_ngarch_fit_news'))
 
 ngarch.fit.stdres <- residuals(ngarch.fit, standardize = TRUE)
 n2 <- ggAcf(ngarch.fit.stdres) + 
-  labs(title = paste0(ser_name,': NGARCH standardized residuals')) +
+  labs(title = paste0(ser_name,': NGARCH standardised residuals')) +
   theme_bw()
 printer(n2, folder, subfolder, paste0(name,'_ngarch_fit_acf'))
 
 n3 <- ggAcf(ngarch.fit.stdres^2) + 
-  labs(title = paste0(ser_name,': NGARCH squared standardized residuals')) +
+  labs(title = paste0(ser_name,': NGARCH squared standardised residuals')) +
   theme_bw()
 printer(n3, folder, subfolder, paste0(name,'_ngarch_fit_acf_2'))
 
-# QQ-Plot of standardized residuals
+# QQ-Plot of standardised residuals
 n4 <- ggplot(data = fortify(ngarch.fit.stdres), aes(sample = ngarch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot: NGARCH standardized residuals', y = 'Sample', x = 'Theoretical') +
+  labs(title = 'QQ-Plot: NGARCH standardised residuals', y = 'Sample', x = 'Theoretical') +
   theme_bw()
 printer(n4, folder, subfolder, paste0(name,'_ngarch_fit_qq'))
 
@@ -122,20 +122,20 @@ rm(list = ls(pattern = '^ngarch.'))
 # ngarch.result$res2 <- ngarch.result$rv - ngarch.result$sigma.sq
 # ngarch.result$stdres2 <- ngarch.result$res2/sd(ngarch.result$res2)
 # 
-# # Time series of the standardized residuals
+# # Time series of the standardised residuals
 # q <- ggplot(data = fortify(ngarch.result), aes(x = Index)) +
 #   geom_line(aes(y = stdres)) +
-#   labs(title = 'Standardized Residuals of NGARCH Forecast', x = 'Time', 
-#        y = 'Standardized Residuals') +
+#   labs(title = 'standardised Residuals of NGARCH Forecast', x = 'Time', 
+#        y = 'standardised Residuals') +
 #   theme_bw()
 # # printer(q, paste0(name,'_ngarch_forc_stdres'))
 # q
 # 
-# # QQ-Plot of standardized residuals
+# # QQ-Plot of standardised residuals
 # q <- ggplot(data = fortify(ngarch.result), aes(sample = stdres)) +
 #   stat_qq() +
 #   stat_qq_line() +
-#   labs(title = 'QQ-Plot of standardized Residuals', y = 'sample') +
+#   labs(title = 'QQ-Plot of standardised Residuals', y = 'sample') +
 #   theme_bw()
 # # printer(q, paste0(name,'_ngarch_forc_qq'))
 # q
@@ -166,13 +166,13 @@ rm(list = ls(pattern = '^ngarch.'))
 # 
 # # Auto correlation plot
 # q <- ggAcf(ngarch.result$stdres) + 
-#   labs(title = 'ACF: ngarch Standardized Residuals') +
+#   labs(title = 'ACF: ngarch standardised Residuals') +
 #   theme_bw()
 # # printer(q, paste0(name,'_ngarch_forc_res_acf'))
 # q
 # 
 # q <- ggAcf(ngarch.result$stdres^2) + 
-#   labs(title = 'ACF: ngarch Squared Standardized Residuals') +
+#   labs(title = 'ACF: ngarch Squared standardised Residuals') +
 #   theme_bw()
 # # printer(q, paste0(name,'_nngarch_res_acf_2'))
 # q
