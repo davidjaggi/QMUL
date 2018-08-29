@@ -68,7 +68,7 @@ summary(x)
 
 dl1 <- ggplot(fortify(x), aes(x = Index, y = x)) +
   geom_line() +
-  labs(title = paste0(ser_name,' Series'), x = 'Time', y = 'Price') +
+  labs(title = paste0(ser_name,': Series'), x = 'Time', y = 'Price') +
   theme_bw()
 printer(dl1, folder, subfolder, paste0(name,'_series'))
 

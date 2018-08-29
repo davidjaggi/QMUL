@@ -102,7 +102,7 @@ Adjusted Pearson Goodness-of-Fit Test:
 4    50     50.60       0.4102
 
 
-Elapsed time : 9.226455 
+Elapsed time : 9.59538 
 
 
 *---------------------------------*
@@ -208,5 +208,5 @@ Adjusted Pearson Goodness-of-Fit Test:
 4    50     50.60       0.4102
 
 
-Elapsed time : 9.226455 
+Elapsed time : 9.59538 
 

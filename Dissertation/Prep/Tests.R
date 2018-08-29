@@ -6,26 +6,26 @@ subfolder <- 'Tests'
 # log-returns
 test1 <- ggplot(fortify(ret)) +
   geom_line(aes(x = Index, y = ret)) +
-  labs(title = paste0(ser_name, ' Returns'), x = 'Time', y = 'Log-Return') +
+  labs(title = paste0(ser_name, ': returns'), x = 'Time', y = 'Log-Return') +
   theme_bw()
 printer(test1, folder, subfolder, paste0(name,'_ret_plot'))
 
 # absolute log-returns
 test2 <- ggplot(fortify(ret)) +
   geom_line(aes(x = Index, y = abs(ret))) +
-  labs(title = paste0(ser_name,' absolute returns'), x = 'Time', y = 'Absolute Log-Returns') +
+  labs(title = paste0(ser_name,': absolute returns'), x = 'Time', y = 'Absolute Log-Returns') +
   theme_bw()
 printer(test2, folder, subfolder, paste0(name,'_ret_abs_plot'))
 
 # squared log-returns
 test3 <- ggplot(fortify(ret)) +
   geom_line(aes(x = Index, y = ret^2)) +
-  labs(title = paste0(ser_name,' squared returns'), x = 'Time', y = 'Squared Log-Returns') +
+  labs(title = paste0(ser_name,': squared returns'), x = 'Time', y = 'Squared Log-Returns') +
   theme_bw()
 printer(test3, folder, subfolder, paste0(name,'_ret_2_plot'))
 ##### Make a histogram of the returns ##########################################
 test4 <- gghistogram(fortify(ret)$ret) +
-  labs(title = paste0(ser_name,' Histogram of returns'), x = 'Log-Return', y = 'Count') +
+  labs(title = paste0(ser_name,': histogram of returns'), x = 'Log-Return', y = 'Count') +
   theme_bw()
 printer(test4,folder, subfolder, paste0(name,'_ret_hist'))
 
@@ -41,7 +41,7 @@ test5 <- ggplot(data = fortify(ret), aes(sample = ret)) +
   stat_qq() +
   geom_abline(slope = slope, intercept = int) +
   theme_bw() +
-  labs(title = paste0('QQ - plot of the ',ser_name,' returns'), x = 'Theoretical',
+  labs(title = paste0(ser_name,': QQ - plot of the returns'), x = 'Theoretical',
        y = 'Sample')
 printer(test5, folder, subfolder, paste0(name, '_ret_qq'))
 rm(y,x,slope,int)
@@ -49,19 +49,19 @@ rm(y,x,slope,int)
 ##### Test series for autocorrelation  ACF #####################################
 # Return acf
 test6 <- ggAcf(ret) +
-  labs(title = paste0('ACF: ',ser_name,' returns'), x = 'Lag', y = 'ACF') +
+  labs(title = paste0(ser_name,': ACF of the returns'), x = 'Lag', y = 'ACF') +
   theme_bw()
 printer(test6, folder, subfolder, paste0(name,'_acf'))
 
 # Absolute return acf
 test7 <- ggAcf(abs(ret)) +
-  labs(title = paste0('ACF: ',ser_name,' absolute returns'), x = 'Lag', y = 'ACF') +
+  labs(title = paste0(ser_name,': ACF of the absolute returns'), x = 'Lag', y = 'ACF') +
   theme_bw()
 printer(test7, folder, subfolder, paste0(name,'_acf_abs'))
 
 # Squared return acf  
 test8 <- ggAcf(ret^2) +
-  labs(title = paste0('ACF: ',ser_name,' squared returns'), x = 'Lag', y = 'ACF') +
+  labs(title = paste0(ser_name,': ACF of the squared returns'), x = 'Lag', y = 'ACF') +
   theme_bw()
 printer(test8, folder, subfolder, paste0(name,'_acf_2'))
 
@@ -69,20 +69,20 @@ printer(test8, folder, subfolder, paste0(name,'_acf_2'))
 # Return PAcf
 # Take care of x axis
 test9 <- ggPacf(ret) +
-  labs(title = paste0('PACF: ',ser_name,' returns'), x = 'Lag', y = 'PACF') +
+  labs(title = paste0(ser_name,': PACF of the returns'), x = 'Lag', y = 'PACF') +
   theme_bw()
 printer(test9, folder, subfolder, paste0(name,'_pacf'))
 
 # Absolute return pacf
 test10 <- ggPacf(abs(ret)) +
-  labs(title = paste0('PACF: ',ser_name,' absolute returns'), x = 'Lag', y = 'PACF') +
+  labs(title = paste0(ser_name, ': PACF of the absolute returns'), x = 'Lag', y = 'PACF') +
   theme_bw()
 printer(test10, folder, subfolder, paste0(name,'_pacf_abs'))
 
 # Squared return pacf
 # Take care of x axis
 test11 <- ggPacf(ret^2) +
-  labs(title = paste0('PACF: ',ser_name,' squared returns'), x = 'Lag', y = 'PACF') +
+  labs(title = paste0(ser_name,': PACF of the squared returns'), x = 'Lag', y = 'PACF') +
   theme_bw()
 printer(test11, folder, subfolder, paste0(name,'_pacf_2'))
 

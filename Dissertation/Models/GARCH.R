@@ -34,18 +34,18 @@ impact.all$GARCH <- as.data.frame(c(garch.ni$zy))
 
 g1 <- qplot(garch.ni$zx, garch.ni$zy, ylab = garch.ni$yexpr, 
             xlab = garch.ni$xexpr, 
-      geom="line", main = paste0(ser_name," GARCH news impact curve")) +
+      geom="line", main = paste0(ser_name,": GARCH news impact curve")) +
       theme_bw()
 printer(g1,folder, subfolder,paste0(name,'_garch_fit_news'))
 
 garch.fit.stdres <- residuals(garch.fit, standardize = TRUE)
 g2 <- ggAcf(garch.fit.stdres) + 
-      labs(title = paste0(ser_name,' GARCH standardized residuals')) +
+      labs(title = paste0(ser_name,': GARCH standardized residuals')) +
       theme_bw()
 printer(g2, folder, subfolder,paste0(name,'_garch_fit_acf'))
 
 g3 <- ggAcf(garch.fit.stdres^2) + 
-  labs(title = paste0(ser_name,' GARCH squared standardized residuals')) +
+  labs(title = paste0(ser_name,': GARCH squared standardized residuals')) +
   theme_bw()
 printer(g3, folder, subfolder,paste0(name,'_garch_fit_acf_2'))
 
@@ -82,7 +82,7 @@ oos.all$GARCH <- garch.result$sigma
 g5 <- ggplot(data = fortify(garch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = paste0(ser_name,' realized vs estimated volatility OOS'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,': realized vs estimated OOS'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(g5, folder, subfolder,paste0(name,'_garch_forc_rve'))
 
@@ -90,7 +90,7 @@ g5.1 <- ggplot(data = fortify(garch.result), aes(x = as.Date(Index))) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
-  labs(title = paste0(ser_name,' realized vs estimated volatility OOS zoom'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,': realized vs estimated OOS zoom'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(g5.1, folder, subfolder,paste0(name,'_garch_forc_rve_zoom'))
 ##### Test the volatility forecast #############################################

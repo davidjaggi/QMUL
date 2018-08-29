@@ -30,19 +30,19 @@ impact.all$TGARCH <- as.data.frame(c(tgarch.ni$zy))
 
 t1 <- qplot(tgarch.ni$zx, tgarch.ni$zy, ylab = tgarch.ni$yexpr, 
             xlab = tgarch.ni$xexpr, 
-           geom="line", main = paste0(ser_name," TGARCH news impact curve")) +
+           geom="line", main = paste0(ser_name,": TGARCH news impact curve")) +
   theme_bw()
 printer(t1, folder, subfolder, paste0(name,'_tgarch_fit_news'))
 
 tgarch.fit.stdres <- residuals(tgarch.fit, standardize = TRUE)
 
 t2 <- ggAcf(tgarch.fit.stdres) + 
-  labs(title = paste0(ser_name,' TGARCH standardized residuals')) +
+  labs(title = paste0(ser_name,': TGARCH standardized residuals')) +
   theme_bw()
 printer(t2, folder, subfolder, paste0(name,'_tgarch_fit_acf'))
 
 t3 <- ggAcf(tgarch.fit.stdres^2) + 
-  labs(title = paste0(ser_name,' TGARCH squared standardized residuals')) +
+  labs(title = paste0(ser_name,': TGARCH squared standardized residuals')) +
   theme_bw()
 printer(t3, folder, subfolder, paste0(name,'_tgarch_fit_acf_2'))
 
@@ -79,7 +79,7 @@ oos.all$TGARCH <- tgarch.result$sigma
 t5 <- ggplot(data = fortify(tgarch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = paste0(ser_name,' realized vs estimated volatility OOS'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,': realized vs estimated OOS'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(t5, folder, subfolder, paste0(name,'_tgarch_forc_rve'))
 
@@ -87,7 +87,7 @@ t5.1 <- ggplot(data = fortify(tgarch.result), aes(x = as.Date(Index))) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
-  labs(title = paste0(ser_name,' realized vs estimated volatility OOS zoom'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,': realized vs estimated OOS zoom'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(t5.1, folder, subfolder,paste0(name,'_tgarch_forc_rve_zoom'))
 
