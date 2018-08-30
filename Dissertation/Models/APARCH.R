@@ -44,12 +44,12 @@ printer(a1, folder, subfolder, paste0(name,'_aparch_fit_news'))
 
 aparch.fit.stdres <- residuals(aparch.fit, standardize = TRUE)
 a2 <- ggAcf(aparch.fit.stdres) + 
-  labs(title = paste0(ser_name,': APARCH standardised residuals')) +
+  labs(title = paste0(ser_name,': APARCH residuals')) +
   theme_bw()
 printer(a2, folder, subfolder, paste0(name,'_aparch_fit_acf'))
 
 a3 <- ggAcf(aparch.fit.stdres^2) + 
-  labs(title = paste0(ser_name,': APARCH squared standardised residuals')) +
+  labs(title = paste0(ser_name,': APARCH squared residuals')) +
   theme_bw()
 printer(a3, folder, subfolder, paste0(name,'_aparch_fit_acf_2'))
 
@@ -57,7 +57,7 @@ printer(a3, folder, subfolder, paste0(name,'_aparch_fit_acf_2'))
 a4 <- ggplot(data = fortify(aparch.fit.stdres), aes(sample = aparch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot: APARCH standardised residuals', y = 'Sample', x = 'Theoretical') +
+  labs(title = paste0(ser_name,': QQ-Plot of the APARCH residuals'), y = 'Sample', x = 'Theoretical') +
   theme_bw()
 printer(a4, folder, subfolder, paste0(name,'_aparch_fit_qq'))
 
@@ -86,7 +86,7 @@ oos.all$APARCH <- aparch.result$sigma
 a5 <- ggplot(data = fortify(aparch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = paste0(ser_name,': realized vs estimated OOS'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,': Realized vs estimated OOS'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(a5, folder, subfolder, paste0(name,'_aparch_forc_rve'))
 
@@ -94,7 +94,7 @@ a5.1 <- ggplot(data = fortify(aparch.result), aes(x = as.Date(Index))) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
-  labs(title = paste0(ser_name,': realized vs estimated OOS zoom'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,': Realized vs estimated OOS zoom'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(a5.1, folder, subfolder,paste0(name,'_aparch_forc_rve_zoom'))
 

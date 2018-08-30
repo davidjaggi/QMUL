@@ -35,12 +35,12 @@ printer(e1, folder, subfolder, paste0(name,'_egarch_fit_news'))
 
 egarch.fit.stdres <- residuals(egarch.fit, standardize = TRUE)
 e2 <- ggAcf(egarch.fit.stdres) + 
-  labs(title = paste0(ser_name,': EGARCH standardised residuals')) +
+  labs(title = paste0(ser_name,': EGARCH residuals')) +
   theme_bw()
 printer(e2, folder, subfolder, paste0(name,'_egarch_fit_acf'))
 
 e3 <- ggAcf(egarch.fit.stdres^2) + 
-  labs(title = paste0(ser_name,': EGARCH squared standardised residuals')) +
+  labs(title = paste0(ser_name,': EGARCH squared residuals')) +
   theme_bw()
 printer(e3, folder, subfolder, paste0(name,'_egarch_fit_acf_2'))
 
@@ -48,7 +48,7 @@ printer(e3, folder, subfolder, paste0(name,'_egarch_fit_acf_2'))
 e4 <- ggplot(data = fortify(egarch.fit.stdres), aes(sample = egarch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot: EGARCH standardised residuals', y = 'Sample', x = 'Theoretical') +
+  labs(title = paste0(ser_name,': QQ-Plot of the EGARCH residuals'), y = 'Sample', x = 'Theoretical') +
   theme_bw()
 printer(e4, folder, subfolder, paste0(name,'_egarch_fit_qq'))
 
@@ -77,7 +77,7 @@ oos.all$EGARCH <- egarch.result$sigma
 e5 <- ggplot(data = fortify(egarch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = paste0(ser_name,': realized vs estimated OOS'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,': Realized vs estimated OOS'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(e5, folder, subfolder, paste0(name,'_egarch_forc_rve'))
 
@@ -85,7 +85,7 @@ e5.1 <- ggplot(data = fortify(egarch.result), aes(x = as.Date(Index))) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
-  labs(title = paste0(ser_name,': realized vs estimated OOS zoom'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,': Realized vs estimated OOS zoom'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(e5.1, folder, subfolder,paste0(name,'_egarch_forc_rve_zoom'))
 

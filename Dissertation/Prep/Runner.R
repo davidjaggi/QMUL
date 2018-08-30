@@ -5,6 +5,7 @@ source('Dissertation/Prep/Functions.R')
 # tseries <- 'FTSE'
 tseries <- 'DAX'
 
+
 source('Dissertation/Prep/DataLoader.R')  
 source('Dissertation/Prep/isos_Splitter.R')
 source('Dissertation/Prep/Tests.R')

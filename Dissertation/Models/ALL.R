@@ -18,7 +18,7 @@ all1 <- ggplot(data = fortify(oos.all), aes(x = as.Date(Index))) +
   geom_line(aes(y = APARCH, colour = 'APARCH')) +
   ylim(0,xl) +
   scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
-  labs(title = paste0(ser_name,': realized vs estimated OOS'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,': Realized vs estimated OOS'), x = 'Time', y = 'Volatility') +
   theme_bw() +
   scale_colour_manual(name="Models",
                       values=c(RV="black", 
@@ -37,7 +37,7 @@ all2 <- ggplot(data = impact.all, aes(x = x)) +
   geom_line(aes(y = TGARCH, colour = 'TGARCH'))+
   geom_line(aes(y = NGARCH, colour = 'NGARCH')) +
   geom_line(aes(y = APARCH, colour = 'APARCH')) +
-  labs(title = paste0(ser_name,': news impact curve'), x = xexpr, 
+  labs(title = paste0(ser_name,': News impact curve'), x = xexpr, 
        y = yexpr) +
   theme_bw() +
   scale_colour_manual(name="Models",

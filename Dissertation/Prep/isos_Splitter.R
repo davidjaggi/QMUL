@@ -67,7 +67,7 @@ printer(isos3, folder, subfolder,name = paste0(name,'_isos_split'))
 # Plot both data series in one plot
 isos4 <- ggplot() +
   geom_line(data = fortify(ret.abs),aes(x = Index, y = ret.abs), color = 'black') +
-  labs(title = paste0(ser_name,': absolute daily returns'), x = 'Time', y = 'Log-Return') +
+  labs(title = paste0(ser_name,': Absolute daily returns'), x = 'Time', y = 'Log-Return') +
   theme_bw()
 printer(isos4, folder, subfolder,name = paste0(name,'_ret_abs'))
 

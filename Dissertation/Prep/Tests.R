@@ -6,26 +6,26 @@ subfolder <- 'Tests'
 # log-returns
 test1 <- ggplot(fortify(ret)) +
   geom_line(aes(x = Index, y = ret)) +
-  labs(title = paste0(ser_name, ': returns'), x = 'Time', y = 'Log-Return') +
+  labs(title = paste0(ser_name, ': Returns'), x = 'Time', y = 'Log-Return') +
   theme_bw()
 printer(test1, folder, subfolder, paste0(name,'_ret_plot'))
 
 # absolute log-returns
 test2 <- ggplot(fortify(ret)) +
   geom_line(aes(x = Index, y = abs(ret))) +
-  labs(title = paste0(ser_name,': absolute returns'), x = 'Time', y = 'Absolute Log-Returns') +
+  labs(title = paste0(ser_name,': Absolute returns'), x = 'Time', y = 'Absolute Log-Returns') +
   theme_bw()
 printer(test2, folder, subfolder, paste0(name,'_ret_abs_plot'))
 
 # squared log-returns
 test3 <- ggplot(fortify(ret)) +
   geom_line(aes(x = Index, y = ret^2)) +
-  labs(title = paste0(ser_name,': squared returns'), x = 'Time', y = 'Squared Log-Returns') +
+  labs(title = paste0(ser_name,': Squared returns'), x = 'Time', y = 'Squared Log-Returns') +
   theme_bw()
 printer(test3, folder, subfolder, paste0(name,'_ret_2_plot'))
 ##### Make a histogram of the returns ##########################################
 test4 <- gghistogram(fortify(ret)$ret) +
-  labs(title = paste0(ser_name,': histogram of returns'), x = 'Log-Return', y = 'Count') +
+  labs(title = paste0(ser_name,': Histogram of the returns'), x = 'Log-Return', y = 'Count') +
   theme_bw()
 printer(test4,folder, subfolder, paste0(name,'_ret_hist'))
 

@@ -40,12 +40,12 @@ printer(g1,folder, subfolder,paste0(name,'_garch_fit_news'))
 
 garch.fit.stdres <- residuals(garch.fit, standardize = TRUE)
 g2 <- ggAcf(garch.fit.stdres) + 
-      labs(title = paste0(ser_name,': GARCH standardised residuals')) +
+      labs(title = paste0(ser_name,': GARCH residuals')) +
       theme_bw()
 printer(g2, folder, subfolder,paste0(name,'_garch_fit_acf'))
 
 g3 <- ggAcf(garch.fit.stdres^2) + 
-  labs(title = paste0(ser_name,': GARCH squared standardised residuals')) +
+  labs(title = paste0(ser_name,': GARCH squared residuals')) +
   theme_bw()
 printer(g3, folder, subfolder,paste0(name,'_garch_fit_acf_2'))
 
@@ -53,7 +53,7 @@ printer(g3, folder, subfolder,paste0(name,'_garch_fit_acf_2'))
 g4 <- ggplot(data = fortify(garch.fit.stdres), aes(sample = garch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot: GARCH standardised residuals', y = 'Sample', x = 'Theoretical') +
+  labs(title = paste0(ser_name,': QQ-Plot of the GARCH residuals'), y = 'Sample', x = 'Theoretical') +
   theme_bw()
 printer(g4, folder, subfolder,paste0(name,'_garch_fit_qq'))
 
@@ -82,7 +82,7 @@ oos.all$GARCH <- garch.result$sigma
 g5 <- ggplot(data = fortify(garch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = paste0(ser_name,': realized vs estimated OOS'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,': Realized vs estimated OOS'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(g5, folder, subfolder,paste0(name,'_garch_forc_rve'))
 
@@ -90,7 +90,7 @@ g5.1 <- ggplot(data = fortify(garch.result), aes(x = as.Date(Index))) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
-  labs(title = paste0(ser_name,': realized vs estimated OOS zoom'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,': Realized vs estimated OOS zoom'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(g5.1, folder, subfolder,paste0(name,'_garch_forc_rve_zoom'))
 ##### Test the volatility forecast #############################################

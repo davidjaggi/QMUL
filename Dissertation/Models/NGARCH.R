@@ -36,12 +36,12 @@ printer(n1, folder, subfolder, paste0(name,'_ngarch_fit_news'))
 
 ngarch.fit.stdres <- residuals(ngarch.fit, standardize = TRUE)
 n2 <- ggAcf(ngarch.fit.stdres) + 
-  labs(title = paste0(ser_name,': NGARCH standardised residuals')) +
+  labs(title = paste0(ser_name,': NGARCH residuals')) +
   theme_bw()
 printer(n2, folder, subfolder, paste0(name,'_ngarch_fit_acf'))
 
 n3 <- ggAcf(ngarch.fit.stdres^2) + 
-  labs(title = paste0(ser_name,': NGARCH squared standardised residuals')) +
+  labs(title = paste0(ser_name,': NGARCH squared residuals')) +
   theme_bw()
 printer(n3, folder, subfolder, paste0(name,'_ngarch_fit_acf_2'))
 
@@ -49,7 +49,7 @@ printer(n3, folder, subfolder, paste0(name,'_ngarch_fit_acf_2'))
 n4 <- ggplot(data = fortify(ngarch.fit.stdres), aes(sample = ngarch.fit.stdres)) +
   stat_qq() +
   qqplotr::stat_qq_line() +
-  labs(title = 'QQ-Plot: NGARCH standardised residuals', y = 'Sample', x = 'Theoretical') +
+  labs(title = paste0(ser_name,': QQ-Plot of the NGARCH residuals'), y = 'Sample', x = 'Theoretical') +
   theme_bw()
 printer(n4, folder, subfolder, paste0(name,'_ngarch_fit_qq'))
 
@@ -79,7 +79,7 @@ oos.all$NGARCH <- ngarch.result$sigma
 n5 <- ggplot(data = fortify(ngarch.result), aes(x = Index)) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
-  labs(title = paste0(ser_name,': realized vs estimated OOS'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,': Realized vs estimated OOS'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(n5, folder, subfolder, paste0(name,'_ngarch_forc_rve'))
 
@@ -87,7 +87,7 @@ n5.1 <- ggplot(data = fortify(ngarch.result), aes(x = as.Date(Index))) +
   geom_line(aes(y = rv)) +
   geom_line(aes(y = sigma), colour = 'red') +
   scale_x_date(limits = c(as.Date('2018-01-01', format = '%Y-%m-%d'), as.Date('2018-06-31', format = '%Y-%m-%d'))) +
-  labs(title = paste0(ser_name,': realized vs estimated OOS zoom'), x = 'Time', y = 'Volatility') +
+  labs(title = paste0(ser_name,': Realized vs estimated OOS zoom'), x = 'Time', y = 'Volatility') +
   theme_bw() 
 printer(n5.1, folder, subfolder,paste0(name,'_ngarch_forc_rve_zoom'))
 
