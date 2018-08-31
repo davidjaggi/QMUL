@@ -41,7 +41,7 @@ test5 <- ggplot(data = fortify(ret), aes(sample = ret)) +
   stat_qq() +
   geom_abline(slope = slope, intercept = int) +
   theme_bw() +
-  labs(title = paste0(ser_name,': QQ - plot of the returns'), x = 'Theoretical',
+  labs(title = paste0(ser_name,': QQ - Plot of the returns'), x = 'Theoretical',
        y = 'Sample')
 printer(test5, folder, subfolder, paste0(name, '_ret_qq'))
 rm(y,x,slope,int)

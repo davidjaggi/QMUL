@@ -3,7 +3,7 @@ source('Dissertation/Prep/Functions.R')
 
 # tseries <- 'SPX' # SPX, FTSE, DAX
 # tseries <- 'FTSE'
-tseries <- 'DAX'
+# tseries <- 'DAX'
 
 
 source('Dissertation/Prep/DataLoader.R')  
